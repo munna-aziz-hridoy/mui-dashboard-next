@@ -23,6 +23,14 @@ code[class*='language-'] {
   padding: 0;
 }
 
-.upgrade-to-pro-button {
+.upgrade-to-pro-button,
+.css-a9n7s9,
+.css-1c8ux76 {
   display: none !important;
+}
+
+@media (min-width: 1440px) {
+  .css-zyg32b {
+    max-width: 100% !important;
+  }
 }

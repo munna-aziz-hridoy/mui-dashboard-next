@@ -178,6 +178,8 @@ const AddPurchaseForm = () => {
               <TextField fullWidth label='Search Products' placeholder='Search Products' />
             </Grid>
 
+            {/* Product list table */}
+
             <TableStickyHeader />
 
             <Grid item xs={12} sm={4}>
@@ -211,13 +213,6 @@ const AddPurchaseForm = () => {
                 label='Note'
                 placeholder='Note'
                 sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
-                // InputProps={{
-                //   startAdornment: (
-                //     <InputAdornment position='start'>
-                //       <MessageOutline />
-                //     </InputAdornment>
-                //   )
-                // }}
               />
             </Grid>
           </Grid>

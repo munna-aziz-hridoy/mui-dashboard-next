@@ -11,29 +11,56 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 
+import { BsTrash } from 'react-icons/bs'
+
 const columns = [
   { id: 'name', label: 'Name', minWidth: 170 },
   { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
   {
-    id: 'population',
-    label: 'Population',
+    id: 'quantity',
+    label: 'Quantity',
     minWidth: 170,
-    align: 'right',
-    format: value => value.toLocaleString('en-US')
+    align: 'right'
+    // format: value => value.toLocaleString('en-US')
   },
   {
-    id: 'size',
-    label: 'Size\u00a0(km\u00b2)',
+    id: 'batch-no',
+    label: 'Batch No',
     minWidth: 170,
-    align: 'right',
-    format: value => value.toLocaleString('en-US')
+    align: 'right'
+    // format: value => value.toLocaleString('en-US')
   },
   {
-    id: 'density',
-    label: 'Density',
+    id: 'expire-date',
+    label: 'Expired Date',
     minWidth: 170,
-    align: 'right',
-    format: value => value.toFixed(2)
+    align: 'right'
+    // format: value => value.toFixed(2)
+  },
+  {
+    id: 'net-unit-cost',
+    label: 'Net Unit Cost',
+    minWidth: 170,
+    align: 'right'
+    // format: value => value.toFixed(2)
+  },
+  {
+    id: 'discount',
+    label: 'Discount',
+    minWidth: 170,
+    align: 'right'
+  },
+  {
+    id: 'tax',
+    label: 'Tax',
+    minWidth: 170,
+    align: 'right'
+  },
+  {
+    id: 'sub-total',
+    label: 'Sub Total',
+    minWidth: 170,
+    align: 'right'
   }
 ]
 function createData(name, code, population, size) {
@@ -85,6 +112,9 @@ const TableStickyHeader = () => {
                   {column.label}
                 </TableCell>
               ))}
+              <TableCell align='right' sx={{ minWidth: 120 }}>
+                <BsTrash />
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
