@@ -25,6 +25,7 @@ import DatePicker from 'react-datepicker'
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
+import TableStickyHeader from '../tables/TableStickyHeader'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Birth Date' autoComplete='off' />
@@ -86,7 +87,16 @@ const FormLayoutsSeparator = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField fullWidth label='Username' placeholder='carterLeonard' />
+              {/* <TextField fullWidth label='Username' placeholder='carterLeonard' /> */}
+              <DatePicker
+                selected={date}
+                showYearDropdown
+                showMonthDropdown
+                placeholderText='MM-DD-YYYY'
+                customInput={<CustomInput />}
+                id='form-layouts-separator-date'
+                onChange={date => setDate(date)}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField fullWidth type='email' label='Email' placeholder='carterleonard@gmail.com' />
@@ -142,6 +152,9 @@ const FormLayoutsSeparator = () => {
             <Grid item xs={12}>
               <Divider sx={{ marginBottom: 0 }} />
             </Grid>
+
+            <TableStickyHeader />
+
             <Grid item xs={12}>
               <Typography variant='body2' sx={{ fontWeight: 600 }}>
                 2. Personal Info

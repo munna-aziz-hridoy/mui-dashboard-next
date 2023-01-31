@@ -44,6 +44,15 @@ const navigation = () => {
       openInNewTab: true
     },
     {
+      sectionTitle: 'Purchase'
+    },
+    {
+      title: 'Add Purchase',
+      icon: AccountPlusOutline,
+      path: '/purchase/add-purchase'
+      // openInNewTab: true
+    },
+    {
       sectionTitle: 'User Interface'
     },
     {
