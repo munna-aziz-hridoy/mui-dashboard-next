@@ -11,56 +11,59 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 
-import { BsTrash } from 'react-icons/bs'
+import { BsTrash, BsPencilSquare } from 'react-icons/bs'
+import { Box, Button, TextField, Typography } from '@mui/material'
+import EditProduct from 'src/@core/components/modal/editProductPropertiesModal'
+import ProductTableRow from './ProductTableRow'
 
 const columns = [
-  { id: 'name', label: 'Name', minWidth: 170 },
+  { id: 'name', label: 'Name', minWidth: 200 },
   { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
   {
     id: 'quantity',
     label: 'Quantity',
-    minWidth: 170,
-    align: 'right'
+    minWidth: 120,
+    align: 'left'
     // format: value => value.toLocaleString('en-US')
   },
   {
     id: 'batch-no',
     label: 'Batch No',
-    minWidth: 170,
-    align: 'right'
+    minWidth: 140,
+    align: 'left'
     // format: value => value.toLocaleString('en-US')
   },
   {
     id: 'expire-date',
     label: 'Expired Date',
-    minWidth: 170,
-    align: 'right'
+    minWidth: 140,
+    align: 'left'
     // format: value => value.toFixed(2)
   },
   {
     id: 'net-unit-cost',
     label: 'Net Unit Cost',
-    minWidth: 170,
-    align: 'right'
+    minWidth: 130,
+    align: 'left'
     // format: value => value.toFixed(2)
   },
   {
     id: 'discount',
     label: 'Discount',
-    minWidth: 170,
-    align: 'right'
+    minWidth: 110,
+    align: 'left'
   },
   {
     id: 'tax',
     label: 'Tax',
-    minWidth: 170,
-    align: 'right'
+    minWidth: 110,
+    align: 'left'
   },
   {
     id: 'sub-total',
     label: 'Sub Total',
-    minWidth: 170,
-    align: 'right'
+    minWidth: 110,
+    align: 'left'
   }
 ]
 function createData(name, code, population, size) {
@@ -87,7 +90,7 @@ const rows = [
   createData('Brazil', 'BR', 210147125, 8515767)
 ]
 
-const TableStickyHeader = () => {
+const TableStickyHeader = ({ products, setProducts }) => {
   // ** States
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -118,19 +121,44 @@ const TableStickyHeader = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+            {products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
               return (
-                <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
-                  {columns.map(column => {
-                    const value = row[column.id]
+                // <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
+                //   <TableCell>
+                //     <Box style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                //       <Typography variant='body1'>{name}</Typography>
 
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    )
-                  })}
-                </TableRow>
+                //       <BsPencilSquare onClick={() => setOpenEditProductModal(true)} fontSize={18} cursor='pointer' />
+                //     </Box>
+                //     <EditProduct open={openEditProductModal} setOpen={setOpenEditProductModal} product={row} />
+                //   </TableCell>
+                //   <TableCell>{id}</TableCell>
+                //   <TableCell>
+                //     <TextField type='number' />
+                //   </TableCell>
+                //   <TableCell>
+                //     <TextField disabled style={{ background: '#eee', borderRadius: '3px' }} />
+                //   </TableCell>
+                //   <TableCell>
+                //     <TextField disabled style={{ background: '#eee', borderRadius: '3px' }} />
+                //   </TableCell>
+                //   <TableCell>0.00</TableCell>
+                //   <TableCell>0.00</TableCell>
+                //   <TableCell>0.00</TableCell>
+                //   <TableCell>0.00</TableCell>
+                //   <TableCell>
+                //     <Button
+                //       onClick={() => {
+                //         setProducts(prev => prev.filter(item => item.id !== id))
+                //       }}
+                //       variant='contained'
+                //       color='error'
+                //     >
+                //       Delete
+                //     </Button>
+                //   </TableCell>
+                // </TableRow>
+                <ProductTableRow key={row.id} product={row} setProducts={setProducts} />
               )
             })}
           </TableBody>
@@ -139,7 +167,7 @@ const TableStickyHeader = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component='div'
-        count={rows.length}
+        count={products.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

@@ -8,11 +8,11 @@ const style = {
   padding: '5px'
 }
 
-const FileUpload = () => {
+const FileUpload = ({ setFiles }) => {
   return (
     <div style={style}>
       <label>Upload Document</label>
-      <input type='file' />
+      <input onChange={e => setFiles(e.target.files[0])} type='file' />
     </div>
   )
 }
