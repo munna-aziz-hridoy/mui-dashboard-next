@@ -18,7 +18,7 @@ import ProductTableRow from './ProductTableRow'
 
 const columns = [
   { id: 'name', label: 'Name', minWidth: 200 },
-  { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+  // { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
   {
     id: 'quantity',
     label: 'Quantity',
@@ -26,20 +26,20 @@ const columns = [
     align: 'left'
     // format: value => value.toLocaleString('en-US')
   },
-  {
-    id: 'batch-no',
-    label: 'Batch No',
-    minWidth: 140,
-    align: 'left'
-    // format: value => value.toLocaleString('en-US')
-  },
-  {
-    id: 'expire-date',
-    label: 'Expired Date',
-    minWidth: 140,
-    align: 'left'
-    // format: value => value.toFixed(2)
-  },
+  // {
+  //   id: 'batch-no',
+  //   label: 'Batch No',
+  //   minWidth: 140,
+  //   align: 'left'
+  //   // format: value => value.toLocaleString('en-US')
+  // },
+  // {
+  //   id: 'expire-date',
+  //   label: 'Expired Date',
+  //   minWidth: 140,
+  //   align: 'left'
+  //   // format: value => value.toFixed(2)
+  // },
   {
     id: 'net-unit-cost',
     label: 'Net Unit Cost',
@@ -47,18 +47,18 @@ const columns = [
     align: 'left'
     // format: value => value.toFixed(2)
   },
-  {
-    id: 'discount',
-    label: 'Discount',
-    minWidth: 110,
-    align: 'left'
-  },
-  {
-    id: 'tax',
-    label: 'Tax',
-    minWidth: 110,
-    align: 'left'
-  },
+  // {
+  //   id: 'discount',
+  //   label: 'Discount',
+  //   minWidth: 110,
+  //   align: 'left'
+  // },
+  // {
+  //   id: 'tax',
+  //   label: 'Tax',
+  //   minWidth: 110,
+  //   align: 'left'
+  // },
   {
     id: 'sub-total',
     label: 'Sub Total',
@@ -122,44 +122,7 @@ const TableStickyHeader = ({ products, setProducts }) => {
           </TableHead>
           <TableBody>
             {products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-              return (
-                // <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
-                //   <TableCell>
-                //     <Box style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                //       <Typography variant='body1'>{name}</Typography>
-
-                //       <BsPencilSquare onClick={() => setOpenEditProductModal(true)} fontSize={18} cursor='pointer' />
-                //     </Box>
-                //     <EditProduct open={openEditProductModal} setOpen={setOpenEditProductModal} product={row} />
-                //   </TableCell>
-                //   <TableCell>{id}</TableCell>
-                //   <TableCell>
-                //     <TextField type='number' />
-                //   </TableCell>
-                //   <TableCell>
-                //     <TextField disabled style={{ background: '#eee', borderRadius: '3px' }} />
-                //   </TableCell>
-                //   <TableCell>
-                //     <TextField disabled style={{ background: '#eee', borderRadius: '3px' }} />
-                //   </TableCell>
-                //   <TableCell>0.00</TableCell>
-                //   <TableCell>0.00</TableCell>
-                //   <TableCell>0.00</TableCell>
-                //   <TableCell>0.00</TableCell>
-                //   <TableCell>
-                //     <Button
-                //       onClick={() => {
-                //         setProducts(prev => prev.filter(item => item.id !== id))
-                //       }}
-                //       variant='contained'
-                //       color='error'
-                //     >
-                //       Delete
-                //     </Button>
-                //   </TableCell>
-                // </TableRow>
-                <ProductTableRow key={row.id} product={row} setProducts={setProducts} />
-              )
+              return <ProductTableRow key={row.product} productData={row} setProducts={setProducts} />
             })}
           </TableBody>
         </Table>

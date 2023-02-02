@@ -3,14 +3,26 @@ import React, { useState } from 'react'
 import { BsPencilSquare } from 'react-icons/bs'
 import EditProduct from 'src/@core/components/modal/editProductPropertiesModal'
 
-const ProductTableRow = ({ product, setProducts }) => {
+const ProductTableRow = ({ productData, setProducts }) => {
   const [openEditProductModal, setOpenEditProductModal] = useState(false)
-  const { pk, total_quantity, product_name } = product
+  const { product, product_name, product_unit } = productData
 
-  console.log(product)
+  const handleSetProductProperty = (property, e) => {
+    setProducts(prev => {
+      const exists = prev.find(item => item.product === product)
+      exists[property] = parseFloat(e.target.value)
+
+      const itemIndex = prev.indexOf(productData)
+
+      const restItem = prev.filter(item => item.product !== product)
+
+      restItem.splice(itemIndex, 0, exists)
+      return restItem
+    })
+  }
 
   return (
-    <TableRow hover role='checkbox' tabIndex={-1}>
+    <TableRow hover role='checkbox' tabIndex={-1} style={{ padding: '30px' }}>
       <TableCell>
         <Box style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Typography variant='body1'>{product_name}</Typography>
@@ -20,40 +32,52 @@ const ProductTableRow = ({ product, setProducts }) => {
         <EditProduct
           open={openEditProductModal}
           setOpen={setOpenEditProductModal}
-          product={product}
+          productData={productData}
           setProducts={setProducts}
         />
       </TableCell>
-      <TableCell>{pk}</TableCell>
-      <TableCell>
+      {/* <TableCell>{product}</TableCell> */}
+      <TableCell style={{ position: 'relative' }}>
         <TextField
-          onChange={e => {
-            const quantity = parseFloat(e.target.value)
-            setProducts(prev => {
-              const exists = prev.find(item => item.product === pk)
-              const restItem = prev.filter(item => item.product !== pk)
-              exists.quantity = quantity
-              return [...restItem, exists]
-            })
-          }}
+          className='table_input'
+          onChange={e => handleSetProductProperty('quantity', e)}
           type='number'
-          value={product?.quantity}
+          value={productData?.quantity}
         />
+        {!productData?.quantity && (
+          <Typography style={{ position: 'absolute' }} variant='body2' textAlign='center' color='error' fontSize={12}>
+            Please input product quantity
+          </Typography>
+        )}
+      </TableCell>
+      <TableCell style={{ position: 'relative' }}>
+        <TextField
+          className='table_input'
+          onChange={e => handleSetProductProperty('unit_cost', e)}
+          type='number'
+          value={productData?.unit_cost}
+        />
+        {!productData?.unit_cost && (
+          <Typography style={{ position: 'absolute' }} variant='body2' textAlign='center' color='error' fontSize={12}>
+            Please input product unit cost
+          </Typography>
+        )}
       </TableCell>
       <TableCell>
-        <TextField disabled style={{ background: '#eee', borderRadius: '3px' }} />
+        <Typography>
+          {productData?.quantity && productData?.unit_cost ? productData?.quantity * productData?.unit_cost : '0.00'}
+        </Typography>
       </TableCell>
+      {/* <TableCell>{productData?.unitCost ? productData?.unitCost : '0.00'}</TableCell>
+      <TableCell>{productData?.discount ? productData?.discount : '0.00'}</TableCell>
+      <TableCell>{productData?.tax ? productData?.tax : '0.00'}</TableCell>
       <TableCell>
-        <TextField disabled style={{ background: '#eee', borderRadius: '3px' }} />
-      </TableCell>
-      <TableCell>{product?.unitCost ? product?.unitCost : '0.00'}</TableCell>
-      <TableCell>{product?.discount ? product?.discount : '0.00'}</TableCell>
-      <TableCell>{product?.tax ? product?.tax : '0.00'}</TableCell>
-      <TableCell>{product?.unitCost && product?.discount ? product?.unitCost - product?.discount : '0.00'} </TableCell>
+        {productData?.unitCost && productData?.discount ? productData?.unitCost - productData?.discount : '0.00'}{' '}
+      </TableCell> */}
       <TableCell>
         <Button
           onClick={() => {
-            setProducts(prev => prev.filter(item => item.id !== pk))
+            setProducts(prev => prev.filter(item => item.product !== product))
           }}
           variant='contained'
           color='error'

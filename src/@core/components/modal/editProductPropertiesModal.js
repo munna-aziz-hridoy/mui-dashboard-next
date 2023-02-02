@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 // ** MUI imports
 import {
@@ -23,6 +23,7 @@ import {
 import { Phone, AccountOutline, EmailOutline, MessageOutline } from 'mdi-material-ui'
 
 import { BiMoney } from 'react-icons/bi'
+import { getUnitChoice } from 'src/@core/apiFunction/product'
 
 const style = {
   position: 'absolute',
@@ -38,27 +39,25 @@ const style = {
   outline: 'none'
 }
 
-const EditProduct = ({ open, setOpen, product, setProducts }) => {
-  const { pk, total_quantity, product_name } = product
+const EditProduct = ({ open, setOpen, productData, setProducts }) => {
+  const { product, product_name, product_unit } = productData
+  const [units, setUnits] = useState([])
+
+  useEffect(() => {
+    getUnitChoice().then(data => setUnits(data))
+  }, [])
 
   const handleSetProductProperty = (property, e, isNumber) => {
     setProducts(prev => {
-      const exists = prev.find(item => item.id === id)
-      const restItem = prev.filter(item => item.id !== id)
+      const exists = prev.find(item => item.product === product)
+      const restItem = prev.filter(item => item.product !== product)
       exists[property] = isNumber ? parseFloat(e.target.value) : e.target.value
       return [...restItem, exists]
     })
   }
 
   return (
-    <Modal
-      //   keepMounted
-      id={pk}
-      open={open}
-      onClose={() => setOpen(false)}
-      //   aria-labelledby='keep-mounted-modal-title'
-      //   aria-describedby='keep-mounted-modal-description'
-    >
+    <Modal id={product} open={open} onClose={() => setOpen(false)}>
       <Box sx={style}>
         <Card>
           <CardHeader title={product_name} titleTypographyProps={{ variant: 'h6' }} />
@@ -72,10 +71,10 @@ const EditProduct = ({ open, setOpen, product, setProducts }) => {
                     type='number'
                     label='Quantity'
                     placeholder='Quantity'
-                    value={product?.quantity}
+                    value={productData?.quantity}
                   />
                 </Grid>
-                <Grid item xs={4}>
+                {/* <Grid item xs={4}>
                   <TextField
                     onChange={e => handleSetProductProperty('discount', e)}
                     fullWidth
@@ -84,18 +83,18 @@ const EditProduct = ({ open, setOpen, product, setProducts }) => {
                     placeholder='Discount'
                     value={product?.discount}
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={4}>
                   <TextField
-                    onChange={e => handleSetProductProperty('unitCost', e)}
+                    onChange={e => handleSetProductProperty('unit_cost', e)}
                     fullWidth
                     type='number'
                     label='Unit Cost'
                     placeholder='Unit Cost'
-                    value={product?.unitCost}
+                    value={productData?.unit_cost}
                   />
                 </Grid>
-                <Grid item xs={4}>
+                {/* <Grid item xs={4}>
                   <FormControl fullWidth>
                     <InputLabel id='form-layouts-separator-select-label'>Tax</InputLabel>
                     <Select
@@ -121,26 +120,18 @@ const EditProduct = ({ open, setOpen, product, setProducts }) => {
                       ))}
                     </Select>
                   </FormControl>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={4}>
                   <FormControl fullWidth>
                     <InputLabel id='form-layouts-separator-select-label'>Product Unit</InputLabel>
                     <Select
-                      onChange={e => {
-                        const unitMeasure = e.target.value
-                        setProducts(prev => {
-                          const exists = prev.find(item => item.id === id)
-                          const restItem = prev.filter(item => item.id !== id)
-                          exists.unitMeasure = unitMeasure
-                          return [...restItem, exists]
-                        })
-                      }}
+                      onChange={e => handleSetProductProperty('product_unit', e, false)}
                       label='Product Unit'
-                      defaultValue=''
+                      defaultValue={product_unit}
                       id='form-layouts-separator-select'
                       labelId='form-layouts-separator-select-label'
                     >
-                      {['Piece', 'Dozen Box', 'Cartoon Box'].map((item, i) => (
+                      {units?.map((item, i) => (
                         <MenuItem key={i} value={item}>
                           {item}
                         </MenuItem>
@@ -151,20 +142,12 @@ const EditProduct = ({ open, setOpen, product, setProducts }) => {
 
                 <Grid item xs={12}>
                   <TextField
-                    onChange={e => {
-                      const imei = e.target.value
-                      setProducts(prev => {
-                        const exists = prev.find(item => item.id === id)
-                        const restItem = prev.filter(item => item.id !== id)
-                        exists.imei = imei
-                        return [...restItem, exists]
-                      })
-                    }}
+                    onChange={e => handleSetProductProperty('EN_number', e, false)}
                     fullWidth
                     multiline
                     minRows={1}
-                    label='IMEI Number'
-                    placeholder='IMEI'
+                    label='EN Number'
+                    placeholder='EN'
                     sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
                   />
                 </Grid>

@@ -29,6 +29,10 @@ code[class*='language-'] {
   display: none !important;
 }
 
+.table_input input {
+  padding: 7.4px 14px;
+}
+
 @media (min-width: 1440px) {
   .css-zyg32b {
     max-width: 100% !important;
