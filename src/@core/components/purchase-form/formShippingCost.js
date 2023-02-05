@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Grid, TextField } from '@mui/material'
 
-const FormShippingCost = ({ setPurchaseData }) => {
+const FormShippingCost = ({ setPurchaseData, clearForm }) => {
+  const [shipping, setShipping] = useState('')
+
+  useEffect(() => {
+    setShipping('')
+  }, [clearForm])
+
   return (
     <Grid item xs={12} sm={4}>
       <TextField
@@ -10,14 +16,16 @@ const FormShippingCost = ({ setPurchaseData }) => {
           setPurchaseData(prev => {
             return {
               ...prev,
-              shipping_cost: parseFloat(e.target.value)
+              shipping_charge: parseFloat(e.target.value)
             }
           })
+          setShipping(e.target.value)
         }}
         type='number'
         fullWidth
         label='Shipping Cost'
         placeholder='Shipping cost'
+        value={shipping}
       />
     </Grid>
   )

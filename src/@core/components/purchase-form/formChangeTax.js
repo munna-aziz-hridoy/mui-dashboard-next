@@ -1,22 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 // ** MUI import
 
-import { Grid, TextField } from '@mui/material'
+import { Grid, TextField, Typography } from '@mui/material'
 
-const FormChangeTax = ({ setTotalTax, purchaseData, totalTax }) => {
+const FormChangeTax = ({ setTotalTax, purchaseData, totalTax, clearForm }) => {
+
+  const [errorText, setErrorText] = useState('')
+
+
+  useEffect(()=>{
+    setTotalTax(0)
+  },[clearForm])
+
   return (
     <Grid item xs={12} sm={4}>
       <TextField
         onChange={e => {
           const taxInNum = parseFloat(e.target.value)
+
+          if(taxInNum < 0){
+            return setErrorText()
+          }
+          setErrorText('')
           setTotalTax(taxInNum)
 
-          if (purchaseData?.tax_8 !== 0) {
-            purchaseData.tax_8 = taxInNum
-          } else if (purchaseData?.tax_10 !== 0) {
-            purchaseData.tax_10 = taxInNum
-          }
+          purchaseData?.tax = taxInNum
+
         }}
         type='number'
         fullWidth
@@ -24,6 +34,11 @@ const FormChangeTax = ({ setTotalTax, purchaseData, totalTax }) => {
         placeholder='Enter Tax Amount'
         value={totalTax}
       />
+      {
+        errorText && <Typography variant='body2' color='error' fontSize={12}>
+          {errorText}
+        </Typography>
+      }
     </Grid>
   )
 }

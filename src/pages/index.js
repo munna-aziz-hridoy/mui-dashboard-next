@@ -21,6 +21,7 @@ import StatisticsCard from 'src/views/dashboard/StatisticsCard'
 import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
 import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
+import { Toaster } from 'react-hot-toast'
 
 const Dashboard = () => {
   return (
@@ -94,6 +95,7 @@ const Dashboard = () => {
           <Table />
         </Grid>
       </Grid>
+      <Toaster />
     </ApexChartWrapper>
   )
 }

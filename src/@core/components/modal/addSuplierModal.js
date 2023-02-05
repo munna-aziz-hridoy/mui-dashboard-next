@@ -17,6 +17,7 @@ import {
 // ** Icon imports
 
 import { Phone, AccountOutline, EmailOutline, MessageOutline } from 'mdi-material-ui'
+import { FaAddressCard, FaFax } from 'react-icons/fa'
 
 const style = {
   position: 'absolute',
@@ -95,15 +96,30 @@ const AddSuplier = ({ open, setOpen }) => {
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
+                    type='number'
+                    label='Fax.'
+                    placeholder='Fax'
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <FaFax />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
                     multiline
                     minRows={3}
-                    label='Note'
-                    placeholder='Note'
+                    label='Address'
+                    placeholder='Address'
                     sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position='start'>
-                          <MessageOutline />
+                          <FaAddressCard />
                         </InputAdornment>
                       )
                     }}

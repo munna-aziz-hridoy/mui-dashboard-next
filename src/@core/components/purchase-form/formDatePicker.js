@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useState } from 'react'
 
 import { TextField, Grid } from '@mui/material'
 
@@ -9,23 +9,32 @@ const CustomInput = forwardRef((props, ref) => {
 })
 
 const FormDatePicker = ({ purchaseData, setPurchaseData }) => {
+  const [selectedDate, setSelectedDate] = useState(new Date())
+
   return (
     <Grid item xs={12} sm={4}>
       <DatePicker
-        selected={purchaseData?.purchaseDate}
+        selected={selectedDate}
+        required
         showYearDropdown
         showMonthDropdown
         placeholderText='MM-DD-YYYY'
         customInput={<CustomInput />}
         id='form-layouts-separator-date'
-        onChange={date =>
+        onChange={date => {
+          const dateArr = date.toString().split(' ')
+          const time = `${dateArr[4].split(':')[0]}:${dateArr[4].split(':')[1]}`
+
+          const timestamp = `${dateArr[3]}-0${date.getMonth() + 1}-${dateArr[2]} ${time}`
+
           setPurchaseData(prev => {
             return {
               ...prev,
-              purchaseDate: date
+              timestamp
             }
           })
-        }
+          setSelectedDate(date)
+        }}
       />
     </Grid>
   )

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getSearchedProduct } from 'src/@core/apiFunction/product'
 import AddProduct from 'src/@core/components/modal/addProductModal'
 
@@ -14,7 +14,7 @@ const listStyle = {
   zIndex: '5'
 }
 
-const FormSelectProduct = ({ setSelectedProduct }) => {
+const FormSelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) => {
   const [productName, setProductName] = useState('')
 
   const [searchedProduct, setSearchedProduct] = useState([])
@@ -22,6 +22,10 @@ const FormSelectProduct = ({ setSelectedProduct }) => {
   const [productLoading, setProductLoading] = useState(false)
   const [openProductModal, setOpenProductModal] = useState(false)
   const [openProductList, setOpenProductList] = useState(false)
+
+  useEffect(() => {
+    setSelectedProduct([])
+  }, [clearForm])
 
   const handleSearchProduct = e => {
     const searchText = e.target.value
@@ -52,6 +56,12 @@ const FormSelectProduct = ({ setSelectedProduct }) => {
         value={productName}
       />
 
+      {selectedProduct?.length === 0 && (
+        <Typography variant='body2' color='error' fontSize={12}>
+          Add product
+        </Typography>
+      )}
+
       <Box style={{ ...listStyle, display: openProductList ? 'block' : 'none' }} borderRadius={1} boxShadow={5}>
         <List>
           {productLoading ? (
@@ -61,11 +71,11 @@ const FormSelectProduct = ({ setSelectedProduct }) => {
           ) : searchedProduct?.length !== 0 ? (
             searchedProduct?.map(item => (
               <ListItem
-                key={item?.pk}
+                key={item?.id}
                 onClick={() => {
                   setSelectedProduct(prev => {
                     const selectedItem = {
-                      product: item.pk,
+                      product: item.id,
                       product_unit: item.product_unit,
                       product_name: item.product_name
                     }

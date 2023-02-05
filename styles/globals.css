@@ -25,7 +25,8 @@ code[class*='language-'] {
 
 .upgrade-to-pro-button,
 .css-a9n7s9,
-.css-1c8ux76 {
+.css-1c8ux76,
+.css-4gpitf-MuiTablePagination-selectLabel {
   display: none !important;
 }
 
@@ -38,3 +39,5 @@ code[class*='language-'] {
     max-width: 100% !important;
   }
 }
+
+/* MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1oi9tye-MuiPaper-root-MuiCard-root */

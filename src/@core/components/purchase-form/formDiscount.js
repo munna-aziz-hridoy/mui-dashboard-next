@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 //** MUI import
-import { Grid, TextField } from '@mui/material'
+import { Grid, TextField, Typography } from '@mui/material'
 
-const FormDiscount = ({ setPurchaseData }) => {
+const FormDiscount = ({ setPurchaseData, clearForm }) => {
+  const [discount, setDiscount] = useState(0)
+
+  useEffect(() => {
+    setDiscount('')
+  }, [clearForm])
+
   return (
     <Grid item xs={12} sm={4}>
       <TextField
@@ -14,12 +20,20 @@ const FormDiscount = ({ setPurchaseData }) => {
               discount: parseFloat(e.target.value)
             }
           })
+          setDiscount(parseFloat(e.target.value))
         }}
         type='number'
         fullWidth
         label='Discount'
         placeholder='100'
+        value={discount}
       />
+
+      {discount < 0 && (
+        <Typography variant='body2' color='error' fontSize={12}>
+          Discount can't be negative
+        </Typography>
+      )}
     </Grid>
   )
 }

@@ -1,4 +1,5 @@
-import React from 'react'
+import { Typography } from '@mui/material'
+import React, { useState } from 'react'
 
 const style = {
   display: 'flex',
@@ -9,11 +10,26 @@ const style = {
 }
 
 const FileUpload = ({ setFiles }) => {
+  const [isFile, setIsFile] = useState(false)
+
   return (
-    <div style={style}>
-      <label>Upload Document</label>
-      <input onChange={e => setFiles(e.target.files[0])} type='file' />
-    </div>
+    <>
+      <div style={style}>
+        <label>Upload Document</label>
+        <input
+          onChange={e => {
+            setFiles(e.target.files[0])
+            setIsFile(true)
+          }}
+          type='file'
+        />
+        {!isFile && (
+          <Typography variant='body2' color='error' fontSize={12}>
+            Upload invoice image
+          </Typography>
+        )}
+      </div>
+    </>
   )
 }
 

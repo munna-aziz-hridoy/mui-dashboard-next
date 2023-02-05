@@ -42,3 +42,15 @@ export const getPaymentChoice = async () => {
     return []
   }
 }
+
+export const getTaxChoices = async () => {
+  const url = `${mainUrl}/common/tax-percentage-choices/`
+  const res = await fetch(url)
+  const data = await res.json()
+
+  if (data) {
+    return data
+  } else {
+    return []
+  }
+}

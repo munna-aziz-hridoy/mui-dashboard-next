@@ -1,46 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 // ** MUI import
 
 import { Grid, FormControl, RadioGroup, Radio, FormControlLabel } from '@mui/material'
+import { getTaxChoices } from 'src/@core/apiFunction/product'
 
 const FormSelectTax = ({ setPurchaseData, setTotalTax, invoiceTotal }) => {
+  const [taxChoices, setTaxChoices] = useState([])
+
+  useEffect(() => {
+    getTaxChoices().then(data => setTaxChoices(data))
+  }, [])
+
   const handleSetTax = e => {
     const taxInPercent = parseInt(e.target.value)
-    if (taxInPercent === 0) {
-      setPurchaseData(prev => {
-        return {
-          ...prev,
-          tax_8: 0,
-          tax_10: 0
-        }
-      })
-      setTotalTax(0)
-    } else if (taxInPercent === 8) {
-      const taxAmount = (invoiceTotal * taxInPercent) / 100
+    const taxAmount = (invoiceTotal * taxInPercent) / 100
+    setTotalTax(taxAmount)
 
-      setPurchaseData(prev => {
-        return {
-          ...prev,
-          tax_8: taxAmount,
-          tax_10: 0
-        }
-      })
-
-      setTotalTax(taxAmount)
-    } else if (taxInPercent === 10) {
-      const taxAmount = (invoiceTotal * taxInPercent) / 100
-
-      setPurchaseData(prev => {
-        return {
-          ...prev,
-          tax_8: 0,
-          tax_10: taxAmount
-        }
-      })
-
-      setTotalTax(taxAmount)
-    }
+    setPurchaseData(prev => {
+      return {
+        ...prev,
+        tax: taxAmount,
+        tax_percentage: taxInPercent
+      }
+    })
   }
 
   return (
@@ -55,8 +38,10 @@ const FormSelectTax = ({ setPurchaseData, setTotalTax, invoiceTotal }) => {
           style={{ flexDirection: 'row' }}
         >
           <FormControlLabel value='0' control={<Radio />} label='No Tax' />
-          <FormControlLabel value='8' control={<Radio />} label='Tax 8%' />
-          <FormControlLabel value='10' control={<Radio />} label='Tax 10%' />
+
+          {taxChoices.map(item => (
+            <FormControlLabel key={item} value={item} control={<Radio />} label={`Tax ${item}%`} />
+          ))}
         </RadioGroup>
       </FormControl>
     </Grid>

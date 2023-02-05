@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { getSearchedSuplier } from 'src/@core/apiFunction/suplier'
-import AddSuplier from 'src/@core/components/modal/addSuplierModal'
 
 // ** MUI import
 
-import { Grid, TextField, Box, List, ListItem, CircularProgress, Typography, Button } from '@mui/material'
+import { Grid, TextField, Box, List, ListItem, CircularProgress, Typography } from '@mui/material'
 
 const listStyle = {
   background: '#c140f5',
@@ -14,18 +13,13 @@ const listStyle = {
   zIndex: '5'
 }
 
-const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
-  const [openSuplierModal, setOpenSuplierModal] = useState(false)
+const SelectSuplierSearch = ({}) => {
   const [openSuplierList, setOpenSuplierList] = useState(false)
   const [suplierLoading, setSuplierLoading] = useState(false)
 
   const [searchedSuplier, setSearchedSuplier] = useState([])
 
   const [suplierName, setSuplierName] = useState('')
-
-  useEffect(() => {
-    setSuplierName('')
-  }, [clearForm])
 
   const handleSearchSuplier = e => {
     const searchText = e.target.value
@@ -58,14 +52,7 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
         label='Search Suplier'
         placeholder='Search Suplier'
         value={suplierName}
-        required
       />
-
-      {!suplierName && (
-        <Typography variant='body2' color='error' fontSize={12}>
-          Please Add a supplier
-        </Typography>
-      )}
 
       <Box
         style={{ ...listStyle, display: openSuplierList ? 'block' : 'none', width: '92%' }}
@@ -77,7 +64,7 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
             <ListItem>
               <CircularProgress color='inherit' style={{ margin: '0 auto' }} />
             </ListItem>
-          ) : searchedSuplier?.length !== 0 ? (
+          ) : (
             searchedSuplier?.map(item => (
               <ListItem
                 key={item?.id}
@@ -99,23 +86,11 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
                 </Typography>
               </ListItem>
             ))
-          ) : (
-            <ListItem>
-              <Button
-                onClick={() => setOpenSuplierModal(true)}
-                fullWidth
-                variant='outlined'
-                style={{ borderColor: '#fff', color: '#fff' }}
-              >
-                Add Suplier
-              </Button>
-            </ListItem>
           )}
         </List>
       </Box>
-      <AddSuplier open={openSuplierModal} setOpen={setOpenSuplierModal} />
     </Grid>
   )
 }
 
-export default FormSuplierSelect
+export default SelectSuplierSearch

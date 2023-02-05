@@ -142,17 +142,17 @@ const EditProduct = ({ open, setOpen, productData, setProducts }) => {
 
                 <Grid item xs={12}>
                   <TextField
-                    onChange={e => handleSetProductProperty('EN_number', e, false)}
+                    onChange={e => handleSetProductProperty('EAN_number', e, false)}
                     fullWidth
                     multiline
                     minRows={1}
-                    label='EN Number'
-                    placeholder='EN'
+                    label='EAN Number'
+                    placeholder='EAN'
                     sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Button onClick={() => setOpen(false)} type='submit' variant='contained' size='large'>
+                  <Button onClick={() => setOpen(false)} variant='contained' size='large'>
                     Submit
                   </Button>
                 </Grid>

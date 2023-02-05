@@ -10,6 +10,8 @@ import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
+import { BiPurchaseTag, BiListCheck } from 'react-icons/bi'
+
 const navigation = () => {
   return [
     {
@@ -48,9 +50,14 @@ const navigation = () => {
     },
     {
       title: 'Add Purchase',
-      icon: AccountPlusOutline,
+      icon: BiPurchaseTag,
       path: '/purchase/add-purchase'
       // openInNewTab: true
+    },
+    {
+      title: 'Purchase List',
+      icon: BiListCheck,
+      path: '/purchase/purchase-list'
     },
     {
       sectionTitle: 'User Interface'

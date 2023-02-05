@@ -1,6 +1,6 @@
 import { TableCell, TableRow, Box, Typography, Button, TextField } from '@mui/material'
-import React, { useState } from 'react'
-import { BsPencilSquare } from 'react-icons/bs'
+import React, { useEffect, useState } from 'react'
+import { BsPencilSquare, BsTrashFill } from 'react-icons/bs'
 import EditProduct from 'src/@core/components/modal/editProductPropertiesModal'
 
 const ProductTableRow = ({ productData, setProducts }) => {
@@ -25,7 +25,7 @@ const ProductTableRow = ({ productData, setProducts }) => {
     <TableRow hover role='checkbox' tabIndex={-1} style={{ padding: '30px' }}>
       <TableCell>
         <Box style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Typography variant='body1'>{product_name}</Typography>
+          <Typography variant='body1'>{product_name.split(' -')[0]}</Typography>
 
           <BsPencilSquare onClick={() => setOpenEditProductModal(true)} fontSize={18} cursor='pointer' />
         </Box>
@@ -43,6 +43,7 @@ const ProductTableRow = ({ productData, setProducts }) => {
           onChange={e => handleSetProductProperty('quantity', e)}
           type='number'
           value={productData?.quantity}
+          required
         />
         {!productData?.quantity && (
           <Typography style={{ position: 'absolute' }} variant='body2' textAlign='center' color='error' fontSize={12}>
@@ -56,6 +57,7 @@ const ProductTableRow = ({ productData, setProducts }) => {
           onChange={e => handleSetProductProperty('unit_cost', e)}
           type='number'
           value={productData?.unit_cost}
+          required
         />
         {!productData?.unit_cost && (
           <Typography style={{ position: 'absolute' }} variant='body2' textAlign='center' color='error' fontSize={12}>
@@ -82,7 +84,7 @@ const ProductTableRow = ({ productData, setProducts }) => {
           variant='contained'
           color='error'
         >
-          Delete
+          <BsTrashFill fontSize={18} color='#fff' />
         </Button>
       </TableCell>
     </TableRow>

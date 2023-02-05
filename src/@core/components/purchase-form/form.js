@@ -36,6 +36,8 @@ import FormChangeTax from './formChangeTax'
 import FormDiscount from './formDiscount'
 import FormShippingCost from './formShippingCost'
 import FormInvoiceNote from './formInvoiceNote'
+import { useRouter } from 'next/router'
+import toast, { Toaster } from 'react-hot-toast'
 
 const listStyle = {
   background: '#c140f5',
@@ -46,8 +48,23 @@ const listStyle = {
 }
 
 const AddPurchaseForm = () => {
+  const date = new Date()
+
+  const dateArr = date.toString().split(' ')
+  const time = `${dateArr[4].split(':')[0]}:${dateArr[4].split(':')[1]}`
+  const timestamp = `${dateArr[3]}-0${date.getMonth() + 1}-${dateArr[2]} ${time}`
+
   // ** States
-  const [purchaseData, setPurchaseData] = useState({})
+  const [purchaseData, setPurchaseData] = useState({
+    tax: 0,
+    tax_percentage: 0,
+    discount: 0,
+    shipping_charge: 0,
+    note: '',
+    payment_status: '',
+    amount_paid: null,
+    timestamp
+  })
 
   const [selectedProduct, setSelectedProduct] = useState([])
 
@@ -55,6 +72,9 @@ const AddPurchaseForm = () => {
 
   const [invoiceTotal, setInvoiceTotal] = useState(0)
   const [totalTax, setTotalTax] = useState(0)
+  const [clearForm, setClearForm] = useState(false)
+
+  const router = useRouter()
 
   useEffect(() => {
     if (selectedProduct.length !== 0) {
@@ -75,27 +95,62 @@ const AddPurchaseForm = () => {
     e.preventDefault()
     const url = `${mainUrl}/invoice/`
 
-    console.log({ ...purchaseData, products: selectedProduct, file: invoiceFile })
+    if (!invoiceFile) {
+      return
+    }
+    if (selectedProduct.length === 0) {
+      return
+    }
+
+    const purchase = selectedProduct.map(item => {
+      const { product, product_unit, unit_cost, quantity } = item
+
+      return {
+        product,
+        product_unit,
+        unit_cost,
+        quantity
+      }
+    })
+
+    const data = { invoice_type: 'Purchase', ...purchaseData, purchase }
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setClearForm(true)
+        setTotalTax(0)
+        setInvoiceTotal(0)
+        setInvoiceFile(null)
+        toast.success('Added to purchase list')
+      })
   }
 
   return (
     <Card>
       <CardHeader title='Add New Purchase' titleTypographyProps={{ variant: 'h6' }} />
       <Divider sx={{ margin: 0 }} />
-      <form onSubmit={handlePurchaseDataSubmit}>
+      <form id='purchase-form' onSubmit={handlePurchaseDataSubmit}>
         <CardContent>
           <Grid container spacing={5}>
             {/* purchase form start */}
 
             <FormDatePicker purchaseData={purchaseData} setPurchaseData={setPurchaseData} />
 
-            <FormSuplierSelect setPurchaseData={setPurchaseData} />
+            <FormSuplierSelect setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
-            <FormPaymentStatus setPurchaseData={setPurchaseData} />
+            <FormPaymentStatus setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
             <Grid item xs={12} sm={4}>
               <FormControl fullWidth>
-                <FileUpload setFiles={setInvoiceFile} />
+                <FileUpload setFiles={setInvoiceFile} clearForm={clearForm} />
               </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -104,21 +159,39 @@ const AddPurchaseForm = () => {
 
             {/* Product list and search */}
 
-            <FormSelectProduct setSelectedProduct={setSelectedProduct} />
+            <FormSelectProduct
+              setSelectedProduct={setSelectedProduct}
+              selectedProduct={selectedProduct}
+              clearForm={clearForm}
+            />
 
             {/* Product list table */}
 
-            <TableStickyHeader products={selectedProduct} setProducts={setSelectedProduct} />
+            <TableStickyHeader
+              products={selectedProduct}
+              setProducts={setSelectedProduct}
+              invoiceTotal={invoiceTotal}
+            />
 
-            <FormSelectTax setPurchaseData={setPurchaseData} setTotalTax={setTotalTax} invoiceTotal={invoiceTotal} />
+            <FormSelectTax
+              setPurchaseData={setPurchaseData}
+              setTotalTax={setTotalTax}
+              invoiceTotal={invoiceTotal}
+              clearForm={clearForm}
+            />
 
-            <FormChangeTax setTotalTax={setTotalTax} purchaseData={purchaseData} totalTax={totalTax} />
+            <FormChangeTax
+              setTotalTax={setTotalTax}
+              purchaseData={purchaseData}
+              totalTax={totalTax}
+              clearForm={clearForm}
+            />
 
-            <FormDiscount setPurchaseData={setPurchaseData} />
+            <FormDiscount setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
-            <FormShippingCost setPurchaseData={setPurchaseData} />
+            <FormShippingCost setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
-            <FormInvoiceNote setPurchaseData={setPurchaseData} />
+            <FormInvoiceNote setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
             <Grid item xs={12}>
               <Typography fontWeight={600} variant='h6'>
@@ -138,6 +211,7 @@ const AddPurchaseForm = () => {
           </Button>
         </CardActions>
       </form>
+      <Toaster />
     </Card>
   )
 }
