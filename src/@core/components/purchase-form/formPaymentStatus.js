@@ -19,35 +19,37 @@ const FormPaymentStatus = ({ setPurchaseData, clearForm }) => {
     setSelectedStatus('')
   }, [clearForm])
 
+  const handleChangePaymentStatus = e => {
+    const status = e.target.value
+
+    if (status !== 'Partial') {
+      setPurchaseData(prev => {
+        return {
+          ...prev,
+          payment_status: status,
+          amount_paid: null
+        }
+      })
+      setOpenPartialAmountModal(false)
+    } else {
+      setPurchaseData(prev => {
+        return {
+          ...prev,
+          payment_status: status
+        }
+      })
+      setOpenPartialAmountModal(true)
+    }
+
+    setSelectedStatus(status)
+  }
+
   return (
     <Grid item xs={12} sm={4}>
       <FormControl fullWidth>
         <InputLabel id='form-layouts-separator-select-label'>Payment Status</InputLabel>
         <Select
-          onChange={e => {
-            const status = e.target.value
-
-            if (status !== 'Partial') {
-              setPurchaseData(prev => {
-                return {
-                  ...prev,
-                  payment_status: status,
-                  amount_paid: null
-                }
-              })
-              setOpenPartialAmountModal(false)
-            } else {
-              setPurchaseData(prev => {
-                return {
-                  ...prev,
-                  payment_status: status
-                }
-              })
-              setOpenPartialAmountModal(true)
-            }
-
-            setSelectedStatus(status)
-          }}
+          onChange={handleChangePaymentStatus}
           required
           label='Payment Status'
           defaultValue=''

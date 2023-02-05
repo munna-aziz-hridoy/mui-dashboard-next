@@ -42,6 +42,25 @@ const FormSelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) =
     }
   }
 
+  const handleSelectProduct = item => {
+    setSelectedProduct(prev => {
+      const selectedItem = {
+        product: item.id,
+        product_unit: item.product_unit,
+        product_name: item.product_name
+      }
+      const exists = prev.find(prevPro => prevPro.product === selectedItem.product)
+
+      if (!exists) {
+        return [...prev, selectedItem]
+      } else {
+        return prev
+      }
+    })
+    setOpenProductList(false)
+    setProductName('')
+  }
+
   return (
     <Grid item xs={12} marginBottom={8} style={{ position: 'relative' }}>
       <TextField
@@ -72,24 +91,7 @@ const FormSelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) =
             searchedProduct?.map(item => (
               <ListItem
                 key={item?.id}
-                onClick={() => {
-                  setSelectedProduct(prev => {
-                    const selectedItem = {
-                      product: item.id,
-                      product_unit: item.product_unit,
-                      product_name: item.product_name
-                    }
-                    const exists = prev.find(prevPro => prevPro.product === selectedItem.product)
-
-                    if (!exists) {
-                      return [...prev, selectedItem]
-                    } else {
-                      return prev
-                    }
-                  })
-                  setOpenProductList(false)
-                  setProductName('')
-                }}
+                onClick={() => handleSelectProduct(item)}
                 color='#fff'
                 style={{ cursor: 'pointer' }}
               >

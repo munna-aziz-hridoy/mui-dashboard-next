@@ -9,18 +9,20 @@ const FormInvoiceNote = ({ setPurchaseData, clearForm }) => {
     setNote('')
   }, [clearForm])
 
+  const handleChangeNote = e => {
+    setPurchaseData(prev => {
+      return {
+        ...prev,
+        note: e.target.value
+      }
+    })
+    setNote(e.target.value)
+  }
+
   return (
     <Grid item xs={12}>
       <TextField
-        onChange={e => {
-          setPurchaseData(prev => {
-            return {
-              ...prev,
-              note: e.target.value
-            }
-          })
-          setNote(e.target.value)
-        }}
+        onChange={handleChangeNote}
         value={note}
         fullWidth
         multiline

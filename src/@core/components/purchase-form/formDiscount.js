@@ -10,18 +10,20 @@ const FormDiscount = ({ setPurchaseData, clearForm }) => {
     setDiscount('')
   }, [clearForm])
 
+  const handleSetDiscount = e => {
+    setPurchaseData(prev => {
+      return {
+        ...prev,
+        discount: parseFloat(e.target.value)
+      }
+    })
+    setDiscount(parseFloat(e.target.value))
+  }
+
   return (
     <Grid item xs={12} sm={4}>
       <TextField
-        onChange={e => {
-          setPurchaseData(prev => {
-            return {
-              ...prev,
-              discount: parseFloat(e.target.value)
-            }
-          })
-          setDiscount(parseFloat(e.target.value))
-        }}
+        onChange={handleSetDiscount}
         type='number'
         fullWidth
         label='Discount'

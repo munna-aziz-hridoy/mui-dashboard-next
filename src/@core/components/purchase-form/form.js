@@ -36,16 +36,7 @@ import FormChangeTax from './formChangeTax'
 import FormDiscount from './formDiscount'
 import FormShippingCost from './formShippingCost'
 import FormInvoiceNote from './formInvoiceNote'
-import { useRouter } from 'next/router'
 import toast, { Toaster } from 'react-hot-toast'
-
-const listStyle = {
-  background: '#c140f5',
-  position: 'absolute',
-  width: '98%',
-  padding: '1rem',
-  zIndex: '5'
-}
 
 const AddPurchaseForm = () => {
   const date = new Date()
@@ -73,8 +64,6 @@ const AddPurchaseForm = () => {
   const [invoiceTotal, setInvoiceTotal] = useState(0)
   const [totalTax, setTotalTax] = useState(0)
   const [clearForm, setClearForm] = useState(false)
-
-  const router = useRouter()
 
   useEffect(() => {
     if (selectedProduct.length !== 0) {
