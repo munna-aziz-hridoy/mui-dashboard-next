@@ -22,7 +22,7 @@ const columns = [
   {
     id: 'quantity',
     label: 'Quantity',
-    minWidth: 120,
+    minWidth: 100,
     align: 'left'
     // format: value => value.toLocaleString('en-US')
   },
@@ -40,9 +40,19 @@ const columns = [
   //   align: 'left'
   //   // format: value => value.toFixed(2)
   // },
+
+  {
+    id: 'prev-unit-cost',
+    label: 'Previous Unit Cost',
+    minWidth: 100,
+    align: 'left'
+
+    // format: value => value.toFixed(2)
+  },
+
   {
     id: 'net-unit-cost',
-    label: 'Net Unit Cost',
+    label: 'Unit Cost',
     minWidth: 130,
     align: 'left'
     // format: value => value.toFixed(2)
@@ -80,6 +90,8 @@ const TableStickyHeader = ({ products, setProducts, invoiceTotal }) => {
     setRowsPerPage(+event.target.value)
     setPage(0)
   }
+
+  console.log(products)
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>

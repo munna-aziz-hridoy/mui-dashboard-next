@@ -20,29 +20,30 @@ const style = {
 }
 
 const PartialPaymentModal = ({ open, setOpen, setPurchaseData }) => {
+  const handlechangePaidAmount = () => {
+    setPurchaseData(prev => {
+      return {
+        ...prev,
+        amount_paid: parseFloat(e.target.value)
+      }
+    })
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    setOpen(false)
+  }
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
       <Box sx={style}>
         <Card>
           <CardHeader title='Paid Amount' titleTypographyProps={{ variant: 'h6' }} />
           <CardContent>
-            <form
-              onSubmit={e => {
-                e.preventDefault()
-                setOpen(false)
-              }}
-            >
+            <form onSubmit={handleSubmit}>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <TextField
-                    onChange={e => {
-                      setPurchaseData(prev => {
-                        return {
-                          ...prev,
-                          amount_paid: parseFloat(e.target.value)
-                        }
-                      })
-                    }}
+                    onChange={handlechangePaidAmount}
                     fullWidth
                     type='number'
                     label='Paid Amount'

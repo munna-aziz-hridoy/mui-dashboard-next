@@ -42,17 +42,30 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
     }
   }
 
+  const handleInputClick = () => {
+    setOpenSuplierList(prev => !prev)
+    setSuplierLoading(true)
+    getSearchedSuplier('').then(data => {
+      setSearchedSuplier(data)
+      setSuplierLoading(false)
+    })
+  }
+
+  const handleSetPurchaseData = item => {
+    setPurchaseData(prev => {
+      return {
+        ...prev,
+        suplier: item?.id
+      }
+    })
+    setSuplierName(item?.name)
+    setOpenSuplierList(false)
+  }
+
   return (
     <Grid item xs={12} sm={4} style={{ position: 'relative' }}>
       <TextField
-        onClick={() => {
-          setOpenSuplierList(prev => !prev)
-          setSuplierLoading(true)
-          getSearchedSuplier('').then(data => {
-            setSearchedSuplier(data)
-            setSuplierLoading(false)
-          })
-        }}
+        onClick={handleInputClick}
         onChange={handleSearchSuplier}
         fullWidth
         label='Search Suplier'
@@ -81,16 +94,7 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
             searchedSuplier?.map(item => (
               <ListItem
                 key={item?.id}
-                onClick={() => {
-                  setPurchaseData(prev => {
-                    return {
-                      ...prev,
-                      suplier: item?.id
-                    }
-                  })
-                  setSuplierName(item?.name)
-                  setOpenSuplierList(false)
-                }}
+                onClick={() => handleSetPurchaseData(item)}
                 color='#fff'
                 style={{ cursor: 'pointer' }}
               >

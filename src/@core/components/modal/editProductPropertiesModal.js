@@ -4,12 +4,10 @@ import React, { useEffect, useState } from 'react'
 import {
   Box,
   Modal,
-  Typography,
   Card,
   CardContent,
   Grid,
   TextField,
-  InputAdornment,
   CardHeader,
   Button,
   FormControl,
@@ -18,11 +16,6 @@ import {
   MenuItem
 } from '@mui/material'
 
-// ** Icon imports
-
-import { Phone, AccountOutline, EmailOutline, MessageOutline } from 'mdi-material-ui'
-
-import { BiMoney } from 'react-icons/bi'
 import { getUnitChoice } from 'src/@core/apiFunction/product'
 
 const style = {
@@ -99,7 +92,7 @@ const EditProduct = ({ open, setOpen, productData, setProducts }) => {
                     <InputLabel id='form-layouts-separator-select-label'>Tax</InputLabel>
                     <Select
                       onChange={e => {
-                        console.log(e)
+                        
                         const tax = e.target.value
                         setProducts(prev => {
                           const exists = prev.find(item => item.id === id)

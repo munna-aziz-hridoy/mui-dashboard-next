@@ -20,13 +20,13 @@ const FormInvoiceNote = ({ setPurchaseData, clearForm }) => {
   }
 
   return (
-    <Grid item xs={12}>
+    <Grid item xs={6}>
       <TextField
         onChange={handleChangeNote}
         value={note}
         fullWidth
         multiline
-        minRows={3}
+        minRows={4}
         label='Note'
         placeholder='Note'
         sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}

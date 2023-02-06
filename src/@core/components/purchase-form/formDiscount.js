@@ -7,7 +7,7 @@ const FormDiscount = ({ setPurchaseData, clearForm }) => {
   const [discount, setDiscount] = useState(0)
 
   useEffect(() => {
-    setDiscount('')
+    setDiscount(0)
   }, [clearForm])
 
   const handleSetDiscount = e => {
@@ -21,7 +21,7 @@ const FormDiscount = ({ setPurchaseData, clearForm }) => {
   }
 
   return (
-    <Grid item xs={12} sm={4}>
+    <Grid item xs={12} sm={6}>
       <TextField
         onChange={handleSetDiscount}
         type='number'

@@ -5,7 +5,7 @@ import EditProduct from 'src/@core/components/modal/editProductPropertiesModal'
 
 const ProductTableRow = ({ productData, setProducts }) => {
   const [openEditProductModal, setOpenEditProductModal] = useState(false)
-  const { product, product_name, product_unit } = productData
+  const { product, product_name, prev_unit_cost } = productData
 
   const handleSetProductProperty = (property, e) => {
     setProducts(prev => {
@@ -51,6 +51,7 @@ const ProductTableRow = ({ productData, setProducts }) => {
           </Typography>
         )}
       </TableCell>
+      <TableCell height={85}>{prev_unit_cost}</TableCell>
       <TableCell style={{ position: 'relative' }}>
         <TextField
           className='table_input'

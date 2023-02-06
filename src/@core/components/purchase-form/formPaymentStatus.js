@@ -27,7 +27,7 @@ const FormPaymentStatus = ({ setPurchaseData, clearForm }) => {
         return {
           ...prev,
           payment_status: status,
-          amount_paid: null
+          amount_paid: 0
         }
       })
       setOpenPartialAmountModal(false)

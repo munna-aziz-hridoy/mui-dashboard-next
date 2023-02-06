@@ -69,12 +69,12 @@ const SelectSuplierSearch = ({}) => {
               <ListItem
                 key={item?.id}
                 onClick={() => {
-                  setPurchaseData(prev => {
-                    return {
-                      ...prev,
-                      suplier: item?.id
-                    }
-                  })
+                  // setPurchaseData(prev => {
+                  //   return {
+                  //     ...prev,
+                  //     suplier: item?.id
+                  //   }
+                  // })
                   setSuplierName(item?.name)
                   setOpenSuplierList(false)
                 }}

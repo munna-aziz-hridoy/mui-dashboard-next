@@ -25,22 +25,22 @@ const navigation = () => {
       path: '/account-settings'
     },
     {
-      sectionTitle: 'Pages'
+      sectionTitle: 'Products'
     },
     {
-      title: 'Login',
+      title: 'Online Product',
       icon: Login,
       path: '/pages/login',
       openInNewTab: true
     },
     {
-      title: 'Register',
+      title: 'Offline Product',
       icon: AccountPlusOutline,
       path: '/pages/register',
       openInNewTab: true
     },
     {
-      title: 'Error',
+      title: 'Product Mapping',
       icon: AlertCircleOutline,
       path: '/pages/error',
       openInNewTab: true

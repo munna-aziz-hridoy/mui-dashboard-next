@@ -37,6 +37,7 @@ import FormDiscount from './formDiscount'
 import FormShippingCost from './formShippingCost'
 import FormInvoiceNote from './formInvoiceNote'
 import toast, { Toaster } from 'react-hot-toast'
+import { postInvoice } from 'src/@core/apiFunction/invoice'
 
 const AddPurchaseForm = () => {
   const date = new Date()
@@ -82,8 +83,6 @@ const AddPurchaseForm = () => {
 
   const handlePurchaseDataSubmit = e => {
     e.preventDefault()
-    const url = `${mainUrl}/invoice/`
-
     if (!invoiceFile) {
       return
     }
@@ -91,7 +90,7 @@ const AddPurchaseForm = () => {
       return
     }
 
-    const purchase = selectedProduct.map(item => {
+    const invoice_items = selectedProduct.map(item => {
       const { product, product_unit, unit_cost, quantity } = item
 
       return {
@@ -102,23 +101,22 @@ const AddPurchaseForm = () => {
       }
     })
 
-    const data = { invoice_type: 'Purchase', ...purchaseData, purchase }
+    const data = { invoice_type: 'Purchase', ...purchaseData, invoice_items }
 
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(res => res.json())
+    postInvoice(data)
       .then(data => {
-        console.log(data)
-        setClearForm(true)
-        setTotalTax(0)
-        setInvoiceTotal(0)
-        setInvoiceFile(null)
-        toast.success('Added to purchase list')
+        if (data.success) {
+          setClearForm(true)
+          setTotalTax(0)
+          setInvoiceTotal(0)
+          setInvoiceFile(null)
+          toast.success('Added to purchase list')
+        } else {
+          toast.error('Invoice Not added')
+        }
+      })
+      .catch(err => {
+        toast.error('Invoice Not added')
       })
   }
 
@@ -162,24 +160,25 @@ const AddPurchaseForm = () => {
               invoiceTotal={invoiceTotal}
             />
 
-            <FormSelectTax
-              setPurchaseData={setPurchaseData}
-              setTotalTax={setTotalTax}
-              invoiceTotal={invoiceTotal}
-              clearForm={clearForm}
-            />
+            <Grid item xs={6}>
+              <Grid container spacing={6}>
+                <FormDiscount setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
-            <FormChangeTax
-              setTotalTax={setTotalTax}
-              purchaseData={purchaseData}
-              totalTax={totalTax}
-              clearForm={clearForm}
-            />
-
-            <FormDiscount setPurchaseData={setPurchaseData} clearForm={clearForm} />
-
-            <FormShippingCost setPurchaseData={setPurchaseData} clearForm={clearForm} />
-
+                <FormShippingCost setPurchaseData={setPurchaseData} clearForm={clearForm} />
+                <FormChangeTax
+                  setTotalTax={setTotalTax}
+                  purchaseData={purchaseData}
+                  totalTax={totalTax}
+                  clearForm={clearForm}
+                />
+                <FormSelectTax
+                  setPurchaseData={setPurchaseData}
+                  setTotalTax={setTotalTax}
+                  invoiceTotal={invoiceTotal}
+                  clearForm={clearForm}
+                />
+              </Grid>
+            </Grid>
             <FormInvoiceNote setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
             <Grid item xs={12}>

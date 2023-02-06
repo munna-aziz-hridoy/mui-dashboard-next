@@ -47,7 +47,8 @@ const FormSelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) =
       const selectedItem = {
         product: item.id,
         product_unit: item.product_unit,
-        product_name: item.product_name
+        product_name: item.product_name,
+        prev_unit_cost: item.unit_cost
       }
       const exists = prev.find(prevPro => prevPro.product === selectedItem.product)
 
@@ -61,13 +62,15 @@ const FormSelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) =
     setProductName('')
   }
 
+  const handleInputClick = () => {
+    setOpenProductList(prev => !prev)
+    getSearchedProduct('').then(data => setSearchedProduct(data))
+  }
+
   return (
     <Grid item xs={12} marginBottom={8} style={{ position: 'relative' }}>
       <TextField
-        onClick={() => {
-          setOpenProductList(prev => !prev)
-          getSearchedProduct('').then(data => setSearchedProduct(data))
-        }}
+        onClick={handleInputClick}
         onChange={handleSearchProduct}
         fullWidth
         label='Search Products'
