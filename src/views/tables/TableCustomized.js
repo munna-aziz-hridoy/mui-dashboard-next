@@ -7,7 +7,7 @@ import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import TableRow from '@mui/material/TableRow'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
-import { TablePagination } from '@mui/material'
+import { CircularProgress, TablePagination } from '@mui/material'
 import { useEffect, useState } from 'react'
 import InvoiceTableRow from './InvoiceTableRow'
 import { getAllInvoiceList } from 'src/@core/apiFunction/invoice'
@@ -27,11 +27,16 @@ const TableCustomized = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
   const [refetch, setRefetch] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const [invoices, setInvoices] = useState([])
 
   useEffect(() => {
-    getAllInvoiceList().then(data => setInvoices(data))
+    setLoading(true)
+    getAllInvoiceList().then(data => {
+      setInvoices(data)
+      setLoading(false)
+    })
   }, [refetch])
 
   const handleChangePage = (event, newPage) => {
@@ -61,6 +66,14 @@ const TableCustomized = () => {
             </TableRow>
           </TableHead>
           <TableBody>
+            {loading && (
+              <TableRow>
+                <TableCell colSpan={8}>
+                  <CircularProgress color='inherit' style={{ margin: '0 auto', display: 'block' }} />
+                </TableCell>
+              </TableRow>
+            )}
+
             {invoices
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 

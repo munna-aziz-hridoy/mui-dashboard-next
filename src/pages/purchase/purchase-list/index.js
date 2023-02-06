@@ -18,7 +18,7 @@ const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Purchase Date' autoComplete='off' />
 })
 
-const PurchaseList = () => {
+const PurchaseList = ({}) => {
   const [date, setDate] = useState(new Date())
 
   const router = useRouter()
