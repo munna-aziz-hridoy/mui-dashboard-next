@@ -16,8 +16,9 @@ import {
 
 // ** Icon imports
 
-import { Phone, AccountOutline, EmailOutline, MessageOutline } from 'mdi-material-ui'
+import { Phone, AccountOutline, EmailOutline } from 'mdi-material-ui'
 import { FaAddressCard, FaFax } from 'react-icons/fa'
+import AddSuplierForm from '../forms/addSuplierForm'
 
 const style = {
   position: 'absolute',
@@ -46,7 +47,7 @@ const AddSuplier = ({ open, setOpen }) => {
         <Card>
           <CardHeader title='Add Suplier' titleTypographyProps={{ variant: 'h6' }} />
           <CardContent>
-            <form onSubmit={e => e.preventDefault()}>
+            {/* <form onSubmit={e => e.preventDefault()}>
               <Grid container spacing={5}>
                 <Grid item xs={12}>
                   <TextField
@@ -131,7 +132,8 @@ const AddSuplier = ({ open, setOpen }) => {
                   </Button>
                 </Grid>
               </Grid>
-            </form>
+            </form> */}
+            <AddSuplierForm />
           </CardContent>
         </Card>
       </Box>

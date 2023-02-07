@@ -48,6 +48,8 @@ const TableCustomized = () => {
     setPage(0)
   }
 
+  console.log(invoices)
+
   return (
     <Paper>
       <TableContainer component={Paper}>
@@ -57,11 +59,12 @@ const TableCustomized = () => {
               <StyledTableCell>Date</StyledTableCell>
               <StyledTableCell>Invoice</StyledTableCell>
               <StyledTableCell>Suplier</StyledTableCell>
-              {/* <StyledTableCell>Purchase Status</StyledTableCell> */}
+              <StyledTableCell>Purchase Status</StyledTableCell>
               <StyledTableCell>Grand Total</StyledTableCell>
               <StyledTableCell>Paid</StyledTableCell>
               <StyledTableCell>Due</StyledTableCell>
               <StyledTableCell>Payment Status</StyledTableCell>
+
               <StyledTableCell>Action</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -75,7 +78,7 @@ const TableCustomized = () => {
             )}
 
             {invoices
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
               .map((invoice, i) => (
                 <InvoiceTableRow key={i} invoice={invoice} refetch={setRefetch} />

@@ -33,12 +33,13 @@ const InvoiceModal = ({ open, setOpen, invoice }) => {
     item_amount,
     note,
     payment_status,
-    purchase_invoice,
+    invoice_items,
     shipping_charge,
     supplier,
     tax,
-    timestamp,
-    tax_percentage
+    invoice_date,
+    tax_percentage,
+    stock_status
   } = invoice
 
   return (
@@ -66,13 +67,16 @@ const InvoiceModal = ({ open, setOpen, invoice }) => {
         <Grid container spacing={20} justifyContent='space-between'>
           <Grid item>
             <Typography variant='body1' fontWeight={400} fontSize={14}>
-              Date: <span style={{ fontWeight: '600', fontSize: '16px' }}>{timestamp.split(' ')[0]}</span>
+              Date: <span style={{ fontWeight: '600', fontSize: '16px' }}>{invoice_date.split(' ')[0]}</span>
             </Typography>
             <Typography variant='body1' fontWeight={400} fontSize={14}>
               Payment Status: <span style={{ fontWeight: '600', fontSize: '16px' }}>{payment_status}</span>
             </Typography>
             <Typography variant='body1' fontWeight={400} fontSize={14}>
               Invoice Type: <span style={{ fontWeight: '600', fontSize: '16px' }}>{invoice_type}</span>
+            </Typography>
+            <Typography variant='body1' fontWeight={400} fontSize={14}>
+              Purchase Status: <span style={{ fontWeight: '600', fontSize: '16px' }}>{stock_status}</span>
             </Typography>
           </Grid>
           <Grid item>
@@ -96,7 +100,7 @@ const InvoiceModal = ({ open, setOpen, invoice }) => {
         </Grid>
 
         <TableBasic
-          purchase_products={purchase_invoice}
+          purchase_products={invoice_items}
           others={[
             { amount: item_amount, name: 'Item Amount' },
             { amount: shipping_charge, name: 'Shipping Charge' },

@@ -30,20 +30,17 @@ const navigation = () => {
     {
       title: 'Online Product',
       icon: Login,
-      path: '/pages/login',
-      openInNewTab: true
+      path: '/products/online-product'
     },
     {
       title: 'Offline Product',
       icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
+      path: '/products/offline-product'
     },
     {
-      title: 'Product Mapping',
+      title: 'Internal Product',
       icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
+      path: '/products/internal-product'
     },
     {
       sectionTitle: 'Purchase'
@@ -58,6 +55,17 @@ const navigation = () => {
       title: 'Purchase List',
       icon: BiListCheck,
       path: '/purchase/purchase-list'
+    },
+
+    { sectionTitle: 'Others' },
+    {
+      title: 'Supplier',
+      icon: BiListCheck,
+      path: '/others/supplier'
+    },
+    {
+      title: 'Sales',
+      icon: BiListCheck
     },
     {
       sectionTitle: 'User Interface'

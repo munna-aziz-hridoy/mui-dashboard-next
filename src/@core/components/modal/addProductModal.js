@@ -19,6 +19,7 @@ import {
 import { Phone, AccountOutline, EmailOutline, MessageOutline } from 'mdi-material-ui'
 
 import { BiMoney } from 'react-icons/bi'
+import AddInternalProduct from '../forms/addInternalProductForm'
 
 const style = {
   position: 'absolute',
@@ -47,7 +48,7 @@ const AddProduct = ({ open, setOpen }) => {
         <Card>
           <CardHeader title='Add Product' titleTypographyProps={{ variant: 'h6' }} />
           <CardContent>
-            <form onSubmit={e => e.preventDefault()}>
+            {/* <form onSubmit={e => e.preventDefault()}>
               <Grid container spacing={5}>
                 <Grid item xs={12}>
                   <TextField
@@ -79,21 +80,7 @@ const AddProduct = ({ open, setOpen }) => {
                     }}
                   />
                 </Grid>
-                {/* <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    type='number'
-                    label='Phone No.'
-                    placeholder='Suplier Phone'
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <Phone />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </Grid> */}
+
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
@@ -117,7 +104,8 @@ const AddProduct = ({ open, setOpen }) => {
                   </Button>
                 </Grid>
               </Grid>
-            </form>
+            </form> */}
+            <AddInternalProduct closeModal={setOpen} />
           </CardContent>
         </Card>
       </Box>

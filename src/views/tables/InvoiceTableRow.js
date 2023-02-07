@@ -33,8 +33,8 @@ const InvoiceTableRow = ({ invoice, refetch }) => {
   const [openInvoiceModal, setOpenInvoiceModal] = useState(false)
   const [openPaymentModal, setOpenPaymentModal] = useState(false)
 
-  const { id, timestamp, invoice_total, payment_status, amount_paid, supplier } = invoice
-  const date = timestamp.split(' ')[0]
+  const { id, invoice_date, invoice_total, payment_status, amount_paid, supplier, stock_status } = invoice
+  const date = invoice_date.split(' ')[0]
 
   return (
     <Fragment>
@@ -42,6 +42,7 @@ const InvoiceTableRow = ({ invoice, refetch }) => {
         <StyledTableCell>{date}</StyledTableCell>
         <StyledTableCell onClick={e => e.stopPropagation()}>invoice image</StyledTableCell>
         <StyledTableCell>{supplier ? supplier?.name : ''}</StyledTableCell>
+        <StyledTableCell>{stock_status}</StyledTableCell>
         <StyledTableCell>{invoice_total}</StyledTableCell>
         <StyledTableCell>
           {payment_status === 'Unpaid' ? 0 : payment_status === 'Paid' ? invoice_total : amount_paid}

@@ -20,7 +20,7 @@ const style = {
 }
 
 const PartialPaymentModal = ({ open, setOpen, setPurchaseData }) => {
-  const handlechangePaidAmount = () => {
+  const handlechangePaidAmount = e => {
     setPurchaseData(prev => {
       return {
         ...prev,

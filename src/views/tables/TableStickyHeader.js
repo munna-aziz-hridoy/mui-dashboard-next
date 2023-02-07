@@ -119,7 +119,7 @@ const TableStickyHeader = ({ products, setProducts, invoiceTotal }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
+      {/* <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component='div'
         count={products?.length}
@@ -127,7 +127,7 @@ const TableStickyHeader = ({ products, setProducts, invoiceTotal }) => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      /> */}
       <Typography textAlign='right' variant='h5' fontSize={18} fontWeight={600} marginRight={10}>
         Total: {invoiceTotal}
       </Typography>

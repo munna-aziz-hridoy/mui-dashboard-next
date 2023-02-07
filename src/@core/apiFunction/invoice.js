@@ -1,7 +1,7 @@
-import mainUrl from 'src/@core/utils/mainUrl'
+import API_URL from 'src/@core/utils/mainUrl'
 
 export const postInvoice = async postData => {
-  const url = `${mainUrl}/invoice/`
+  const url = `${API_URL}/invoice/`
 
   const res = await fetch(url, {
     method: 'POST',
@@ -12,7 +12,7 @@ export const postInvoice = async postData => {
   })
   const data = await res.json()
 
-  if (data?.timestamp) {
+  if (data?.invoice_date) {
     return { success: true }
   } else {
     return { success: false }
@@ -20,19 +20,19 @@ export const postInvoice = async postData => {
 }
 
 export const getAllInvoiceList = async () => {
-  const url = `${mainUrl}/invoice/`
+  const url = `${API_URL}/invoice/`
   const res = await fetch(url)
   const data = await res.json()
 
   if (data) {
-    return data
+    return data?.data
   } else {
     return []
   }
 }
 
 export const postPayment = async postData => {
-  const url = `${mainUrl}/payment/`
+  const url = `${API_URL}/payment/`
 
   const res = await fetch(url, {
     method: 'POST',

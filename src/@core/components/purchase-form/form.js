@@ -38,6 +38,7 @@ import FormShippingCost from './formShippingCost'
 import FormInvoiceNote from './formInvoiceNote'
 import toast, { Toaster } from 'react-hot-toast'
 import { postInvoice } from 'src/@core/apiFunction/invoice'
+import FormStockStatus from './formStockStatus'
 
 const AddPurchaseForm = () => {
   const date = new Date()
@@ -134,6 +135,8 @@ const AddPurchaseForm = () => {
             <FormSuplierSelect setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
             <FormPaymentStatus setPurchaseData={setPurchaseData} clearForm={clearForm} />
+
+            <FormStockStatus setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
             <Grid item xs={12} sm={4}>
               <FormControl fullWidth>

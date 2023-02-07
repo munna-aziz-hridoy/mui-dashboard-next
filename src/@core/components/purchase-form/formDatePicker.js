@@ -20,7 +20,7 @@ const FormDatePicker = ({ purchaseData, setPurchaseData }) => {
     setPurchaseData(prev => {
       return {
         ...prev,
-        timestamp
+        invoice_date: timestamp
       }
     })
     setSelectedDate(date)
