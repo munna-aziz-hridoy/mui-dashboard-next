@@ -1,14 +1,14 @@
 const DefaultPalette = (mode, themeColor) => {
   // ** Vars
-  const lightColor = '58, 53, 65'
-  const darkColor = '231, 227, 252'
+  const lightColor = '38, 35, 42' // '58, 53, 65'
+  const darkColor = '0,0,0' //'231, 227, 252'
   const mainColor = mode === 'light' ? lightColor : darkColor
 
   const primaryGradient = () => {
     if (themeColor === 'primary') {
-      return '#C6A7FE'
+      return '#100720' //  '#C6A7FE' // change here
     } else if (themeColor === 'secondary') {
-      return '#9C9FA4'
+      return '#31087B' // '#000' //9C9FA4
     } else if (themeColor === 'success') {
       return '#93DD5C'
     } else if (themeColor === 'error') {
@@ -32,9 +32,9 @@ const DefaultPalette = (mode, themeColor) => {
     },
     mode: mode,
     primary: {
-      light: '#9E69FD',
-      main: '#9155FD',
-      dark: '#804BDF',
+      light: '#10072094',
+      main: '#100720', // change here
+      dark: '#100720',
       contrastText: '#FFF'
     },
     secondary: {
@@ -84,8 +84,8 @@ const DefaultPalette = (mode, themeColor) => {
       A700: '#303030'
     },
     text: {
-      primary: `rgba(${mainColor}, 0.87)`,
-      secondary: `rgba(${mainColor}, 0.68)`,
+      primary: `rgba(${mainColor}, 1)`,
+      secondary: `rgba(${mainColor}, 1)`,
       disabled: `rgba(${mainColor}, 0.38)`
     },
     divider: `rgba(${mainColor}, 0.12)`,

@@ -48,8 +48,6 @@ const Row = props => {
   // ** State
   const [open, setOpen] = useState(false)
 
-  console.log(row)
-
   return (
     <Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -135,8 +133,6 @@ const rows = [
 ]
 
 const TableCollapsible = ({ products }) => {
-  console.log(products)
-
   return (
     <TableContainer component={Paper}>
       <Table aria-label='collapsible table'>

@@ -89,7 +89,8 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
             sx={{
               mr: 2.5,
               color: 'text.primary',
-              transition: 'margin .25s ease-in-out'
+              transition: 'margin .25s ease-in-out',
+              fontSize: '24px'
             }}
           >
             <UserIcon icon={IconTag} />

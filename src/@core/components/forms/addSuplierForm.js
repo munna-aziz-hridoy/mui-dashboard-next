@@ -8,7 +8,7 @@ import { FaAddressCard, FaFax } from 'react-icons/fa'
 import { addSupplier } from 'src/@core/apiFunction/suplier'
 import { toast } from 'react-hot-toast'
 
-const AddSuplierForm = () => {
+const AddSuplierForm = ({ refetch }) => {
   const [emailLength, setEmailLength] = useState(0)
 
   const handleAddSuplier = e => {
@@ -30,6 +30,9 @@ const AddSuplierForm = () => {
         e.target.phone.value = ''
         e.target.fax.value = ''
         e.target.address.value = ''
+        if (refetch) {
+          refetch(prev => !prev)
+        }
       } else {
         toast.error('Failed to create supplier')
       }
@@ -135,7 +138,7 @@ const AddSuplierForm = () => {
         </Grid>
         <Grid item xs={12}>
           <Button type='submit' variant='contained' size='large'>
-            Submit
+            Add Supplier
           </Button>
         </Grid>
       </Grid>

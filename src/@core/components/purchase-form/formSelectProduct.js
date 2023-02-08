@@ -7,7 +7,7 @@ import AddProduct from 'src/@core/components/modal/addProductModal'
 import { Grid, TextField, Box, List, ListItem, CircularProgress, Typography, Button } from '@mui/material'
 
 const listStyle = {
-  background: '#c140f5',
+  // background: '#c140f5',
   position: 'absolute',
   width: '98%',
   padding: '1rem',
@@ -84,7 +84,16 @@ const FormSelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) =
         </Typography>
       )}
 
-      <Box style={{ ...listStyle, display: openProductList ? 'block' : 'none' }} borderRadius={1} boxShadow={5}>
+      <Box
+        position='absolute'
+        padding='1rem'
+        width='98%'
+        zIndex={5}
+        bgcolor='#100720'
+        style={{ display: openProductList ? 'block' : 'none' }}
+        borderRadius={1}
+        boxShadow={5}
+      >
         <List>
           {productLoading ? (
             <ListItem>

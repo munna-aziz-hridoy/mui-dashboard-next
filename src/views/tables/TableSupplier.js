@@ -7,27 +7,29 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 
-const TableDense = ({ products }) => {
+const TableSupplier = ({ supplier }) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
-            <TableCell>Regular Price</TableCell>
-            <TableCell>Sale Price</TableCell>
-            <TableCell>Category</TableCell>
+            <TableCell>Phone</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>Fax</TableCell>
+            <TableCell>Address</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {products.map((row, i) => (
+          {supplier?.map((row, i) => (
             <TableRow key={i} sx={{ '&:last-of-type  td, &:last-of-type  th': { border: 0 } }}>
               <TableCell component='th' scope='row'>
-                {row?.product_name}
+                {row?.name}
               </TableCell>
-              <TableCell>{row?.regular_price}</TableCell>
-              <TableCell>{row?.sale_price}</TableCell>
-              <TableCell>{row?.category}</TableCell>
+              <TableCell>{row?.phone}</TableCell>
+              <TableCell>{row?.email}</TableCell>
+              <TableCell>{row?.fax}</TableCell>
+              <TableCell>{row?.address}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -36,4 +38,4 @@ const TableDense = ({ products }) => {
   )
 }
 
-export default TableDense
+export default TableSupplier

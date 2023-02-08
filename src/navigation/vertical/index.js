@@ -11,6 +11,11 @@ import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
 import { BiPurchaseTag, BiListCheck } from 'react-icons/bi'
+import { AiOutlineDropbox } from 'react-icons/ai'
+import { TiDropbox } from 'react-icons/ti'
+import { GiBoxUnpacking } from 'react-icons/gi'
+import { GrUserManager } from 'react-icons/gr'
+import { RiScales2Fill, RiStockLine } from 'react-icons/ri'
 
 const navigation = () => {
   return [
@@ -28,20 +33,21 @@ const navigation = () => {
       sectionTitle: 'Products'
     },
     {
+      title: 'Internal Product',
+      icon: GiBoxUnpacking,
+      path: '/products/internal-product'
+    },
+    {
       title: 'Online Product',
-      icon: Login,
+      icon: AiOutlineDropbox,
       path: '/products/online-product'
     },
     {
       title: 'Offline Product',
-      icon: AccountPlusOutline,
+      icon: TiDropbox,
       path: '/products/offline-product'
     },
-    {
-      title: 'Internal Product',
-      icon: AlertCircleOutline,
-      path: '/products/internal-product'
-    },
+
     {
       sectionTitle: 'Purchase'
     },
@@ -60,12 +66,18 @@ const navigation = () => {
     { sectionTitle: 'Others' },
     {
       title: 'Supplier',
-      icon: BiListCheck,
+      icon: GrUserManager,
       path: '/others/supplier'
     },
     {
       title: 'Sales',
-      icon: BiListCheck
+      icon: RiStockLine,
+      path: '/others/sales'
+    },
+    {
+      title: 'test',
+      icon: RiScales2Fill,
+      path: '/others/test'
     },
     {
       sectionTitle: 'User Interface'

@@ -91,8 +91,6 @@ const TableStickyHeader = ({ products, setProducts, invoiceTotal }) => {
     setPage(0)
   }
 
-  console.log(products)
-
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>

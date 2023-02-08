@@ -7,6 +7,7 @@ import { Box, Modal, Card, CardContent, Grid, TextField, CardHeader, Button, Typ
 
 import { FaPrint } from 'react-icons/fa'
 import TableBasic from 'src/views/tables/TableBasic'
+import PrintedInvoice from '../printed-invoice'
 
 const style = {
   position: 'absolute',
@@ -24,39 +25,40 @@ const style = {
   overflow: 'auto'
 }
 
-const InvoiceModal = ({ open, setOpen, invoice }) => {
-  const {
-    amount_paid,
-    discount,
-    invoice_total,
-    invoice_type,
-    item_amount,
-    note,
-    payment_status,
-    invoice_items,
-    shipping_charge,
-    supplier,
-    tax,
-    invoice_date,
-    tax_percentage,
-    stock_status
-  } = invoice
+const InvoiceModal = ({ open, setOpen }) => {
+  // const {
+  //   amount_paid,
+  //   discount,
+  //   invoice_total,
+  //   invoice_type,
+  //   item_amount,
+  //   note,
+  //   payment_status,
+  //   invoice_items,
+  //   shipping_charge,
+  //   supplier,
+  //   tax,
+  //   invoice_date,
+  //   tax_percentage,
+  //   stock_status
+  // } = invoice
 
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
-      <Box id='print-invoice' sx={style}>
-        <Button
-          onClick={() => {
-            window.print()
-          }}
-          variant='outlined'
-        >
-          <FaPrint fontSize={18} />
-          <Typography variant='body1' fontSize={14} marginLeft={2} textTransform='capitalize' fontWeight={500}>
-            Print
-          </Typography>
-        </Button>
-        <Typography variant='body1' fontSize={24} fontWeight={600} textAlign='center'>
+      <Button
+        onClick={() => {
+          window.print()
+        }}
+        variant='outlined'
+      >
+        <FaPrint fontSize={18} />
+        <Typography variant='body1' fontSize={14} marginLeft={2} textTransform='capitalize' fontWeight={500}>
+          Print
+        </Typography>
+      </Button>
+
+      <div id='print-invoice' sx={style}>
+        {/* <Typography variant='body1' fontSize={24} fontWeight={600} textAlign='center'>
           Pims
         </Typography>
         <Typography variant='body2' fontSize={16} fontWeight={400} textAlign='center'>
@@ -114,8 +116,10 @@ const InvoiceModal = ({ open, setOpen, invoice }) => {
 
         <Typography variant='body1' fontWeight={400} fontSize={14} marginTop={15}>
           Note: {note}
-        </Typography>
-      </Box>
+        </Typography> */}
+
+        <PrintedInvoice />
+      </div>
     </Modal>
   )
 }
