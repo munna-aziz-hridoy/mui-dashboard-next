@@ -27,7 +27,7 @@ code[class*='language-'] {
 .css-a9n7s9,
 .css-1c8ux76,
 .css-4gpitf-MuiTablePagination-selectLabel {
-  display: none !important;
+  /* display: none !important; */
 }
 
 .table_input input {
