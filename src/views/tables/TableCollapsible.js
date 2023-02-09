@@ -67,7 +67,7 @@ const Row = props => {
       <TableRow>
         <TableCell colSpan={6} sx={{ py: '0 !important' }}>
           <Collapse in={open} timeout='auto' unmountOnExit>
-            <Box sx={{ m: 2 }}>
+            <Box bgcolor='#f7f7f7' sx={{ m: 2, p: 2, borderRadius: 1 }}>
               <Typography variant='h6' gutterBottom component='div'>
                 Online Product
               </Typography>
@@ -75,9 +75,9 @@ const Row = props => {
                 <TableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
-                    <TableCell>Unit</TableCell>
-                    <TableCell>Quantity</TableCell>
-                    <TableCell>Unit Cost</TableCell>
+                    <TableCell>Product Id</TableCell>
+                    {/* <TableCell>Quantity</TableCell>
+                    <TableCell>Unit Cost</TableCell> */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -86,15 +86,15 @@ const Row = props => {
                       <TableCell component='th' scope='row'>
                         {item?.product_name}
                       </TableCell>
-                      <TableCell>{item?.product_unit}</TableCell>
-                      <TableCell>{item?.total_quantity}</TableCell>
-                      <TableCell>{item?.unit_cost}</TableCell>
+                      <TableCell>{item?.product_ID}</TableCell>
+                      {/* <TableCell>{item?.total_quantity}</TableCell>
+                      <TableCell>{item?.unit_cost}</TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </Box>
-            <Box sx={{ m: 2 }}>
+            <Box bgcolor='#f7f7f7' sx={{ m: 2, p: 2, borderRadius: 1 }}>
               <Typography variant='h6' gutterBottom component='div'>
                 Offline Product
               </Typography>

@@ -1,7 +1,26 @@
 import React, { useEffect, useState } from 'react'
 
 // ** MUI imports
-import { Box, Modal, Card, CardContent, Grid, TextField, CardHeader, Button } from '@mui/material'
+import {
+  Box,
+  Modal,
+  Card,
+  CardContent,
+  Grid,
+  TextField,
+  CardHeader,
+  Button,
+  Typography,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableBody,
+  TableCell,
+  Paper,
+  Table
+} from '@mui/material'
+import { getInvoicePaymentDetails } from 'src/@core/apiFunction/invoice'
+import PaymentTable from 'src/views/tables/PaymentTable'
 
 // ** Icon imports
 
@@ -10,7 +29,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
+  width: 700,
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
@@ -19,17 +38,24 @@ const style = {
   outline: 'none'
 }
 
-const ViewPaymentModal = ({ open, setOpen }) => {
-  const handleSubmit = e => {
-    e.preventDefault()
-    setOpen(false)
-  }
+const ViewPaymentModal = ({ open, setOpen, invoiceId }) => {
+  const [paymentDetails, setPaymentDetails] = useState([])
+  useEffect(() => {
+    getInvoicePaymentDetails(invoiceId).then(data => {
+      if (data.success) {
+        setPaymentDetails(data.data)
+      }
+    })
+  }, [])
+
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
       <Box sx={style}>
         <Card>
           <CardHeader title='Payment History' titleTypographyProps={{ variant: 'h6' }} />
-          <CardContent></CardContent>
+          <CardContent>
+            <PaymentTable payment={paymentDetails} />
+          </CardContent>
         </Card>
       </Box>
     </Modal>

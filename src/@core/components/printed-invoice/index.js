@@ -16,7 +16,26 @@ const styleTr = {
   border: '1px solid gray'
 }
 
-const PrintedInvoice = () => {
+const PrintedInvoice = ({ invoice }) => {
+  const {
+    amount_paid,
+    created_at,
+    discount,
+    id,
+    invoice_date,
+    invoice_items,
+    invoice_total,
+    invoice_type,
+    item_amount,
+    note,
+    payment_status,
+    shipping_charge,
+    stock_status,
+    supplier,
+    tax,
+    tax_percentage
+  } = invoice
+
   return (
     <div
       style={{
@@ -27,6 +46,7 @@ const PrintedInvoice = () => {
         minHeight: '90%',
         padding: '20px'
       }}
+      id='printed-invoice'
     >
       <h2
         style={{
@@ -60,60 +80,62 @@ const PrintedInvoice = () => {
               margin: '3px 0'
             }}
           >
-            Date: <strong>2023-02-07</strong>
+            Date: <strong>{invoice_date?.split(' ')[0]}</strong>
           </p>
           <p
             style={{
               margin: '3px 0'
             }}
           >
-            Payment Status: <strong>Paid</strong>
+            Payment Status: <strong>{payment_status}</strong>
           </p>
           <p
             style={{
               margin: '3px 0'
             }}
           >
-            Invoice Type: <strong>Purchse</strong>
+            Invoice Type: <strong>{invoice_type}</strong>
           </p>
           <p
             style={{
               margin: '3px 0'
             }}
           >
-            Purchase Status: <strong>Received All</strong>
+            Purchase Status: <strong>{stock_status}</strong>
           </p>
         </div>
-        <div>
-          <p
-            style={{
-              margin: '3px 0'
-            }}
-          >
-            Supplier name: <strong>Demo User</strong>
-          </p>
-          <p
-            style={{
-              margin: '3px 0'
-            }}
-          >
-            Email: <strong>demo@gmail.com</strong>
-          </p>
-          <p
-            style={{
-              margin: '3px 0'
-            }}
-          >
-            Phone: <strong>12345678901</strong>
-          </p>
-          <p
-            style={{
-              margin: '3px 0'
-            }}
-          >
-            Address: House no 31, Road 06, Block B
-          </p>
-        </div>
+        {supplier && (
+          <div>
+            <p
+              style={{
+                margin: '3px 0'
+              }}
+            >
+              Supplier name: <strong>{supplier?.name}</strong>
+            </p>
+            <p
+              style={{
+                margin: '3px 0'
+              }}
+            >
+              Email: <strong>{supplier?.email}</strong>
+            </p>
+            <p
+              style={{
+                margin: '3px 0'
+              }}
+            >
+              Phone: <strong>{supplier?.phone}</strong>
+            </p>
+            <p
+              style={{
+                margin: '3px 0'
+              }}
+            >
+              Address: {supplier?.address}
+            </p>
+          </div>
+        )}
       </div>
 
       <div
@@ -150,18 +172,14 @@ const PrintedInvoice = () => {
             </tr>
           </thead>
           <tbody style={styleTr}>
-            <tr style={styleTr}>
-              <td style={styleTd}>Ashirbad Ata</td>
-              <td style={styleTd}>300</td>
-              <td style={styleTd}>115</td>
-              <td style={styleTd}>45000</td>
-            </tr>
-            <tr style={styleTr}>
-              <td style={styleTd}>Ashirbad Ata</td>
-              <td style={styleTd}>300</td>
-              <td style={styleTd}>115</td>
-              <td style={styleTd}>45000</td>
-            </tr>
+            {invoice_items?.map((item, i) => (
+              <tr key={i} style={styleTr}>
+                <td style={styleTd}>{item?.product?.product_name}</td>
+                <td style={styleTd}>{item?.quantity}</td>
+                <td style={styleTd}>{item?.unit_cost}</td>
+                <td style={styleTd}>{item?.quantity * item?.unit_cost}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
 
@@ -180,7 +198,7 @@ const PrintedInvoice = () => {
               margin: '3px 0'
             }}
           >
-            Item Amount: <strong>2400</strong>
+            Item Amount: <strong>{item_amount}</strong>
           </p>
           <p
             style={{
@@ -189,7 +207,7 @@ const PrintedInvoice = () => {
               margin: '3px 0'
             }}
           >
-            Shipping charge: <strong>2400</strong>
+            Shipping charge: <strong>{shipping_charge}</strong>
           </p>
           <p
             style={{
@@ -198,7 +216,7 @@ const PrintedInvoice = () => {
               margin: '3px 0'
             }}
           >
-            Tax: <strong>2400</strong>
+            Tax: <strong>{tax}</strong>
           </p>
           <p
             style={{
@@ -207,7 +225,7 @@ const PrintedInvoice = () => {
               margin: '3px 0'
             }}
           >
-            Tax Percentage: <strong>8%</strong>
+            Tax Percentage: <strong>{tax_percentage}%</strong>
           </p>
           <p
             style={{
@@ -216,7 +234,7 @@ const PrintedInvoice = () => {
               margin: '3px 0'
             }}
           >
-            Discount: <strong>100</strong>
+            Discount: <strong>{discount}</strong>
           </p>
           <p
             style={{
@@ -225,7 +243,7 @@ const PrintedInvoice = () => {
               margin: '3px 0'
             }}
           >
-            Paid Amount: <strong>1400</strong>
+            Paid Amount: <strong>{amount_paid}</strong>
           </p>
           <p
             style={{
@@ -234,14 +252,12 @@ const PrintedInvoice = () => {
               fontSize: '20px'
             }}
           >
-            Invoice Total: <strong>2400</strong>
+            Invoice Total: <strong>{invoice_total}</strong>
           </p>
           <hr />
         </div>
         <p style={{ fontSize: '12px' }}>
-          <strong>Note:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita aperiam, eos eveniet
-          quod assumenda reprehenderit delectus quisquam exercitationem corrupti provident, architecto, vitae inventore
-          explicabo quibusdam.
+          <strong>Note:</strong> {note}
         </p>
       </div>
     </div>

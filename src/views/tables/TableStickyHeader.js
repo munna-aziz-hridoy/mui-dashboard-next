@@ -77,7 +77,7 @@ const columns = [
   }
 ]
 
-const TableStickyHeader = ({ products, setProducts, invoiceTotal }) => {
+const TableStickyHeader = ({ products, setProducts, invoiceTotal, setInvoiceTotal, setTotalTax }) => {
   // ** States
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -92,7 +92,7 @@ const TableStickyHeader = ({ products, setProducts, invoiceTotal }) => {
   }
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', marginLeft: '1.25rem' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label='sticky table'>
           <TableHead>
@@ -112,7 +112,15 @@ const TableStickyHeader = ({ products, setProducts, invoiceTotal }) => {
               ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .reverse()
               .map(row => {
-                return <ProductTableRow key={row.product} productData={row} setProducts={setProducts} />
+                return (
+                  <ProductTableRow
+                    key={row.product}
+                    productData={row}
+                    setProducts={setProducts}
+                    setInvoiceTotal={setInvoiceTotal}
+                    setTotalTax={setTotalTax}
+                  />
+                )
               })}
           </TableBody>
         </Table>

@@ -32,11 +32,11 @@ const FormStockStatus = ({ setPurchaseData, clearForm }) => {
   return (
     <Grid item xs={12} sm={4}>
       <FormControl fullWidth>
-        <InputLabel id='form-layouts-separator-select-label'>Payment Status</InputLabel>
+        <InputLabel id='form-layouts-separator-select-label'>Stock Status</InputLabel>
         <Select
           onChange={handleChangeStockStatus}
           required
-          label='Payment Status'
+          label='Stock Status'
           defaultValue=''
           id='form-layouts-separator-select'
           labelId='form-layouts-separator-select-label'

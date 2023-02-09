@@ -49,6 +49,7 @@ const AddPurchaseForm = () => {
 
   // ** States
   const [purchaseData, setPurchaseData] = useState({
+    invoice_type: 'Purchase',
     tax: 0,
     tax_percentage: 0,
     discount: 0,
@@ -56,7 +57,7 @@ const AddPurchaseForm = () => {
     note: '',
     payment_status: '',
     amount_paid: null,
-    timestamp
+    invoice_date: timestamp
   })
 
   const [selectedProduct, setSelectedProduct] = useState([])
@@ -102,7 +103,7 @@ const AddPurchaseForm = () => {
       }
     })
 
-    const data = { invoice_type: 'Purchase', ...purchaseData, invoice_items }
+    const data = { ...purchaseData, invoice_items }
 
     postInvoice(data)
       .then(data => {
@@ -161,10 +162,12 @@ const AddPurchaseForm = () => {
               products={selectedProduct}
               setProducts={setSelectedProduct}
               invoiceTotal={invoiceTotal}
+              setInvoiceTotal={setInvoiceTotal}
+              setTotalTax={setTotalTax}
             />
 
-            <Grid item xs={6}>
-              <Grid container spacing={6}>
+            {selectedProduct?.length !== 0 && (
+              <>
                 <FormDiscount setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
                 <FormShippingCost setPurchaseData={setPurchaseData} clearForm={clearForm} />
@@ -173,6 +176,7 @@ const AddPurchaseForm = () => {
                   purchaseData={purchaseData}
                   totalTax={totalTax}
                   clearForm={clearForm}
+                  invoiceTotal={invoiceTotal}
                 />
                 <FormSelectTax
                   setPurchaseData={setPurchaseData}
@@ -180,9 +184,12 @@ const AddPurchaseForm = () => {
                   invoiceTotal={invoiceTotal}
                   clearForm={clearForm}
                 />
-              </Grid>
+              </>
+            )}
+
+            <Grid item xs={12}>
+              <FormInvoiceNote setPurchaseData={setPurchaseData} clearForm={clearForm} />
             </Grid>
-            <FormInvoiceNote setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
             <Grid item xs={12}>
               <Typography fontWeight={600} variant='h6'>

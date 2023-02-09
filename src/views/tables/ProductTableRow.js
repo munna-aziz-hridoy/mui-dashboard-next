@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { BsPencilSquare, BsTrashFill } from 'react-icons/bs'
 import EditProduct from 'src/@core/components/modal/editProductPropertiesModal'
 
-const ProductTableRow = ({ productData, setProducts }) => {
+const ProductTableRow = ({ productData, setProducts, setInvoiceTotal, setTotalTax }) => {
   const [openEditProductModal, setOpenEditProductModal] = useState(false)
   const { product, product_name, prev_unit_cost } = productData
 
@@ -81,6 +81,8 @@ const ProductTableRow = ({ productData, setProducts }) => {
         <Button
           onClick={() => {
             setProducts(prev => prev.filter(item => item.product !== product))
+            setInvoiceTotal(0)
+            setTotalTax(0)
           }}
           variant='contained'
           color='error'

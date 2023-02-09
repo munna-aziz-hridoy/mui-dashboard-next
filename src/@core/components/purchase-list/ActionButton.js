@@ -6,7 +6,7 @@ import { AiFillEye, AiFillPlusSquare } from 'react-icons/ai'
 import { BsPencilSquare, BsTrashFill } from 'react-icons/bs'
 import { BiMoney } from 'react-icons/bi'
 
-const ActionButton = ({ viewInvoiceModal, viewPaymentModal, paymentStatus }) => {
+const ActionButton = ({ viewInvoiceModal, viewPaymentModal, paymentStatus, openPaymentModal }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const handleClick = event => {
@@ -50,6 +50,7 @@ const ActionButton = ({ viewInvoiceModal, viewPaymentModal, paymentStatus }) => 
 
         <MenuItem
           onClick={() => {
+            viewPaymentModal(true)
             handleClose()
           }}
         >
@@ -59,7 +60,7 @@ const ActionButton = ({ viewInvoiceModal, viewPaymentModal, paymentStatus }) => 
           <MenuItem
             onClick={() => {
               handleClose()
-              viewPaymentModal(true)
+              openPaymentModal(true)
             }}
           >
             <AiFillPlusSquare fontSize={18} style={{ marginRight: '8px' }} color='#8336ff' /> Add Payment

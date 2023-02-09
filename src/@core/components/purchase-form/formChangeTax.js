@@ -4,12 +4,20 @@ import React, { useEffect, useState } from 'react'
 
 import { Grid, TextField, Typography } from '@mui/material'
 
-const FormChangeTax = ({ setTotalTax, purchaseData, totalTax, clearForm }) => {
+const FormChangeTax = ({ setTotalTax, purchaseData, totalTax, clearForm, invoiceTotal }) => {
   const [errorText, setErrorText] = useState('')
 
   useEffect(()=>{
     setTotalTax(0)
   },[clearForm])
+
+  useEffect(()=>{
+    if(purchaseData?.tax_percentage && invoiceTotal){
+       const taxAmount = (invoiceTotal * purchaseData?.tax_percentage) / 100
+       setTotalTax(taxAmount)
+    }
+  },[invoiceTotal])
+
 
 
   const handleChangeTax = ()=>{
@@ -24,7 +32,7 @@ const FormChangeTax = ({ setTotalTax, purchaseData, totalTax, clearForm }) => {
 
 
   return (
-    <Grid item xs={12} sm={6}>
+    <Grid item xs={3}>
       <TextField
         onChange={handleChangeTax}
         type='number'

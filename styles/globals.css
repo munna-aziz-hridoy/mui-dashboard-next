@@ -34,6 +34,10 @@ code[class*='language-'] {
   padding: 7.4px 14px;
 }
 
+.payment-history-table * {
+  overflow: hidden !important;
+}
+
 @media (min-width: 1440px) {
   .css-zyg32b {
     max-width: 100% !important;
@@ -44,8 +48,8 @@ code[class*='language-'] {
   body * {
     visibility: hidden;
   }
-  #print-invoice,
-  #print-invoice * {
+  #printed-invoice,
+  #printed-invoice * {
     visibility: visible;
   }
   /* #print-invoice {

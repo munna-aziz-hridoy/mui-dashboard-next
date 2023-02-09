@@ -50,3 +50,28 @@ export const postPayment = async postData => {
     return { success: false }
   }
 }
+
+export const getInvoicePaymentDetails = async invoiceId => {
+  const url = `${API_URL}/invoice/${invoiceId}/payment_detail/`
+
+  const res = await fetch(url)
+  const data = await res.json()
+
+  if (data?.payments) {
+    return { success: true, data: data?.payments }
+  } else {
+    return { success: false }
+  }
+}
+
+export const getAllPayment = async () => {
+  const url = `${API_URL}/payment/`
+  const res = await fetch(url)
+  const data = await res.json()
+
+  if (data?.length) {
+    return data
+  } else {
+    return []
+  }
+}

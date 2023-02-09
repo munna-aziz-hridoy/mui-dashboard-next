@@ -10,7 +10,7 @@ import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
-import { BiPurchaseTag, BiListCheck } from 'react-icons/bi'
+import { BiPurchaseTag, BiListCheck, BiMoney } from 'react-icons/bi'
 import { AiOutlineDropbox } from 'react-icons/ai'
 import { TiDropbox } from 'react-icons/ti'
 import { GiBoxUnpacking } from 'react-icons/gi'
@@ -75,10 +75,11 @@ const navigation = () => {
       path: '/others/sales'
     },
     {
-      title: 'test',
-      icon: RiScales2Fill,
-      path: '/others/test'
+      title: 'Payment List',
+      icon: BiMoney,
+      path: '/others/payment-list'
     },
+
     {
       sectionTitle: 'User Interface'
     },

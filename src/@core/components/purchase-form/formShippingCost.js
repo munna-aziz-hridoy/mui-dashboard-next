@@ -20,7 +20,7 @@ const FormShippingCost = ({ setPurchaseData, clearForm }) => {
   }
 
   return (
-    <Grid item xs={12} sm={6}>
+    <Grid item xs={3}>
       <TextField
         onChange={handleChangeShipping}
         type='number'
