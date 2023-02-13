@@ -30,6 +30,10 @@ code[class*='language-'] {
   /* display: none !important; */
 }
 
+.css-1ckyf00-MuiTablePagination-selectLabel {
+  display: none;
+}
+
 .table_input input {
   padding: 7.4px 14px;
 }

@@ -124,6 +124,8 @@ const AddPurchaseForm = () => {
           .catch(err => {
             toast.error('Invoice Not added')
           })
+      } else {
+        toast.error('Failed to upload image')
       }
     })
   }
