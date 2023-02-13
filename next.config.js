@@ -1,6 +1,9 @@
 const path = require('path')
 
 module.exports = {
+  images: {
+    domains: ['pims-live.s3.amazonaws.com']
+  },
   trailingSlash: true,
   reactStrictMode: false,
   experimental: {

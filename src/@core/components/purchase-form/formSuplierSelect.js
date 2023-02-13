@@ -7,7 +7,6 @@ import AddSuplier from 'src/@core/components/modal/addSuplierModal'
 import { Grid, TextField, Box, List, ListItem, CircularProgress, Typography, Button } from '@mui/material'
 
 const listStyle = {
-  background: '#c140f5',
   position: 'absolute',
   width: '98%',
   padding: '1rem',
@@ -81,9 +80,14 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
       )}
 
       <Box
-        style={{ ...listStyle, display: openSuplierList ? 'block' : 'none', width: '92%' }}
+        style={{ display: openSuplierList ? 'block' : 'none', width: '92%' }}
         borderRadius={1}
         boxShadow={5}
+        bgcolor='#100720'
+        position='absolute'
+        width='98%'
+        zIndex={5}
+        padding='1rem'
       >
         <List>
           {suplierLoading ? (

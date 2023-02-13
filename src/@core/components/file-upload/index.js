@@ -1,55 +1,84 @@
-import React, { useState } from 'react'
-import { Typography } from '@mui/material'
+import React, { Fragment, useEffect, useState } from 'react'
+import { Button, LinearProgress, Typography } from '@mui/material'
+
+import ImageUploading from 'react-images-uploading'
 
 import { BsCloudUpload } from 'react-icons/bs'
+import { RxCross2 } from 'react-icons/rx'
 
-const style = {
-  display: 'flex',
-  flexDirection: 'column',
+const btnContainerstyle = {
+  maxHeight: '58px',
   border: '1px solid rgba(0, 0, 0, 0.23)',
   borderRadius: '6px',
-  padding: '16.5px 14px',
-  position: 'relative'
+  padding: '26.5px 14px',
+  position: 'relative',
+  background: 'transparent',
+  width: '100%'
 }
 
-const FileUpload = ({ setFiles }) => {
-  const [isFile, setIsFile] = useState(false)
+const uploadBtnStyle = {
+  margin: '0',
+  padding: '0',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '10px',
+  position: 'absolute',
+  zIndex: 3,
+  cursor: 'pointer',
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0
+}
+
+const FileUpload = ({ setFiles, clearForm }) => {
+  const [images, setImages] = useState([])
+
+  const onChange = (imageList, addUpdateIndex) => {
+    setImages(imageList)
+    const file = imageList[0]?.file
+    const invoice_document = new FormData()
+    invoice_document.append('document', file)
+    setFiles(invoice_document)
+  }
+
+  useEffect(() => {
+    setImages([])
+  }, [clearForm])
 
   return (
     <>
-      <div style={style}>
-        {/* <label>Upload Document</label> */}
-        <input
-          onChange={e => {
-            setFiles(e.target.files[0])
-            setIsFile(true)
-          }}
-          type='file'
-          placeholder='Upload Invoice Image'
-          style={{ opacity: '0', cursor: 'pointer', zIndex: 5 }}
-        />
-        <Typography
-          style={{
-            margin: '0',
-            padding: '0',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '10px',
-            position: 'absolute',
-            zIndex: 3,
-            cursor: 'pointer'
-          }}
-        >
-          <BsCloudUpload fontSize={20} />
-          Upload Invoice
-        </Typography>
-      </div>
-      {!isFile && (
-        <Typography variant='body2' color='error' fontSize={12}>
-          Upload invoice image
-        </Typography>
-      )}
+      <ImageUploading value={images} onChange={onChange} maxNumber={10} dataURLKey='data_url'>
+        {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
+          // write your building UI
+          <div style={{ display: 'flex', gap: '15px' }} className='upload__image-wrapper'>
+            <button style={btnContainerstyle} onClick={onImageUpload} {...dragProps}>
+              {/* Click or Drop here */}
+              <Typography style={uploadBtnStyle}>
+                <BsCloudUpload fontSize={20} />
+                Upload Invoice
+              </Typography>
+            </button>
+            {images.length < 1 && (
+              <Typography variant='body2' color='error' fontSize={12}>
+                Upload invoice image
+              </Typography>
+            )}
+            &nbsp;
+            {imageList.map((image, index) => (
+              <div key={index} className='image-item'>
+                <img src={image['data_url']} alt='' width='100' />
+                <div style={{ display: 'flex', gap: '8px' }} className='image-item__btn-wrapper'>
+                  <Button variant='contained' color='error' onClick={() => onImageRemove(index)}>
+                    <RxCross2 fontSize={22} />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </ImageUploading>
     </>
   )
 }

@@ -75,3 +75,18 @@ export const getAllPayment = async () => {
     return []
   }
 }
+
+export const uploadInvoiceImage = async formData => {
+  const url = `${API_URL}/upload-image/`
+  const res = await fetch(url, {
+    method: 'POST',
+    body: formData
+  })
+  const data = await res.json()
+
+  if (data?.id) {
+    return { success: true, ...data }
+  } else {
+    return { success: false, image_url: '' }
+  }
+}

@@ -41,6 +41,7 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
   }, [])
 
   const handleAddInternalProduct = e => {
+    e.preventDefault()
     const product_name = e.target.product_name.value
     const product_unit = e.target.product_unit.value || null
 

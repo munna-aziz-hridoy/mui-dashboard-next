@@ -37,7 +37,7 @@ import FormDiscount from './formDiscount'
 import FormShippingCost from './formShippingCost'
 import FormInvoiceNote from './formInvoiceNote'
 import toast, { Toaster } from 'react-hot-toast'
-import { postInvoice } from 'src/@core/apiFunction/invoice'
+import { postInvoice, uploadInvoiceImage } from 'src/@core/apiFunction/invoice'
 import FormStockStatus from './formStockStatus'
 
 const AddPurchaseForm = () => {
@@ -88,6 +88,7 @@ const AddPurchaseForm = () => {
     if (!invoiceFile) {
       return
     }
+
     if (selectedProduct.length === 0) {
       return
     }
@@ -103,23 +104,28 @@ const AddPurchaseForm = () => {
       }
     })
 
-    const data = { ...purchaseData, invoice_items }
+    uploadInvoiceImage(invoiceFile).then(imageData => {
+      if (imageData.success) {
+        const supplier_document = imageData?.id
+        const data = { ...purchaseData, supplier_document, invoice_items }
 
-    postInvoice(data)
-      .then(data => {
-        if (data.success) {
-          setClearForm(true)
-          setTotalTax(0)
-          setInvoiceTotal(0)
-          setInvoiceFile(null)
-          toast.success('Added to purchase list')
-        } else {
-          toast.error('Invoice Not added')
-        }
-      })
-      .catch(err => {
-        toast.error('Invoice Not added')
-      })
+        postInvoice(data)
+          .then(data => {
+            if (data.success) {
+              setClearForm(true)
+              setTotalTax(0)
+              setInvoiceTotal(0)
+              setInvoiceFile(null)
+              toast.success('Added to purchase list')
+            } else {
+              toast.error('Invoice Not added')
+            }
+          })
+          .catch(err => {
+            toast.error('Invoice Not added')
+          })
+      }
+    })
   }
 
   return (
@@ -141,7 +147,7 @@ const AddPurchaseForm = () => {
 
             <Grid item xs={12} sm={4}>
               <FormControl fullWidth>
-                <FileUpload setFiles={setInvoiceFile} clearForm={clearForm} />
+                <FileUpload setFiles={setInvoiceFile} clearForm={clearForm} file={invoiceFile} />
               </FormControl>
             </Grid>
             <Grid item xs={12}>

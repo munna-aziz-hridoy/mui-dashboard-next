@@ -47,6 +47,8 @@ const TableCustomized = () => {
     setPage(0)
   }
 
+  console.log(invoices)
+
   return (
     <Paper>
       <TableContainer component={Paper}>

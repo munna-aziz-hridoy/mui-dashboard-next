@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react'
-import { TableRow, TableCell, Typography } from '@mui/material'
+import Image from 'next/image'
+import { TableRow, TableCell, Typography, Card } from '@mui/material'
 import { tableCellClasses } from '@mui/material/TableCell'
 import { styled } from '@mui/material/styles'
 
@@ -8,6 +9,7 @@ import AddPaymentModal from 'src/@core/components/modal/addPaymentModal'
 import { Toaster } from 'react-hot-toast'
 import PrintedInvoiceModal from 'src/@core/components/modal/printedInvoiceModal'
 import ViewPaymentModal from 'src/@core/components/modal/viewPaymentModal'
+import ViewInvoiceImageModal from 'src/@core/components/modal/viewInvoiceImageModal'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -34,14 +36,26 @@ const InvoiceTableRow = ({ invoice, refetch }) => {
   const [openInvoiceModal, setOpenInvoiceModal] = useState(false)
   const [openPaymentModal, setOpenPaymentModal] = useState(false)
   const [openViewPaymentModal, setOpenViewPaymentModal] = useState(false)
+  const [openInvoiceImageModal, setOpenInvoiceImageModal] = useState(false)
 
-  const { amount_paid, created_at, id, invoice_total, payment_status, stock_status, supplier } = invoice
+  const { amount_paid, created_at, id, invoice_total, payment_status, stock_status, supplier, supplier_document } =
+    invoice
 
   return (
     <Fragment>
       <StyledTableRow style={{ cursor: 'pointer' }} onClick={() => setOpenInvoiceModal(true)}>
         <StyledTableCell align='center'>{created_at?.split(' ')[0]}</StyledTableCell>
-        <StyledTableCell onClick={e => e.stopPropagation()}>invoice image</StyledTableCell>
+        <StyledTableCell
+          onClick={e => {
+            e.stopPropagation()
+            setOpenInvoiceImageModal(true)
+          }}
+        >
+          <Card>
+            <Image src={supplier_document} width={60} height={90} />
+          </Card>
+        </StyledTableCell>
+
         <StyledTableCell>{supplier ? supplier?.name : ''}</StyledTableCell>
         <StyledTableCell>{stock_status}</StyledTableCell>
         <StyledTableCell>{invoice_total}</StyledTableCell>
@@ -83,6 +97,11 @@ const InvoiceTableRow = ({ invoice, refetch }) => {
         refetch={refetch}
       />
       <ViewPaymentModal open={openViewPaymentModal} setOpen={setOpenViewPaymentModal} invoiceId={id} />
+      <ViewInvoiceImageModal
+        open={openInvoiceImageModal}
+        setOpen={setOpenInvoiceImageModal}
+        invoiceImage={supplier_document}
+      />
       <Toaster />
     </Fragment>
   )
