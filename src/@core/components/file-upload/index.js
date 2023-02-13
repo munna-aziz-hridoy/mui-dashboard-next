@@ -1,7 +1,9 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { Button, LinearProgress, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Typography } from '@mui/material'
 
 import ImageUploading from 'react-images-uploading'
+
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 
 import { BsCloudUpload } from 'react-icons/bs'
 import { RxCross2 } from 'react-icons/rx'
@@ -13,7 +15,8 @@ const btnContainerstyle = {
   padding: '26.5px 14px',
   position: 'relative',
   background: 'transparent',
-  width: '100%'
+  width: '170px',
+  minWidth: '170px'
 }
 
 const uploadBtnStyle = {
@@ -52,7 +55,7 @@ const FileUpload = ({ setFiles, clearForm }) => {
       <ImageUploading value={images} onChange={onChange} maxNumber={10} dataURLKey='data_url'>
         {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
           // write your building UI
-          <div style={{ display: 'flex', gap: '15px' }} className='upload__image-wrapper'>
+          <div style={{ display: 'flex', gap: '5px', flexDirection: 'column' }} className='upload__image-wrapper'>
             <button style={btnContainerstyle} onClick={onImageUpload} {...dragProps}>
               {/* Click or Drop here */}
               <Typography style={uploadBtnStyle}>
@@ -65,14 +68,40 @@ const FileUpload = ({ setFiles, clearForm }) => {
                 Upload invoice image
               </Typography>
             )}
-            &nbsp;
+
             {imageList.map((image, index) => (
-              <div key={index} className='image-item'>
-                <img src={image['data_url']} alt='' width='100' />
-                <div style={{ display: 'flex', gap: '8px' }} className='image-item__btn-wrapper'>
-                  <Button variant='contained' color='error' onClick={() => onImageRemove(index)}>
-                    <RxCross2 fontSize={22} />
-                  </Button>
+              <div style={{ marginTop: '5px', position: 'relative' }} key={index} className='image-item'>
+                <TransformWrapper>
+                  <TransformComponent>
+                    <img src={image['data_url']} alt='' width='420' />
+                  </TransformComponent>
+                </TransformWrapper>
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '8px',
+                    position: 'absolute',
+                    top: '0px',
+                    right: '30px',
+                    cursor: 'pointer'
+                  }}
+                  className='image-item__btn-wrapper'
+                >
+                  <Typography
+                    border={1}
+                    borderRadius='50%'
+                    display='flex'
+                    justifyContent='center'
+                    alignItems='center'
+                    width={25}
+                    height={25}
+                    boxShadow={2}
+                    bgcolor='#d32f2f'
+                    borderColor='#fff'
+                    onClick={() => onImageRemove(index)}
+                  >
+                    <RxCross2 color='#fff' fontSize={24} fontWeight={600} />
+                  </Typography>
                 </div>
               </div>
             ))}

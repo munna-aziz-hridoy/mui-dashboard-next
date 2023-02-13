@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast'
 
 const AddOnlineProduct = ({ refetch }) => {
   const [id, setId] = useState('')
+  const [name, setName] = useState('')
 
   const handleAddOnlineProduct = e => {
     e.preventDefault()
@@ -36,6 +37,7 @@ const AddOnlineProduct = ({ refetch }) => {
         e.target.regular_price.value = ''
         e.target.sale_price.value = ''
         e.target.category.value = ''
+        e.target.sku.value = ''
         refetch(prev => !prev)
       } else {
         toast.error('Failed to add product')
@@ -47,7 +49,19 @@ const AddOnlineProduct = ({ refetch }) => {
     <form onSubmit={handleAddOnlineProduct} style={{ padding: '20px' }}>
       <Grid container spacing={5}>
         <Grid item xs={6}>
-          <TextField name='product_name' fullWidth label='Prodct Name' placeholder='Product Name' required />
+          <TextField
+            onChange={e => setName(e.target.value)}
+            name='product_name'
+            fullWidth
+            label='Prodct Name'
+            placeholder='Product Name'
+            required
+          />
+          {name.length > 20 && (
+            <Typography variant='body2' color='error' fontSize={12}>
+              Name should be under 20 character
+            </Typography>
+          )}
         </Grid>
         <Grid item xs={6}>
           <TextField

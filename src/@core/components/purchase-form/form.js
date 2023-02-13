@@ -12,7 +12,8 @@ import {
   Typography,
   CardContent,
   CardActions,
-  FormControl
+  FormControl,
+  LinearProgress
 } from '@mui/material'
 
 // ** Table Imports
@@ -22,8 +23,6 @@ import TableStickyHeader from 'src/views/tables/TableStickyHeader'
 import FileUpload from 'src/@core/components/file-upload'
 
 // ** Data import
-
-import mainUrl from 'src/@core/utils/mainUrl'
 
 // **  Form Components
 
@@ -42,10 +41,11 @@ import FormStockStatus from './formStockStatus'
 
 const AddPurchaseForm = () => {
   const date = new Date()
-
   const dateArr = date.toString().split(' ')
   const time = `${dateArr[4].split(':')[0]}:${dateArr[4].split(':')[1]}`
-  const timestamp = `${dateArr[3]}-0${date.getMonth() + 1}-${dateArr[2]} ${time}`
+  const timestamp = `${dateArr[3]}-${date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`}-${
+    dateArr[2]
+  } ${time}`
 
   // ** States
   const [purchaseData, setPurchaseData] = useState({
@@ -67,6 +67,9 @@ const AddPurchaseForm = () => {
   const [invoiceTotal, setInvoiceTotal] = useState(0)
   const [totalTax, setTotalTax] = useState(0)
   const [clearForm, setClearForm] = useState(false)
+  const [showError, setShowError] = useState(false)
+
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (selectedProduct.length !== 0) {
@@ -90,9 +93,10 @@ const AddPurchaseForm = () => {
     }
 
     if (selectedProduct.length === 0) {
+      setShowError(true)
       return
     }
-
+    setLoading(true)
     const invoice_items = selectedProduct.map(item => {
       const { product, product_unit, unit_cost, quantity } = item
 
@@ -117,15 +121,19 @@ const AddPurchaseForm = () => {
               setInvoiceTotal(0)
               setInvoiceFile(null)
               toast.success('Added to purchase list')
+              setLoading(false)
             } else {
               toast.error('Invoice Not added')
+              setLoading(false)
             }
           })
           .catch(err => {
             toast.error('Invoice Not added')
+            setLoading(false)
           })
       } else {
         toast.error('Failed to upload image')
+        setLoading(false)
       }
     })
   }
@@ -134,37 +142,93 @@ const AddPurchaseForm = () => {
     <Card>
       <CardHeader title='Add New Purchase' titleTypographyProps={{ variant: 'h6' }} />
       <Divider sx={{ margin: 0 }} />
-      <form id='purchase-form' onSubmit={handlePurchaseDataSubmit}>
-        <CardContent>
-          <Grid container spacing={5}>
-            {/* purchase form start */}
+      {loading ? (
+        <LinearProgress color='primary' />
+      ) : (
+        <form id='purchase-form' onSubmit={handlePurchaseDataSubmit}>
+          <CardContent>
+            <Grid container spacing={5}>
+              {/* purchase form start */}
 
-            <FormDatePicker purchaseData={purchaseData} setPurchaseData={setPurchaseData} />
+              <Grid item xs={8.5}>
+                <Grid container spacing={4}>
+                  <FormDatePicker purchaseData={purchaseData} setPurchaseData={setPurchaseData} />
 
-            <FormSuplierSelect setPurchaseData={setPurchaseData} clearForm={clearForm} />
+                  <FormSuplierSelect setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
-            <FormPaymentStatus setPurchaseData={setPurchaseData} clearForm={clearForm} />
+                  <FormPaymentStatus setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
-            <FormStockStatus setPurchaseData={setPurchaseData} clearForm={clearForm} />
+                  <FormStockStatus setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
-            <Grid item xs={12} sm={4}>
-              <FormControl fullWidth>
-                <FileUpload setFiles={setInvoiceFile} clearForm={clearForm} file={invoiceFile} />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <Divider sx={{ marginBottom: 0 }} />
-            </Grid>
+                  <FormSelectProduct
+                    setSelectedProduct={setSelectedProduct}
+                    // selectedProduct={selectedProduct}
+                    clearForm={clearForm}
+                    // showError={showError}
+                  />
 
-            {/* Product list and search */}
+                  {/* Product list table */}
 
+                  <TableStickyHeader
+                    products={selectedProduct}
+                    setProducts={setSelectedProduct}
+                    invoiceTotal={invoiceTotal}
+                    setInvoiceTotal={setInvoiceTotal}
+                    setTotalTax={setTotalTax}
+                  />
+
+                  {selectedProduct?.length !== 0 && (
+                    <>
+                      <FormDiscount setPurchaseData={setPurchaseData} clearForm={clearForm} />
+
+                      <FormShippingCost setPurchaseData={setPurchaseData} clearForm={clearForm} />
+                      <FormChangeTax
+                        setTotalTax={setTotalTax}
+                        purchaseData={purchaseData}
+                        totalTax={totalTax}
+                        clearForm={clearForm}
+                        invoiceTotal={invoiceTotal}
+                      />
+                      <FormSelectTax
+                        setPurchaseData={setPurchaseData}
+                        setTotalTax={setTotalTax}
+                        invoiceTotal={invoiceTotal}
+                        clearForm={clearForm}
+                      />
+                    </>
+                  )}
+
+                  <Grid item xs={12}>
+                    <FormInvoiceNote setPurchaseData={setPurchaseData} clearForm={clearForm} />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Typography fontWeight={600} variant='h6'>
+                      Invoice Total:{' '}
+                      {invoiceTotal + totalTax - (purchaseData?.discount || 0) + (purchaseData?.shipping_cost || 0)}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              <Grid item xs={3.5}>
+                <FormControl fullWidth>
+                  <FileUpload setFiles={setInvoiceFile} clearForm={clearForm} file={invoiceFile} />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider sx={{ marginBottom: 0 }} />
+              </Grid>
+
+              {/* 
             <FormSelectProduct
               setSelectedProduct={setSelectedProduct}
               selectedProduct={selectedProduct}
               clearForm={clearForm}
+              showError={showError}
             />
 
-            {/* Product list table */}
+            
 
             <TableStickyHeader
               products={selectedProduct}
@@ -172,9 +236,9 @@ const AddPurchaseForm = () => {
               invoiceTotal={invoiceTotal}
               setInvoiceTotal={setInvoiceTotal}
               setTotalTax={setTotalTax}
-            />
+            /> */}
 
-            {selectedProduct?.length !== 0 && (
+              {/* {selectedProduct?.length !== 0 && (
               <>
                 <FormDiscount setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
@@ -193,9 +257,9 @@ const AddPurchaseForm = () => {
                   clearForm={clearForm}
                 />
               </>
-            )}
+            )} */}
 
-            <Grid item xs={12}>
+              {/* <Grid item xs={12}>
               <FormInvoiceNote setPurchaseData={setPurchaseData} clearForm={clearForm} />
             </Grid>
 
@@ -204,19 +268,20 @@ const AddPurchaseForm = () => {
                 Invoice Total:{' '}
                 {invoiceTotal + totalTax - (purchaseData?.discount || 0) + (purchaseData?.shipping_cost || 0)}
               </Typography>
+            </Grid> */}
             </Grid>
-          </Grid>
-        </CardContent>
-        <Divider sx={{ margin: 0 }} />
-        <CardActions>
-          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
-            Submit
-          </Button>
-          <Button size='large' color='secondary' variant='outlined'>
-            Cancel
-          </Button>
-        </CardActions>
-      </form>
+          </CardContent>
+          <Divider sx={{ margin: 0 }} />
+          <CardActions>
+            <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
+              Submit
+            </Button>
+            <Button size='large' color='secondary' variant='outlined'>
+              Cancel
+            </Button>
+          </CardActions>
+        </form>
+      )}
       <Toaster />
     </Card>
   )

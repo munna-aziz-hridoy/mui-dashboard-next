@@ -5,7 +5,7 @@ import EditProduct from 'src/@core/components/modal/editProductPropertiesModal'
 
 const ProductTableRow = ({ productData, setProducts, setInvoiceTotal, setTotalTax }) => {
   const [openEditProductModal, setOpenEditProductModal] = useState(false)
-  const { product, product_name, prev_unit_cost } = productData
+  const { product, product_name, prev_unit_cost, product_unit } = productData
 
   const handleSetProductProperty = (property, e) => {
     setProducts(prev => {
@@ -25,7 +25,7 @@ const ProductTableRow = ({ productData, setProducts, setInvoiceTotal, setTotalTa
     <TableRow hover role='checkbox' tabIndex={-1} style={{ padding: '30px' }}>
       <TableCell>
         <Box style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Typography variant='body1'>{product_name.split(' -')[0]}</Typography>
+          <Typography variant='body1'>{product_name}</Typography>
 
           <BsPencilSquare onClick={() => setOpenEditProductModal(true)} fontSize={18} cursor='pointer' />
         </Box>
@@ -45,12 +45,13 @@ const ProductTableRow = ({ productData, setProducts, setInvoiceTotal, setTotalTa
           value={productData?.quantity}
           required
         />
-        {!productData?.quantity && (
+        {/* {!productData?.quantity && (
           <Typography style={{ position: 'absolute' }} variant='body2' textAlign='center' color='error' fontSize={12}>
             Please input product quantity
           </Typography>
-        )}
+        )} */}
       </TableCell>
+      <TableCell>{product_unit}</TableCell>
       <TableCell height={85}>{prev_unit_cost}</TableCell>
       <TableCell style={{ position: 'relative' }}>
         <TextField
@@ -60,11 +61,11 @@ const ProductTableRow = ({ productData, setProducts, setInvoiceTotal, setTotalTa
           value={productData?.unit_cost}
           required
         />
-        {!productData?.unit_cost && (
+        {/* {!productData?.unit_cost && (
           <Typography style={{ position: 'absolute' }} variant='body2' textAlign='center' color='error' fontSize={12}>
             Please input product unit cost
           </Typography>
-        )}
+        )} */}
       </TableCell>
       <TableCell>
         <Typography>

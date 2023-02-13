@@ -1,23 +1,10 @@
 import React from 'react'
 
 // ** MUI imports
-import {
-  Box,
-  Modal,
-  Typography,
-  Card,
-  CardContent,
-  Grid,
-  TextField,
-  InputAdornment,
-  CardHeader,
-  Button
-} from '@mui/material'
+import { Box, Modal, Card, CardContent, CardHeader } from '@mui/material'
 
 // ** Icon imports
 
-import { Phone, AccountOutline, EmailOutline } from 'mdi-material-ui'
-import { FaAddressCard, FaFax } from 'react-icons/fa'
 import AddSuplierForm from '../forms/addSuplierForm'
 
 const style = {

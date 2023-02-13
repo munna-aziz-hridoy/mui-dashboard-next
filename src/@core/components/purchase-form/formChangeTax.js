@@ -20,7 +20,7 @@ const FormChangeTax = ({ setTotalTax, purchaseData, totalTax, clearForm, invoice
 
 
 
-  const handleChangeTax = ()=>{
+  const handleChangeTax = (e)=>{
       const taxInNum = parseFloat(e.target.value)
       if(taxInNum < 0){
         return setErrorText()

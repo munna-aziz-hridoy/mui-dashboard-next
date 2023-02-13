@@ -42,6 +42,15 @@ const columns = [
   // },
 
   {
+    id: 'prev-unit',
+    label: 'Unit',
+    minWidth: 100,
+    align: 'left'
+
+    // format: value => value.toFixed(2)
+  },
+
+  {
     id: 'prev-unit-cost',
     label: 'Previous Unit Cost',
     minWidth: 100,

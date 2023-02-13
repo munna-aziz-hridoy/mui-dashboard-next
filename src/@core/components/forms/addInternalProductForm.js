@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Grid,
-  TextField,
-  Button,
-  Autocomplete,
-  Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem
-} from '@mui/material'
+import { Grid, TextField, Button, Autocomplete, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import { addInternalProduct, getOfflineProducts, getOnlineProducts, getUnitChoice } from 'src/@core/apiFunction/product'
 import { toast } from 'react-hot-toast'
 
@@ -91,13 +81,13 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
             multiple
             options={offlineProducts}
             getOptionLabel={option => option.product_name}
-            renderInput={params => <TextField name='offlineProduct' {...params} label='Offline Products' />}
+            renderInput={params => <TextField required name='offlineProduct' {...params} label='Offline Products' />}
           />
-          {offlineProductId.length === 0 && (
+          {/* {offlineProductId.length === 0 && (
             <Typography variant='body2' color='error' fontSize={12}>
               Select offline product
             </Typography>
-          )}
+          )} */}
         </Grid>
 
         <Grid item xs={6}>
@@ -109,13 +99,13 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
             multiple
             options={onlineProducts}
             getOptionLabel={option => option.product_name}
-            renderInput={params => <TextField name='onlineProduct' {...params} label='Online Products' />}
+            renderInput={params => <TextField required name='onlineProduct' {...params} label='Online Products' />}
           />
-          {onlineProductId.length === 0 && (
+          {/* {onlineProductId.length === 0 && (
             <Typography variant='body2' color='error' fontSize={12}>
               Select Online product
             </Typography>
-          )}
+          )} */}
         </Grid>
 
         <Grid item xs={12}>
@@ -126,6 +116,7 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
               label='Product Unit'
               id='form-layouts-separator-select'
               labelId='form-layouts-separator-select-label'
+              required
             >
               {units?.map((item, i) => (
                 <MenuItem key={i} value={item}>

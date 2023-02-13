@@ -13,7 +13,8 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  Typography
 } from '@mui/material'
 
 import { getUnitChoice } from 'src/@core/apiFunction/product'
@@ -23,7 +24,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
+  width: 700,
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
@@ -49,6 +50,8 @@ const EditProduct = ({ open, setOpen, productData, setProducts }) => {
     })
   }
 
+  console.log()
+
   return (
     <Modal id={product} open={open} onClose={() => setOpen(false)}>
       <Box sx={style}>
@@ -57,6 +60,22 @@ const EditProduct = ({ open, setOpen, productData, setProducts }) => {
           <CardContent>
             <form onSubmit={e => e.preventDefault()}>
               <Grid container spacing={3}>
+                <Grid item xs={6} marginBottom={5}>
+                  <Typography variant='body2' fontSize={14}>
+                    Online Name:{' '}
+                    <span style={{ fontWeight: 600, fontSize: 16 }}>
+                      {productData.online_name.reduce((prev, next) => prev + next)}
+                    </span>
+                  </Typography>
+                </Grid>
+                <Grid marginBottom={5} item xs={6}>
+                  <Typography variant='body2' fontSize={14}>
+                    Offline Name:{' '}
+                    <span style={{ fontWeight: 600, fontSize: 16 }}>
+                      {productData.offline_name.reduce((prev, next) => prev + next)}
+                    </span>
+                  </Typography>
+                </Grid>
                 <Grid item xs={4}>
                   <TextField
                     onChange={e => handleSetProductProperty('quantity', e, true)}
@@ -133,7 +152,7 @@ const EditProduct = ({ open, setOpen, productData, setProducts }) => {
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                   <TextField
                     onChange={e => handleSetProductProperty('EAN_number', e, false)}
                     fullWidth
@@ -143,7 +162,7 @@ const EditProduct = ({ open, setOpen, productData, setProducts }) => {
                     placeholder='EAN'
                     sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12}>
                   <Button onClick={() => setOpen(false)} variant='contained' size='large'>
                     Submit

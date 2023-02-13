@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 
 import { Grid, TextField, InputAdornment, Button, Typography } from '@mui/material'
-import MuiPhoneNumber from 'material-ui-phone-number'
 
 import { Phone, AccountOutline, EmailOutline } from 'mdi-material-ui'
 import { FaAddressCard, FaFax } from 'react-icons/fa'
@@ -15,12 +14,12 @@ const AddSuplierForm = ({ refetch }) => {
     e.preventDefault()
 
     const name = e.target.name.value
-    const email = e.target.email.value
-    const phone = e.target.phone.value
-    const fax = e.target.fax.value
-    const address = e.target.address.value
+    const email = e.target.email.value || ''
+    const phone = e.target.phone.value || ''
+    const fax = e.target.fax.value || ''
+    const address = e.target.address.value || ''
 
-    const supplierData = { name, email, phone, fax: fax || '', address }
+    const supplierData = { name, email, phone, fax, address }
 
     addSupplier(supplierData).then(data => {
       if (data.success) {
@@ -66,7 +65,6 @@ const AddSuplierForm = ({ refetch }) => {
             label='Email'
             placeholder='Suplier Email'
             name='email'
-            required
             helperText='You can use letters, numbers & periods'
             InputProps={{
               startAdornment: (
@@ -88,7 +86,6 @@ const AddSuplierForm = ({ refetch }) => {
             type='phone'
             label='Phone No.'
             name='phone'
-            required
             placeholder='Suplier Phone'
             InputProps={{
               startAdornment: (
@@ -98,8 +95,6 @@ const AddSuplierForm = ({ refetch }) => {
               )
             }}
           />
-
-          {/* <MuiPhoneNumber onlyCountries={['bd']} defaultCountry='bd' inputProps={<TextField />} /> */}
         </Grid>
         <Grid item xs={6}>
           <TextField
@@ -125,7 +120,6 @@ const AddSuplierForm = ({ refetch }) => {
             label='Address'
             placeholder='Address'
             name='address'
-            required
             sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
             InputProps={{
               startAdornment: (

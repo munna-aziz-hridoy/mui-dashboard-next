@@ -6,13 +6,6 @@ import AddSuplier from 'src/@core/components/modal/addSuplierModal'
 
 import { Grid, TextField, Box, List, ListItem, CircularProgress, Typography, Button } from '@mui/material'
 
-const listStyle = {
-  position: 'absolute',
-  width: '98%',
-  padding: '1rem',
-  zIndex: '5'
-}
-
 const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
   const [openSuplierModal, setOpenSuplierModal] = useState(false)
   const [openSuplierList, setOpenSuplierList] = useState(false)
@@ -62,7 +55,7 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
   }
 
   return (
-    <Grid item xs={12} sm={4} style={{ position: 'relative' }}>
+    <Grid item xs={12} sm={6} style={{ position: 'relative' }}>
       <TextField
         onClick={handleInputClick}
         onChange={handleSearchSuplier}
@@ -73,11 +66,11 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
         required
       />
 
-      {!suplierName && (
+      {/* {!suplierName && (
         <Typography variant='body2' color='error' fontSize={12}>
           Please Add a supplier
         </Typography>
-      )}
+      )} */}
 
       <Box
         style={{ display: openSuplierList ? 'block' : 'none', width: '92%' }}

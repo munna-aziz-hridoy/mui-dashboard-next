@@ -47,8 +47,6 @@ const TableCustomized = () => {
     setPage(0)
   }
 
-  console.log(invoices)
-
   return (
     <Paper>
       <TableContainer component={Paper}>
@@ -80,7 +78,7 @@ const TableCustomized = () => {
               ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
               ?.map((invoice, i) => (
-                <InvoiceTableRow key={i} invoice={invoice} refetch={setRefetch} />
+                <InvoiceTableRow key={i} invoice={invoice} refetch={setRefetch} refetchValue={refetch} />
               ))}
           </TableBody>
         </Table>

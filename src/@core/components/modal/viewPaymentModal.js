@@ -1,24 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 // ** MUI imports
-import {
-  Box,
-  Modal,
-  Card,
-  CardContent,
-  Grid,
-  TextField,
-  CardHeader,
-  Button,
-  Typography,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableBody,
-  TableCell,
-  Paper,
-  Table
-} from '@mui/material'
+import { Box, Modal, Card, CardContent, CardHeader, Typography } from '@mui/material'
 import { getInvoicePaymentDetails } from 'src/@core/apiFunction/invoice'
 import PaymentTable from 'src/views/tables/PaymentTable'
 
@@ -38,7 +21,7 @@ const style = {
   outline: 'none'
 }
 
-const ViewPaymentModal = ({ open, setOpen, invoiceId }) => {
+const ViewPaymentModal = ({ open, setOpen, invoiceId, refetchValue }) => {
   const [paymentDetails, setPaymentDetails] = useState([])
   useEffect(() => {
     getInvoicePaymentDetails(invoiceId).then(data => {
@@ -46,7 +29,7 @@ const ViewPaymentModal = ({ open, setOpen, invoiceId }) => {
         setPaymentDetails(data.data)
       }
     })
-  }, [])
+  }, [refetchValue])
 
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
@@ -54,7 +37,13 @@ const ViewPaymentModal = ({ open, setOpen, invoiceId }) => {
         <Card>
           <CardHeader title='Payment History' titleTypographyProps={{ variant: 'h6' }} />
           <CardContent>
-            <PaymentTable payment={paymentDetails} />
+            {paymentDetails.length === 0 ? (
+              <Typography variant='body1' fontSize={22} fontWeight={500}>
+                No payment history for this invoice
+              </Typography>
+            ) : (
+              <PaymentTable payment={paymentDetails} />
+            )}
           </CardContent>
         </Card>
       </Box>

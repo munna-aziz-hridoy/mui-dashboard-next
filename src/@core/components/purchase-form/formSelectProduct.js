@@ -14,7 +14,7 @@ const listStyle = {
   zIndex: '5'
 }
 
-const FormSelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) => {
+const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
   const [productName, setProductName] = useState('')
 
   const [searchedProduct, setSearchedProduct] = useState([])
@@ -48,7 +48,9 @@ const FormSelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) =
         product: item.id,
         product_unit: item.product_unit,
         product_name: item.product_name,
-        prev_unit_cost: item.unit_cost
+        prev_unit_cost: item.unit_cost,
+        offline_name: item.offlineProduct.map(productItem => productItem?.product_name),
+        online_name: item.onlineProduct.map(productItem => productItem?.product_name)
       }
       const exists = prev.find(prevPro => prevPro.product === selectedItem.product)
 
@@ -78,11 +80,11 @@ const FormSelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) =
         value={productName}
       />
 
-      {selectedProduct?.length === 0 && (
+      {/* {showError && (
         <Typography variant='body2' color='error' fontSize={12}>
           Add product
         </Typography>
-      )}
+      )} */}
 
       <Box
         position='absolute'

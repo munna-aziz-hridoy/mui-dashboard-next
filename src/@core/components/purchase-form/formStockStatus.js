@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { getPaymentChoice, getStockStatus } from 'src/@core/apiFunction/product'
+import { getStockStatus } from 'src/@core/apiFunction/product'
 
 // ** MUI import
-import { Grid, FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material'
+import { Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 
 const FormStockStatus = ({ setPurchaseData, clearForm }) => {
   const [stockStatus, setStockStatus] = useState([])
@@ -30,7 +30,7 @@ const FormStockStatus = ({ setPurchaseData, clearForm }) => {
   }
 
   return (
-    <Grid item xs={12} sm={4}>
+    <Grid item xs={12} sm={6}>
       <FormControl fullWidth>
         <InputLabel id='form-layouts-separator-select-label'>Stock Status</InputLabel>
         <Select
@@ -49,11 +49,11 @@ const FormStockStatus = ({ setPurchaseData, clearForm }) => {
           ))}
         </Select>
       </FormControl>
-      {!selectedStatus && (
+      {/* {!selectedStatus && (
         <Typography variant='body2' color='error' fontSize={12}>
           Add stock status
         </Typography>
-      )}
+      )} */}
     </Grid>
   )
 }

@@ -32,4 +32,5 @@ const Supplier = () => {
     </Fragment>
   )
 }
+
 export default Supplier

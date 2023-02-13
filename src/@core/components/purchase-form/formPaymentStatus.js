@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { getPaymentChoice } from 'src/@core/apiFunction/product'
 
 // ** MUI import
-import { Grid, FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material'
+import { Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import PartialPaymentModal from '../modal/partialPaymentModal'
 
 const FormPaymentStatus = ({ setPurchaseData, clearForm }) => {
@@ -45,7 +45,7 @@ const FormPaymentStatus = ({ setPurchaseData, clearForm }) => {
   }
 
   return (
-    <Grid item xs={12} sm={4}>
+    <Grid item xs={12} sm={6}>
       <FormControl fullWidth>
         <InputLabel id='form-layouts-separator-select-label'>Payment Status</InputLabel>
         <Select
@@ -64,11 +64,11 @@ const FormPaymentStatus = ({ setPurchaseData, clearForm }) => {
           ))}
         </Select>
       </FormControl>
-      {!selectedStatus && (
+      {/* {!selectedStatus && (
         <Typography variant='body2' color='error' fontSize={12}>
           Add Payment status
         </Typography>
-      )}
+      )} */}
       <PartialPaymentModal
         open={openPartialAmountModal}
         setOpen={setOpenPartialAmountModal}

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 import { IoMdArrowDropdown } from 'react-icons/io'
 import { AiFillEye, AiFillPlusSquare } from 'react-icons/ai'
-import { BsPencilSquare, BsTrashFill } from 'react-icons/bs'
+
 import { BiMoney } from 'react-icons/bi'
 
 const ActionButton = ({ viewInvoiceModal, viewPaymentModal, paymentStatus, openPaymentModal }) => {
@@ -44,7 +44,7 @@ const ActionButton = ({ viewInvoiceModal, viewPaymentModal, paymentStatus, openP
             viewInvoiceModal(true)
           }}
         >
-          <AiFillEye fontSize={18} style={{ marginRight: '8px' }} color='#8336ff' />
+          <AiFillEye fontSize={18} style={{ marginRight: '8px' }} color='#100720' />
           View
         </MenuItem>
 
@@ -54,7 +54,7 @@ const ActionButton = ({ viewInvoiceModal, viewPaymentModal, paymentStatus, openP
             handleClose()
           }}
         >
-          <BiMoney fontSize={18} style={{ marginRight: '8px' }} color='#8336ff' /> View Payment
+          <BiMoney fontSize={18} style={{ marginRight: '8px' }} color='#100720' /> View Payment
         </MenuItem>
         {paymentStatus !== 'Paid' && (
           <MenuItem
@@ -63,7 +63,7 @@ const ActionButton = ({ viewInvoiceModal, viewPaymentModal, paymentStatus, openP
               openPaymentModal(true)
             }}
           >
-            <AiFillPlusSquare fontSize={18} style={{ marginRight: '8px' }} color='#8336ff' /> Add Payment
+            <AiFillPlusSquare fontSize={18} style={{ marginRight: '8px' }} color='#100720' /> Add Payment
           </MenuItem>
         )}
       </Menu>
