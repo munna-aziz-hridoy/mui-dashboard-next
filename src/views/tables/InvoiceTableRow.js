@@ -42,6 +42,8 @@ const InvoiceTableRow = ({ invoice, refetch, refetchValue }) => {
   const { amount_paid, created_at, id, invoice_total, payment_status, stock_status, supplier, supplier_document } =
     invoice
 
+  console.log(supplier_document)
+
   return (
     <Fragment>
       <StyledTableRow style={{ cursor: 'pointer' }} onClick={() => setOpenInvoiceModal(true)}>
@@ -59,7 +61,9 @@ const InvoiceTableRow = ({ invoice, refetch, refetchValue }) => {
             setOpenInvoiceImageModal(true)
           }}
         >
-          <Image src={supplier_document} width={60} height={90} />
+          <img src={supplier_document} style={{ width: '60px', height: '90px' }} />
+
+          {/* <Image src={supplier_document} width={60} height={90} /> */}
         </StyledTableCell>
 
         <StyledTableCell>{supplier ? supplier?.name : ''}</StyledTableCell>
