@@ -42,8 +42,6 @@ const InvoiceTableRow = ({ invoice, refetch, refetchValue }) => {
   const { amount_paid, created_at, id, invoice_total, payment_status, stock_status, supplier, supplier_document } =
     invoice
 
-  console.log(supplier_document)
-
   return (
     <Fragment>
       <StyledTableRow style={{ cursor: 'pointer' }} onClick={() => setOpenInvoiceModal(true)}>
