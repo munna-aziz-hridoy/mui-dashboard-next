@@ -20,7 +20,7 @@ import {
 
 import TableStickyHeader from 'src/views/tables/TableStickyHeader'
 
-import FileUpload from 'src/@core/components/file-upload'
+import FileUpload from 'src/@core/components/file-upload/fileUpload'
 
 // ** Data import
 

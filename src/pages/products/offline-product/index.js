@@ -1,6 +1,7 @@
 import { Card, CardHeader, CircularProgress, Divider, Typography } from '@mui/material'
 import React, { Fragment, useEffect, useState } from 'react'
 import { getOfflineProducts } from 'src/@core/apiFunction/product'
+import CsvUpload from 'src/@core/components/file-upload/csvUpload'
 import AddOfflineProduct from 'src/@core/components/forms/addOfflineProductForm'
 import TableDense from 'src/views/tables/TableDense'
 
@@ -22,12 +23,13 @@ const InternalProduct = () => {
 
   return (
     <Fragment>
+      <CsvUpload />
       <Card>
-        <CardHeader title='Offline Product' titleTypographyProps={{ variant: 'h6' }} />
+        <CardHeader title='Add offline Product' titleTypographyProps={{ variant: 'h6' }} />
 
         <AddOfflineProduct refetch={setRefetch} />
       </Card>
-      <Card style={{ marginTop: '5rem' }}>
+      <Card style={{ marginTop: '2rem' }}>
         <Typography variant='body1' fontSize={18} fontWeight={600} marginLeft={4} marginBottom={5} marginTop={5}>
           Product list
         </Typography>
