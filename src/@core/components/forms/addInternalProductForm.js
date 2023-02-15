@@ -10,6 +10,9 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
   const [offlineProductId, setOfflineProductId] = useState([])
   const [onlineProductId, setOnlineProductId] = useState([])
 
+  const [offlineProductName, setOfflineProductName] = useState([])
+  const [onlineProductName, setOnlineProductName] = useState([])
+
   const [units, setUnits] = useState([])
 
   useEffect(() => {
@@ -31,6 +34,7 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
   }, [])
 
   const handleAddInternalProduct = e => {
+    e.stopPropagation()
     e.preventDefault()
     const product_name = e.target.product_name.value
     const product_unit = e.target.product_unit.value || null
@@ -53,6 +57,8 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
         e.target.onlineProduct.value = ''
         e.target.offlineProduct.value = ''
         toast.success('Internal Product added')
+        setOfflineProductName([])
+        setOnlineProductName([])
         if (refetch) {
           refetch(prev => !prev)
         }
@@ -76,12 +82,16 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
           <Autocomplete
             onChange={(e, value) => {
               const productId = value.map(item => parseFloat(item.product_sku))
+              const productName = value.map(item => item.product_name)
+              console.log(productName)
+              setOfflineProductName(productName)
               setOfflineProductId(productId)
             }}
+            // value={offlineProductName}
             multiple
             options={offlineProducts}
             getOptionLabel={option => option.product_name}
-            renderInput={params => <TextField required name='offlineProduct' {...params} label='Offline Products' />}
+            renderInput={params => <TextField name='offlineProduct' {...params} label='Offline Products' />}
           />
           {/* {offlineProductId.length === 0 && (
             <Typography variant='body2' color='error' fontSize={12}>
@@ -94,12 +104,14 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
           <Autocomplete
             onChange={(e, value) => {
               const productId = value.map(item => parseFloat(item.product_ID))
+              const productName = value.map(item => item.product_name)
+              setOnlineProductName(productName)
               setOnlineProductId(productId)
             }}
             multiple
             options={onlineProducts}
             getOptionLabel={option => option.product_name}
-            renderInput={params => <TextField required name='onlineProduct' {...params} label='Online Products' />}
+            renderInput={params => <TextField name='onlineProduct' {...params} label='Online Products' />}
           />
           {/* {onlineProductId.length === 0 && (
             <Typography variant='body2' color='error' fontSize={12}>
@@ -128,7 +140,14 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Button type='submit' variant='contained' size='large'>
+          <Button
+            onClick={e => {
+              e.stopPropagation()
+            }}
+            type='submit'
+            variant='contained'
+            size='large'
+          >
             Submit
           </Button>
         </Grid>

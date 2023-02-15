@@ -30,6 +30,11 @@ code[class*='language-'] {
   /* display: none !important; */
 }
 
+.search-field fieldset {
+  border-right: none;
+  border-radius: 6px 0 0 6px;
+}
+
 .css-1ckyf00-MuiTablePagination-selectLabel {
   display: none;
 }

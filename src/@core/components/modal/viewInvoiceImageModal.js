@@ -30,7 +30,7 @@ const ViewInvoiceImageModal = ({ open, setOpen, invoiceImage }) => {
         <Card>
           <TransformWrapper>
             <TransformComponent>
-              <Image src={invoiceImage} width={700} height={850} />
+              <img src={invoiceImage} width={700} height={850} />
             </TransformComponent>
           </TransformWrapper>
         </Card>

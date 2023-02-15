@@ -150,8 +150,8 @@ const AddPurchaseForm = () => {
             <Grid container spacing={5}>
               {/* purchase form start */}
 
-              <Grid item xs={8.5}>
-                <Grid container spacing={4}>
+              <Grid item xs={8}>
+                <Grid container spacing={2}>
                   <FormDatePicker purchaseData={purchaseData} setPurchaseData={setPurchaseData} />
 
                   <FormSuplierSelect setPurchaseData={setPurchaseData} clearForm={clearForm} />
@@ -211,7 +211,7 @@ const AddPurchaseForm = () => {
                 </Grid>
               </Grid>
 
-              <Grid item xs={3.5}>
+              <Grid item xs={4} padding={0}>
                 <FormControl fullWidth>
                   <FileUpload setFiles={setInvoiceFile} clearForm={clearForm} file={invoiceFile} />
                 </FormControl>

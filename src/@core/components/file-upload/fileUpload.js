@@ -52,7 +52,7 @@ const FileUpload = ({ setFiles, clearForm }) => {
 
   return (
     <>
-      <ImageUploading value={images} onChange={onChange} maxNumber={10} dataURLKey='data_url'>
+      <ImageUploading value={images} onChange={onChange} dataURLKey='data_url'>
         {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
           // write your building UI
           <div style={{ display: 'flex', gap: '5px', flexDirection: 'column' }} className='upload__image-wrapper'>
@@ -73,7 +73,7 @@ const FileUpload = ({ setFiles, clearForm }) => {
               <div style={{ marginTop: '5px', position: 'relative' }} key={index} className='image-item'>
                 <TransformWrapper>
                   <TransformComponent>
-                    <img src={image['data_url']} alt='' width='420' />
+                    <img src={image['data_url']} alt='' width='380' />
                   </TransformComponent>
                 </TransformWrapper>
                 <div
