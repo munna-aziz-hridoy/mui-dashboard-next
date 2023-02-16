@@ -19,8 +19,8 @@ export const postInvoice = async postData => {
   }
 }
 
-export const getAllInvoiceList = async () => {
-  const url = `${API_URL}/invoice/`
+export const getAllInvoiceList = async (searchText, dateRange, supplier, paymentStatus) => {
+  const url = `${API_URL}/invoice/?search=${searchText || ''}`
   const res = await fetch(url)
   const data = await res.json()
 

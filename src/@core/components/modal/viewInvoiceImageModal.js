@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 
@@ -15,12 +14,14 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 700,
   height: 850,
+  maxHeight: '95vh',
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
   borderRadius: '6px',
   border: 'none',
-  outline: 'none'
+  outline: 'none',
+  overflowY: 'scroll'
 }
 
 const ViewInvoiceImageModal = ({ open, setOpen, invoiceImage }) => {

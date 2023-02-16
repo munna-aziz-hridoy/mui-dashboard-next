@@ -13,12 +13,14 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 750,
+  maxHeight: '95vh',
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
   borderRadius: '6px',
   border: 'none',
-  outline: 'none'
+  outline: 'none',
+  overflowY: 'scroll'
 }
 
 const PrintedInvoiceModal = ({ open, setOpen, invoice }) => {

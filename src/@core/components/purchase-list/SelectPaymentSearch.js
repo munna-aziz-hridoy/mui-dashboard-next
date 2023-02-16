@@ -4,19 +4,23 @@ import { getPaymentChoice } from 'src/@core/apiFunction/product'
 // ** MUI import
 import { Grid, FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material'
 
-const SelectPaymentSearch = ({}) => {
+const SelectPaymentSearch = ({ setPayment }) => {
   const [paymentStatus, setPaymentStatus] = useState([])
 
   useEffect(() => {
     getPaymentChoice().then(data => setPaymentStatus(data))
   }, [])
 
+  console.log(paymentStatus)
+
   return (
     <Grid item xs={12} sm={4}>
       <FormControl fullWidth>
         <InputLabel id='form-layouts-separator-select-label'>Payment Status</InputLabel>
         <Select
-          onChange={e => {}}
+          onChange={e => {
+            setPayment(e.target.value)
+          }}
           required
           label='Payment Status'
           defaultValue=''

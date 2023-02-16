@@ -13,9 +13,17 @@ const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Sales Date' autoComplete='off' />
 })
 
-const Sales = () => {
+const OnlineSales = () => {
   return (
     <div>
+      <Button
+        href='https://pims-live.s3.ap-northeast-1.amazonaws.com/sample_files/OnlineSell+HEADER.csv'
+        style={{ margin: '10px', marginLeft: 'auto', display: 'block', width: '230px' }}
+        variant='contained'
+        color='primary'
+      >
+        Download Sample CSV
+      </Button>
       <CsvUpload />
 
       <Box component='div' display='flex' justifyContent='space-between' alignItems='center' marginBottom={5}>
@@ -48,4 +56,4 @@ const Sales = () => {
   )
 }
 
-export default Sales
+export default OnlineSales

@@ -20,7 +20,7 @@ const TypographyHeaderText = styled(Typography)(({ theme }) => ({
   lineHeight: 'normal',
   letterSpacing: '0.21px',
   textTransform: 'uppercase',
-  color: theme.palette.text.disabled,
+  color: theme.palette.text.light,
   fontWeight: theme.typography.fontWeightMedium
 }))
 

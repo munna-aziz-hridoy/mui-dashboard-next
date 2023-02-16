@@ -22,21 +22,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   }
 }))
 
-const TableCustomized = () => {
-  const [invoices, setInvoices] = useState([])
-
+const TableCustomized = ({ invoices, loading, refetch, setRefetch }) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
-
-  const [refetch, setRefetch] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  useEffect(async () => {
-    setLoading(true)
-    const data = await getAllInvoiceList()
-    setInvoices(data)
-    setLoading(false)
-  }, [refetch])
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)

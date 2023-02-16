@@ -6,14 +6,14 @@ import { getSearchedSuplier } from 'src/@core/apiFunction/suplier'
 import { Grid, TextField, Box, List, ListItem, CircularProgress, Typography } from '@mui/material'
 
 const listStyle = {
-  background: '#c140f5',
+  background: '#100720',
   position: 'absolute',
   width: '98%',
   padding: '1rem',
   zIndex: '5'
 }
 
-const SelectSuplierSearch = ({}) => {
+const SelectSuplierSearch = ({ setSupplier }) => {
   const [openSuplierList, setOpenSuplierList] = useState(false)
   const [suplierLoading, setSuplierLoading] = useState(false)
 
@@ -64,7 +64,7 @@ const SelectSuplierSearch = ({}) => {
             <ListItem>
               <CircularProgress color='inherit' style={{ margin: '0 auto' }} />
             </ListItem>
-          ) : (
+          ) : searchedSuplier.length !== 0 ? (
             searchedSuplier?.map(item => (
               <ListItem
                 key={item?.id}
@@ -76,6 +76,7 @@ const SelectSuplierSearch = ({}) => {
                   //   }
                   // })
                   setSuplierName(item?.name)
+                  setSupplier(item?.name)
                   setOpenSuplierList(false)
                 }}
                 color='#fff'
@@ -86,6 +87,10 @@ const SelectSuplierSearch = ({}) => {
                 </Typography>
               </ListItem>
             ))
+          ) : (
+            <ListItem>
+              <Typography color='#fff'>No Supplier Found</Typography>
+            </ListItem>
           )}
         </List>
       </Box>

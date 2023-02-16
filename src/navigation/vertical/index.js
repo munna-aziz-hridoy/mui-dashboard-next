@@ -63,17 +63,25 @@ const navigation = () => {
       path: '/purchase/purchase-list'
     },
 
+    { sectionTitle: 'Sales' },
+    {
+      title: 'Offline Sales',
+      icon: RiStockLine,
+      path: '/sales/offline-sales'
+    },
+    {
+      title: 'Online Sales',
+      icon: RiStockLine,
+      path: '/sales/online-sales'
+    },
+
     { sectionTitle: 'Others' },
     {
       title: 'Supplier',
       icon: GrUserManager,
       path: '/others/supplier'
     },
-    {
-      title: 'Sales',
-      icon: RiStockLine,
-      path: '/others/sales'
-    },
+
     {
       title: 'Payment List',
       icon: BiMoney,

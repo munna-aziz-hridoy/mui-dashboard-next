@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 
 //** MUI import
 import { Card, CardHeader, Divider, Grid, TextField, Button } from '@mui/material'
@@ -13,41 +13,78 @@ import SelectSuplierSearch from 'src/@core/components/purchase-list/SelectSuplie
 import SelectPaymentSearch from 'src/@core/components/purchase-list/SelectPaymentSearch'
 import TableCustomized from 'src/views/tables/TableCustomized'
 import { useRouter } from 'next/router'
+import formatedDate from 'src/@core/utils/getFormatedDate'
+import { getAllInvoiceList } from 'src/@core/apiFunction/invoice'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Purchase Date' autoComplete='off' />
 })
 
 const PurchaseList = ({}) => {
-  const [date, setDate] = useState(new Date())
+  const [startDate, setStartDate] = useState(new Date())
+  const [endDate, setEndDate] = useState()
+  const [supplier, setSupplier] = useState('')
+  const [paymentStatus, setPaymentStatus] = useState('')
+  const [productName, setProductName] = useState('')
+
+  const [invoices, setInvoices] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [refetch, setRefetch] = useState(false)
 
   const router = useRouter()
 
+  useEffect(async () => {
+    setLoading(true)
+    await getAllInvoiceList(productName, [startDate, endDate], supplier, paymentStatus).then(data => {
+      setInvoices(data)
+      setLoading(false)
+    })
+  }, [refetch])
+
+  const handleSearch = () => {
+    setRefetch(prev => !prev)
+  }
+
   return (
-    <DatePickerWrapper>
+    <>
       <Card style={{ padding: '20px', overflow: 'visible', marginBottom: '30px' }}>
         <CardHeader title='Purchase List' titleTypographyProps={{ variant: 'h6' }} />
         <Divider sx={{ margin: 0 }} />
 
         <Grid container spacing={6} marginTop={1} marginBottom={10}>
-          <Grid item xs={12} sm={4}>
-            <DatePicker
-              required
-              showYearDropdown
-              showMonthDropdown
-              placeholderText='MM-DD-YYYY'
-              customInput={<CustomInput />}
-              onChange={date => setDate(date)}
-              selected={date}
+          <Grid item xs={12}>
+            <TextField
+              onChange={e => {
+                setProductName(e.target.value)
+              }}
+              fullWidth
+              placeholder='Search by product name'
             />
           </Grid>
+          <Grid item xs={12} sm={4}>
+            <DatePickerWrapper>
+              <DatePicker
+                selectsRange={true}
+                showYearDropdown
+                showMonthDropdown
+                placeholderText='MM-DD-YYYY'
+                customInput={<CustomInput />}
+                onChange={value => {
+                  setStartDate(value[0])
+                  setEndDate(value[1])
+                }}
+                startDate={startDate}
+                endDate={endDate}
+              />
+            </DatePickerWrapper>
+          </Grid>
 
-          <SelectSuplierSearch />
+          <SelectSuplierSearch setSupplier={setSupplier} />
 
-          <SelectPaymentSearch />
+          <SelectPaymentSearch setPayment={setPaymentStatus} />
 
           <Grid item xs={12}>
-            <Button fullWidth variant='outlined'>
+            <Button onClick={handleSearch} fullWidth variant='contained'>
               Search
             </Button>
           </Grid>
@@ -65,9 +102,9 @@ const PurchaseList = ({}) => {
       </Button>
 
       <Card>
-        <TableCustomized />
+        <TableCustomized setRefetch={setRefetch} invoices={invoices} loading={loading} refetch={refetch} />
       </Card>
-    </DatePickerWrapper>
+    </>
   )
 }
 

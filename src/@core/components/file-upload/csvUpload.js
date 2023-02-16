@@ -2,7 +2,7 @@ import { Box, Button, Card, CardHeader, Typography } from '@mui/material'
 import React, { useState, useCallback, Fragment } from 'react'
 import { useDropzone } from 'react-dropzone'
 
-const CsvUpload = () => {
+const CsvUpload = ({ handleUploadCsv }) => {
   const [csvFile, setCsvFile] = useState([])
 
   const onDrop = useCallback(acceptedFiles => {
@@ -11,10 +11,6 @@ const CsvUpload = () => {
 
   const { getInputProps, getRootProps, isDragActive, isDragAccept, i } = useDropzone({ onDrop })
 
-  const handleUploadCsv = () => {
-    console.log(csvFile)
-  }
-
   return (
     <Card style={{ marginBottom: '20px' }}>
       <CardHeader title='Upload CSV' />
@@ -22,7 +18,7 @@ const CsvUpload = () => {
         marginLeft={5}
         marginRight={5}
         component='div'
-        height={120}
+        height={90}
         border={1}
         borderRadius={1}
         borderColor={isDragActive ? 'red' : csvFile.length !== 0 ? 'green' : '#100720'}
@@ -55,7 +51,7 @@ const CsvUpload = () => {
                 <Button
                   onClick={e => {
                     e.stopPropagation()
-                    handleUploadCsv()
+                    handleUploadCsv(csvFile[0], setCsvFile)
                   }}
                   variant='contained'
                   color='primary'

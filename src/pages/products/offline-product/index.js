@@ -1,4 +1,4 @@
-import { Card, CardHeader, CircularProgress, Divider, Typography } from '@mui/material'
+import { Button, Card, CardHeader, CircularProgress, Divider, Typography } from '@mui/material'
 import React, { Fragment, useEffect, useState } from 'react'
 import { getOfflineProducts } from 'src/@core/apiFunction/product'
 import CsvUpload from 'src/@core/components/file-upload/csvUpload'
@@ -23,6 +23,14 @@ const InternalProduct = () => {
 
   return (
     <Fragment>
+      <Button
+        href='https://pims-live.s3.ap-northeast-1.amazonaws.com/sample_files/OfflineProducts+HEADER.csv'
+        style={{ margin: '10px', marginLeft: 'auto', display: 'block', width: '230px' }}
+        variant='contained'
+        color='primary'
+      >
+        Download Sample CSV
+      </Button>
       <CsvUpload />
       <Card>
         <CardHeader title='Add offline Product' titleTypographyProps={{ variant: 'h6' }} />

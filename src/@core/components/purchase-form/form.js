@@ -38,14 +38,10 @@ import FormInvoiceNote from './formInvoiceNote'
 import toast, { Toaster } from 'react-hot-toast'
 import { postInvoice, uploadInvoiceImage } from 'src/@core/apiFunction/invoice'
 import FormStockStatus from './formStockStatus'
+import formatedDate from 'src/@core/utils/getFormatedDate'
 
 const AddPurchaseForm = () => {
-  const date = new Date()
-  const dateArr = date.toString().split(' ')
-  const time = `${dateArr[4].split(':')[0]}:${dateArr[4].split(':')[1]}`
-  const timestamp = `${dateArr[3]}-${date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`}-${
-    dateArr[2]
-  } ${time}`
+  const timestamp = formatedDate(new Date())
 
   // ** States
   const [purchaseData, setPurchaseData] = useState({
