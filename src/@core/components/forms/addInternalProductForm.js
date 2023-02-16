@@ -52,11 +52,9 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
 
     addInternalProduct(productData).then(data => {
       if (data.success) {
+        toast.success('Internal Product added')
         e.target.product_name.value = ''
         e.target.product_unit.value = ''
-        e.target.onlineProduct.value = ''
-        e.target.offlineProduct.value = ''
-        toast.success('Internal Product added')
         setOfflineProductName([])
         setOnlineProductName([])
         if (refetch) {
@@ -82,12 +80,13 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
           <Autocomplete
             onChange={(e, value) => {
               const productId = value.map(item => parseFloat(item.product_sku))
-              const productName = value.map(item => item.product_name)
-              console.log(productName)
+              const productName = value.map(item => {
+                return { product_name: item.product_name }
+              })
               setOfflineProductName(productName)
               setOfflineProductId(productId)
             }}
-            // value={offlineProductName}
+            value={offlineProductName}
             multiple
             options={offlineProducts}
             getOptionLabel={option => option.product_name}
@@ -104,11 +103,14 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
           <Autocomplete
             onChange={(e, value) => {
               const productId = value.map(item => parseFloat(item.product_ID))
-              const productName = value.map(item => item.product_name)
+              const productName = value.map(item => {
+                return { product_name: item.product_name }
+              })
               setOnlineProductName(productName)
               setOnlineProductId(productId)
             }}
             multiple
+            value={onlineProductName}
             options={onlineProducts}
             getOptionLabel={option => option.product_name}
             renderInput={params => <TextField name='onlineProduct' {...params} label='Online Products' />}
