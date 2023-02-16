@@ -20,51 +20,17 @@ const CustomInput = forwardRef((props, ref) => {
 const OfflineSales = () => {
   const [middleCatData, setMiddleCatData] = useState(null)
 
-  const handleUploadOfflineSalesCsv = (csv, setCsv) => {
-    if (csv && middleCatData?.middle_cat_code) {
-      const offlineSalesData = new FormData()
-      offlineSalesData.append('offline_product_file', csv)
-      offlineSalesData.append('middle_cat_code', middleCatData.middle_cat_code)
-      offlineSalesData.append('middle_cat_name', middleCatData.middle_cat_name)
-
-      uploadOfflineSalesCsv(offlineSalesData).then(() => {
-        toast.success('Uploaded CSV successfully')
-        setCsv([])
-        setMiddleCatData(null)
-      })
-    } else toast.error('Please select middle category')
-  }
+  const handleUploadOfflineSalesCsv = (csv, setCsv) => {}
   return (
     <div>
-      <Box component='div' display='flex' justifyContent='space-between' alignItems='center' marginBottom={5}>
-        <FormControl>
-          <InputLabel id='form-layouts-separator-select-label'>Middle Category</InputLabel>
-          <Select
-            style={{ width: '200px' }}
-            onChange={e => {
-              setMiddleCatData(e.target.value)
-            }}
-            label='Middle Category'
-            id='form-layouts-separator-select'
-            labelId='form-layouts-separator-select-label'
-            required
-            value={middleCatData}
-          >
-            {middleCategoryData.map((item, i) => (
-              <MenuItem key={i} value={item}>
-                {item.middle_cat_code}:{item.middle_cat_name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Button
-          href='https://pims-live.s3.ap-northeast-1.amazonaws.com/sample_files/OfflineSell+HEADER.csv'
-          variant='contained'
-          color='primary'
-        >
-          Download Sample CSV
-        </Button>
-      </Box>
+      <Button
+        href='https://pims-live.s3.ap-northeast-1.amazonaws.com/sample_files/OfflineSell+HEADER.csv'
+        variant='contained'
+        color='primary'
+        style={{ margin: '10px', marginLeft: 'auto', display: 'block', width: '230px' }}
+      >
+        Download Sample CSV
+      </Button>
 
       <CsvUpload handleUploadCsv={handleUploadOfflineSalesCsv} />
 
