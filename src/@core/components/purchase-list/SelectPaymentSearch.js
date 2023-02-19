@@ -11,8 +11,6 @@ const SelectPaymentSearch = ({ setPayment }) => {
     getPaymentChoice().then(data => setPaymentStatus(data))
   }, [])
 
-  console.log(paymentStatus)
-
   return (
     <Grid item xs={12} sm={4}>
       <FormControl fullWidth>

@@ -35,7 +35,11 @@ const PurchaseList = ({}) => {
 
   useEffect(async () => {
     setLoading(true)
-    await getAllInvoiceList(productName, [startDate, endDate], supplier, paymentStatus).then(data => {
+
+    const formatedStartDate = startDate ? formatedDate(startDate) : ''
+    const formatedEndDate = endDate ? formatedDate(endDate) : ''
+
+    await getAllInvoiceList(productName, [formatedStartDate, formatedEndDate], supplier, paymentStatus).then(data => {
       setInvoices(data)
       setLoading(false)
     })

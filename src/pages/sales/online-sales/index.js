@@ -2,16 +2,29 @@ import React, { forwardRef } from 'react'
 import { Box, Typography, TextField, Button } from '@mui/material'
 
 import DatePicker from 'react-datepicker'
+import toast, { Toaster } from 'react-hot-toast'
 
 import CsvUpload from 'src/@core/components/file-upload/csvUpload'
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import SalesTable from 'src/views/tables/SalesTable'
 
 import 'react-datepicker/dist/react-datepicker.css'
+import { uploadOnlineSalesCsv } from 'src/@core/apiFunction/sales'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Sales Date' autoComplete='off' />
 })
+
+const handleUploadOnlineSalesData = (csv, setCsv) => {
+  if (csv) {
+    const onlineSalesData = new FormData()
+    onlineSalesData.append('online_sell_file', onlineSalesData)
+    uploadOnlineSalesCsv(onlineSalesData).then(() => {
+      toast.success('Successfully uploaded sales data')
+      setCsv([])
+    })
+  }
+}
 
 const OnlineSales = () => {
   return (
@@ -52,6 +65,7 @@ const OnlineSales = () => {
       </Box>
 
       <SalesTable />
+      <Toaster />
     </div>
   )
 }

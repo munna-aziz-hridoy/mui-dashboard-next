@@ -9,6 +9,12 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography
 } from '@mui/material'
 import React, { Fragment, useEffect, useState } from 'react'
@@ -20,20 +26,26 @@ import TableDense from 'src/views/tables/TableDense'
 import toast, { Toaster } from 'react-hot-toast'
 
 import middleCategoryData from 'src/@core/utils/cat-data'
-import { uploadOfflineSalesCsv } from 'src/@core/apiFunction/sales'
+import { uploadOfflineProductCsv } from 'src/@core/apiFunction/sales'
 
 const InternalProduct = () => {
   const [offlineProducts, setOfflineProducts] = useState([])
   const [middleCatData, setMiddleCatData] = useState(null)
 
+  const [page, setPage] = useState(0)
+  const [totalPages, setTotalPages] = useState(1)
+
   const [refetch, setRefetch] = useState(false)
   const [loading, setLoading] = useState(false)
 
+  const [affectedRows, setAffectedRows] = useState([])
+
   useEffect(() => {
     setLoading(true)
-    getOfflineProducts().then(data => {
+    getOfflineProducts(page).then(data => {
       if (data.success) {
         setOfflineProducts(data.data)
+        setTotalPages(data?.total_pages)
       }
       setLoading(false)
     })
@@ -41,18 +53,26 @@ const InternalProduct = () => {
 
   const handleUploadOfflineProductCsv = (csv, setCsv) => {
     if (csv && middleCatData?.middle_cat_code) {
-      const offlineSalesData = new FormData()
-      offlineSalesData.append('offline_product_file', csv)
-      offlineSalesData.append('middle_cat_code', middleCatData.middle_cat_code)
-      offlineSalesData.append('middle_cat_name', middleCatData.middle_cat_name)
+      const offlineProductData = new FormData()
+      offlineProductData.append('offline_product_file', csv)
+      offlineProductData.append('middle_cat_code', middleCatData.middle_cat_code)
+      offlineProductData.append('middle_cat_name', middleCatData.middle_cat_name)
 
-      uploadOfflineSalesCsv(offlineSalesData).then(() => {
-        toast.success('Uploaded CSV successfully')
+      uploadOfflineProductCsv(offlineProductData).then(data => {
+        if (data.success) {
+          toast.success(data.message)
+        } else {
+          toast.error(data.message)
+          setAffectedRows(data.affected_rows)
+        }
         setCsv([])
         setMiddleCatData(null)
+        setRefetch(prev => !prev)
       })
     } else toast.error('Please select middle category')
   }
+
+  console.log(affectedRows)
 
   return (
     <Fragment>
@@ -60,7 +80,7 @@ const InternalProduct = () => {
         <FormControl>
           <InputLabel id='form-layouts-separator-select-label'>Middle Category</InputLabel>
           <Select
-            style={{ width: '200px' }}
+            style={{ width: '300px' }}
             onChange={e => {
               setMiddleCatData(e.target.value)
             }}
@@ -87,6 +107,43 @@ const InternalProduct = () => {
       </Box>
 
       <CsvUpload handleUploadCsv={handleUploadOfflineProductCsv} />
+
+      {affectedRows.length > 0 && (
+        <Card style={{ margin: '15px 0' }}>
+          <TableContainer>
+            <Button onClick={() => setAffectedRows([])} variant='contained' style={{ margin: '20px' }}>
+              Reset
+            </Button>
+            <Table size='small'>
+              <TableHead>
+                <TableRow style={{ background: 'red' }}>
+                  <TableCell>Row Number</TableCell>
+                  <TableCell>Product Name</TableCell>
+                  <TableCell>Bar code</TableCell>
+                  <TableCell>Rejected reason</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {affectedRows.map(item => (
+                  <TableRow key={item.index}>
+                    <TableCell>
+                      <Typography>{item.index}</Typography>
+                    </TableCell>
+                    <TableCell>{item.product_name}</TableCell>
+                    <TableCell>{item.barcode}</TableCell>
+                    <TableCell>
+                      <Typography variant='body2' fontSize={10} color='error'>
+                        {item.error}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
+      )}
+
       <Card>
         <CardHeader title='Add offline Product' titleTypographyProps={{ variant: 'h6' }} />
 
@@ -99,7 +156,7 @@ const InternalProduct = () => {
 
         {loading && <CircularProgress color='inherit' style={{ margin: '0 auto', display: 'inherit' }} />}
 
-        <TableDense products={offlineProducts} />
+        <TableDense products={offlineProducts} pageCount={setPage} totalPages={totalPages} />
       </Card>
       <Toaster />
     </Fragment>

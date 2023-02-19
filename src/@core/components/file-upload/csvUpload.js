@@ -75,7 +75,6 @@ const CsvUpload = ({ handleUploadCsv }) => {
           )}
         </div>
       </Box>
-      {/* <button onClick={() => console.log(csvFile)}>Click</button> */}
     </Card>
   )
 }

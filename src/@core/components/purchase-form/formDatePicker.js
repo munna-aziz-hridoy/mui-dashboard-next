@@ -4,6 +4,8 @@ import { TextField, Grid } from '@mui/material'
 
 import DatePicker from 'react-datepicker'
 
+import formatedDate from 'src/@core/utils/getFormatedDate'
+
 const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Purchase Date' autoComplete='off' />
 })
@@ -12,17 +14,12 @@ const FormDatePicker = ({ purchaseData, setPurchaseData }) => {
   const [selectedDate, setSelectedDate] = useState(new Date())
 
   const handleChangeDate = date => {
-    const dateArr = date.toString().split(' ')
-    const time = `${dateArr[4].split(':')[0]}:${dateArr[4].split(':')[1]}`
-
-    const timestamp = `${dateArr[3]}-${date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`}-${
-      dateArr[2]
-    } ${time}`
+    const invoice_date = formatedDate(date)
 
     setPurchaseData(prev => {
       return {
         ...prev,
-        invoice_date: timestamp
+        invoice_date
       }
     })
     setSelectedDate(date)

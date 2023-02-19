@@ -41,7 +41,7 @@ import FormStockStatus from './formStockStatus'
 import formatedDate from 'src/@core/utils/getFormatedDate'
 
 const AddPurchaseForm = () => {
-  const timestamp = formatedDate(new Date())
+  const invoice_date = formatedDate(new Date())
 
   // ** States
   const [purchaseData, setPurchaseData] = useState({
@@ -53,7 +53,7 @@ const AddPurchaseForm = () => {
     note: '',
     payment_status: '',
     amount_paid: null,
-    invoice_date: timestamp
+    invoice_date
   })
 
   const [selectedProduct, setSelectedProduct] = useState([])

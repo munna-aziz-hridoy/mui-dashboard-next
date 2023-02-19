@@ -20,7 +20,16 @@ const CustomInput = forwardRef((props, ref) => {
 const OfflineSales = () => {
   const [middleCatData, setMiddleCatData] = useState(null)
 
-  const handleUploadOfflineSalesCsv = (csv, setCsv) => {}
+  const handleUploadOfflineSalesCsv = (csv, setCsv) => {
+    if (csv) {
+      const offlineSalesData = new FormData()
+      offlineSalesData.append('offline_sell_file', offlineSalesData)
+      uploadOfflineSalesCsv(offlineSalesData).then(() => {
+        toast.success('Successfully uploaded Sales Data')
+        setCsv([])
+      })
+    }
+  }
   return (
     <div>
       <Button

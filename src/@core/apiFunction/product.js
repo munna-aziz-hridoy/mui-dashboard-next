@@ -73,14 +73,16 @@ export const getStockStatus = async () => {
 
 // online product
 
-export const getOnlineProducts = async () => {
-  const url = `${API_URL}/online_product/`
+export const getOnlineProducts = async page => {
+  const url = page > 1 ? `${API_URL}/online_product/?page=${page}` : `${API_URL}/online_product/`
 
   const res = await fetch(url)
+
+  if (res.status !== 200) return { success: false, data: [] }
   const data = await res.json()
 
   if (data?.data) {
-    return { success: true, data: data?.data }
+    return { success: true, data: data?.data, total_pages: data?.total_pages }
   } else {
     return { success: false, data: [] }
   }
@@ -92,10 +94,11 @@ export const getOfflineProducts = async () => {
   const url = `${API_URL}/offline_product/`
 
   const res = await fetch(url)
+  if (res.status !== 200) return { success: false, data: [] }
   const data = await res.json()
 
   if (data?.data) {
-    return { success: true, data: data?.data }
+    return { success: true, data: data?.data, total_pages: data?.total_pages }
   } else {
     return { success: false, data: [] }
   }

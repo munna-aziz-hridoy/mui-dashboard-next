@@ -20,11 +20,17 @@ export const postInvoice = async postData => {
 }
 
 export const getAllInvoiceList = async (searchText, dateRange, supplier, paymentStatus) => {
-  const url = `${API_URL}/invoice/?search=${searchText || ''}`
+  const dateRangeFormated =
+    dateRange[0] && dateRange[1] ? `${dateRange[0].split(' ')[0]},${dateRange[1].split(' ')[0]}` : ''
+
+  const url = `${API_URL}/invoice/?search=${
+    searchText || supplier || ''
+  }&invoice_date__date__range=${dateRangeFormated}&payment_status=${paymentStatus || ''}`
   const res = await fetch(url)
+
   const data = await res.json()
 
-  if (data) {
+  if (data?.total_records) {
     return data?.data
   } else {
     return []

@@ -1,25 +1,42 @@
-import { Button, Card, CardHeader, CircularProgress, Divider, Typography } from '@mui/material'
 import React, { Fragment, useEffect, useState } from 'react'
+import { Button, Card, CardHeader, CircularProgress, Divider, Typography } from '@mui/material'
+
+import toast, { Toaster } from 'react-hot-toast'
+
 import { getOnlineProducts } from 'src/@core/apiFunction/product'
+import { uploadOnlineProductCsv } from 'src/@core/apiFunction/sales'
 import CsvUpload from 'src/@core/components/file-upload/csvUpload'
 import AddOnlineProduct from 'src/@core/components/forms/addOnlineProductForm'
 import TableDense from 'src/views/tables/TableDense'
 
 const OnlineProduct = () => {
   const [onlineProducts, setOnlineProducts] = useState([])
-
+  const [page, setPage] = useState(0)
+  const [totalPages, setTotalPages] = useState(1)
   const [refetch, setRefetch] = useState(false)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setLoading(true)
-    getOnlineProducts().then(data => {
+    getOnlineProducts(page).then(data => {
       if (data.success) {
         setOnlineProducts(data.data)
+        setTotalPages(data?.total_pages)
       }
       setLoading(false)
     })
-  }, [refetch])
+  }, [refetch, page])
+
+  const handleUploadOnlineProductCsv = (csv, setCsv) => {
+    if (csv) {
+      const onlineProductData = new FormData()
+      onlineProductData.append('online_product_file', csv)
+      uploadOnlineProductCsv(onlineProductData).then(() => {
+        toast.success('Successfully uploaded CSV')
+        setCsv([])
+      })
+    }
+  }
 
   return (
     <Fragment>
@@ -31,7 +48,7 @@ const OnlineProduct = () => {
       >
         Download Sample CSV
       </Button>
-      <CsvUpload />
+      <CsvUpload handleUploadCsv={handleUploadOnlineProductCsv} />
       <Card>
         <CardHeader title='Add online product' titleTypographyProps={{ variant: 'h6' }} />
 
@@ -44,8 +61,9 @@ const OnlineProduct = () => {
 
         {loading && <CircularProgress color='inherit' style={{ margin: '0 auto', display: 'inherit' }} />}
 
-        <TableDense products={onlineProducts} />
+        <TableDense products={onlineProducts} totalPages={totalPages} pageCount={setPage} />
       </Card>
+      <Toaster />
     </Fragment>
   )
 }
