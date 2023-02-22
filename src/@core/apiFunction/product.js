@@ -117,7 +117,7 @@ export const addInternalProduct = async productData => {
     body: JSON.stringify(productData)
   })
   const data = await res.json()
-
+  console.log(data)
   if (data?.product_name) {
     return { success: true }
   } else {

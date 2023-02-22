@@ -8,6 +8,7 @@ import { uploadOnlineProductCsv } from 'src/@core/apiFunction/sales'
 import CsvUpload from 'src/@core/components/file-upload/csvUpload'
 import AddOnlineProduct from 'src/@core/components/forms/addOnlineProductForm'
 import TableDense from 'src/views/tables/TableDense'
+import AffectedTable from 'src/views/tables/affectedTable'
 
 const OnlineProduct = () => {
   const [onlineProducts, setOnlineProducts] = useState([])
@@ -15,6 +16,8 @@ const OnlineProduct = () => {
   const [totalPages, setTotalPages] = useState(1)
   const [refetch, setRefetch] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  const [affectedRows, setAffectedRows] = useState([])
 
   useEffect(() => {
     setLoading(true)
@@ -31,9 +34,16 @@ const OnlineProduct = () => {
     if (csv) {
       const onlineProductData = new FormData()
       onlineProductData.append('online_product_file', csv)
-      uploadOnlineProductCsv(onlineProductData).then(() => {
-        toast.success('Successfully uploaded CSV')
+      uploadOnlineProductCsv(onlineProductData).then(data => {
+        if (data.success) {
+          toast.success(data.message)
+        } else {
+          toast.error(data.message)
+          setAffectedRows(data.affected_rows)
+        }
         setCsv([])
+
+        setRefetch(prev => !prev)
       })
     }
   }
@@ -49,6 +59,9 @@ const OnlineProduct = () => {
         Download Sample CSV
       </Button>
       <CsvUpload handleUploadCsv={handleUploadOnlineProductCsv} />
+
+      {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />}
+
       <Card>
         <CardHeader title='Add online product' titleTypographyProps={{ variant: 'h6' }} />
 

@@ -27,6 +27,7 @@ import toast, { Toaster } from 'react-hot-toast'
 
 import middleCategoryData from 'src/@core/utils/cat-data'
 import { uploadOfflineProductCsv } from 'src/@core/apiFunction/sales'
+import AffectedTable from 'src/views/tables/affectedTable'
 
 const InternalProduct = () => {
   const [offlineProducts, setOfflineProducts] = useState([])
@@ -108,41 +109,7 @@ const InternalProduct = () => {
 
       <CsvUpload handleUploadCsv={handleUploadOfflineProductCsv} />
 
-      {affectedRows.length > 0 && (
-        <Card style={{ margin: '15px 0' }}>
-          <TableContainer>
-            <Button onClick={() => setAffectedRows([])} variant='contained' style={{ margin: '20px' }}>
-              Reset
-            </Button>
-            <Table size='small'>
-              <TableHead>
-                <TableRow style={{ background: 'red' }}>
-                  <TableCell>Row Number</TableCell>
-                  <TableCell>Product Name</TableCell>
-                  <TableCell>Bar code</TableCell>
-                  <TableCell>Rejected reason</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {affectedRows.map(item => (
-                  <TableRow key={item.index}>
-                    <TableCell>
-                      <Typography>{item.index}</Typography>
-                    </TableCell>
-                    <TableCell>{item.product_name}</TableCell>
-                    <TableCell>{item.barcode}</TableCell>
-                    <TableCell>
-                      <Typography variant='body2' fontSize={10} color='error'>
-                        {item.error}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Card>
-      )}
+      {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />}
 
       <Card>
         <CardHeader title='Add offline Product' titleTypographyProps={{ variant: 'h6' }} />

@@ -18,10 +18,14 @@ const CustomInput = forwardRef((props, ref) => {
 const handleUploadOnlineSalesData = (csv, setCsv) => {
   if (csv) {
     const onlineSalesData = new FormData()
-    onlineSalesData.append('online_sell_file', onlineSalesData)
-    uploadOnlineSalesCsv(onlineSalesData).then(() => {
-      toast.success('Successfully uploaded sales data')
-      setCsv([])
+    onlineSalesData.append('online_sell_data', onlineSalesData)
+    uploadOnlineSalesCsv(onlineSalesData).then(data => {
+      if (data.success) {
+        toast.success('Successfully uploaded sales data')
+        setCsv([])
+      } else {
+        toast.error(data.message)
+      }
     })
   }
 }
@@ -37,7 +41,7 @@ const OnlineSales = () => {
       >
         Download Sample CSV
       </Button>
-      <CsvUpload />
+      <CsvUpload handleUploadCsv={handleUploadOnlineSalesData} />
 
       <Box component='div' display='flex' justifyContent='space-between' alignItems='center' marginBottom={5}>
         <Box component='div' display='flex' alignItems='center' gap={2}>

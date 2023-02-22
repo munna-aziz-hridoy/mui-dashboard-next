@@ -51,6 +51,7 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
     }
 
     addInternalProduct(productData).then(data => {
+      console.log(data)
       if (data.success) {
         toast.success('Internal Product added')
         e.target.product_name.value = ''

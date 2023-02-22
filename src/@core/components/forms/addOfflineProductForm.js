@@ -11,17 +11,17 @@ const AddOfflineProduct = ({ refetch }) => {
 
     const product_name = e.target.product_name.value
     const product_sku = e.target.product_sku.value
-    const ean = e.target.ean.value
+    const barcode = e.target.barcode.value
     const category = e.target.category.value || null
 
-    const productData = { product_name, product_sku, ean, category }
+    const productData = { product_name, product_sku, barcode, category }
 
     addOfflineProduct(productData).then(data => {
       if (data.success) {
         toast.success('Product added successfully')
         e.target.product_name.value = ''
         e.target.product_sku.value = ''
-        e.target.ean.value = ''
+        e.target.barcode.value = ''
         e.target.category.value = ''
         refetch(prev => !prev)
       } else {
@@ -53,7 +53,7 @@ const AddOfflineProduct = ({ refetch }) => {
         </Grid>
 
         <Grid item xs={6}>
-          <TextField type='number' name='ean' fullWidth label='EAN number' placeholder='EAN number' required />
+          <TextField type='number' name='barcode' fullWidth label='EAN number' placeholder='Bar Code' required />
         </Grid>
         <Grid item xs={6}>
           <TextField name='category' fullWidth label='Category' placeholder='Category' />
