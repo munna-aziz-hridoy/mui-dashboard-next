@@ -17,6 +17,7 @@ import TableContainer from '@mui/material/TableContainer'
 // ** Icons Imports
 import ChevronUp from 'mdi-material-ui/ChevronUp'
 import ChevronDown from 'mdi-material-ui/ChevronDown'
+import { Pagination } from '@mui/material'
 
 const createData = (name, calories, fat, carbs, protein, price) => {
   return {
@@ -102,7 +103,7 @@ const Row = props => {
                 <TableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
-                    <TableCell>Sku</TableCell>
+                    <TableCell>Bar Code</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -111,7 +112,7 @@ const Row = props => {
                       <TableCell component='th' scope='row'>
                         {item?.product_name}
                       </TableCell>
-                      <TableCell>{item?.product_sku}</TableCell>
+                      <TableCell>{item?.barcode}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -124,27 +125,45 @@ const Row = props => {
   )
 }
 
-const TableCollapsible = ({ products }) => {
+const TableCollapsible = ({ products, totalPages, pageCount }) => {
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label='collapsible table'>
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>Name</TableCell>
-            <TableCell>Unit</TableCell>
-            <TableCell>Quantity</TableCell>
-            {/* <TableCell>Carbs (g)</TableCell>
+    <Fragment>
+      <TableContainer component={Paper}>
+        <Table aria-label='collapsible table'>
+          <TableHead>
+            <TableRow>
+              <TableCell />
+              <TableCell>Name</TableCell>
+              <TableCell>Unit</TableCell>
+              <TableCell>Quantity</TableCell>
+              {/* <TableCell>Carbs (g)</TableCell>
             <TableCell>Protein (g)</TableCell> */}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {products.map(row => (
-            <Row key={row.id} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {products.map(row => (
+              <Row key={row.id} row={row} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Box
+        component='div'
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        marginBottom={5}
+        marginTop={2}
+        marginLeft={3}
+        marginRight={3}
+        padding={4}
+        style={{ background: '#f1f1f1', borderRadius: '5px' }}
+      >
+        <div></div>
+
+        <Pagination count={totalPages} shape='rounded' onChange={(e, value) => pageCount(value)} />
+      </Box>
+    </Fragment>
   )
 }
 

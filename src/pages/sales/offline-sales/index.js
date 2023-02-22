@@ -24,13 +24,14 @@ const OfflineSales = () => {
     if (csv) {
       const offlineSalesData = new FormData()
       offlineSalesData.append('offline_sell_file', offlineSalesData)
+
       uploadOfflineSalesCsv(offlineSalesData).then(data => {
-        console.log(data)
         toast.success('Successfully uploaded Sales Data')
         setCsv([])
       })
     }
   }
+
   return (
     <div>
       <Button

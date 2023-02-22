@@ -15,22 +15,22 @@ const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Sales Date' autoComplete='off' />
 })
 
-const handleUploadOnlineSalesData = (csv, setCsv) => {
-  if (csv) {
-    const onlineSalesData = new FormData()
-    onlineSalesData.append('online_sell_data', onlineSalesData)
-    uploadOnlineSalesCsv(onlineSalesData).then(data => {
-      if (data.success) {
-        toast.success('Successfully uploaded sales data')
-        setCsv([])
-      } else {
-        toast.error(data.message)
-      }
-    })
-  }
-}
-
 const OnlineSales = () => {
+  const handleUploadOnlineSalesData = (csv, setCsv) => {
+    if (csv) {
+      const onlineSalesData = new FormData()
+      onlineSalesData.append('online_sell_file', onlineSalesData)
+      uploadOnlineSalesCsv(onlineSalesData).then(data => {
+        if (data.success) {
+          toast.success('Successfully uploaded sales data')
+          setCsv([])
+        } else {
+          toast.error(data.message)
+        }
+      })
+    }
+  }
+
   return (
     <div>
       <Button

@@ -51,7 +51,6 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
     }
 
     addInternalProduct(productData).then(data => {
-      console.log(data)
       if (data.success) {
         toast.success('Internal Product added')
         e.target.product_name.value = ''
@@ -80,10 +79,11 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
         <Grid item xs={6}>
           <Autocomplete
             onChange={(e, value) => {
-              const productId = value.map(item => parseFloat(item.product_sku))
+              const productId = value.map(item => parseFloat(item.barcode))
               const productName = value.map(item => {
-                return { product_name: item.product_name }
+                return { product_name: item.product_name, barcode: item.barcode }
               })
+
               setOfflineProductName(productName)
               setOfflineProductId(productId)
             }}
@@ -105,7 +105,7 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
             onChange={(e, value) => {
               const productId = value.map(item => parseFloat(item.product_ID))
               const productName = value.map(item => {
-                return { product_name: item.product_name }
+                return { product_name: item.product_name, product_ID: item.product_ID }
               })
               setOnlineProductName(productName)
               setOnlineProductId(productId)

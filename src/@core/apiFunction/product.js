@@ -1,16 +1,16 @@
 import API_URL from 'src/@core/utils/mainUrl'
 
 // get searched product item
-export const getSearchedProduct = async searchValue => {
+export const getSearchedProduct = async (searchValue, page) => {
   const url = `${API_URL}/internal_product/?search=${searchValue}`
 
   const res = await fetch(url)
   const data = await res.json()
 
   if (data?.data) {
-    return data.data
+    return { data: data.data, total_pages: data?.total_pages }
   } else {
-    return []
+    return { data: [], total_pages: 1 }
   }
 }
 
@@ -90,8 +90,8 @@ export const getOnlineProducts = async page => {
 
 // offline product
 
-export const getOfflineProducts = async () => {
-  const url = `${API_URL}/offline_product/`
+export const getOfflineProducts = async page => {
+  const url = page > 1 ? `${API_URL}/offline_product/?page=${page}` : `${API_URL}/offline_product/`
 
   const res = await fetch(url)
   if (res.status !== 200) return { success: false, data: [] }
@@ -117,7 +117,7 @@ export const addInternalProduct = async productData => {
     body: JSON.stringify(productData)
   })
   const data = await res.json()
-  console.log(data)
+
   if (data?.product_name) {
     return { success: true }
   } else {

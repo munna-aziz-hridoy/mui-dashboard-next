@@ -50,7 +50,7 @@ const InternalProduct = () => {
       }
       setLoading(false)
     })
-  }, [refetch])
+  }, [refetch, page])
 
   const handleUploadOfflineProductCsv = (csv, setCsv) => {
     if (csv && middleCatData?.middle_cat_code) {
@@ -72,8 +72,6 @@ const InternalProduct = () => {
       })
     } else toast.error('Please select middle category')
   }
-
-  console.log(affectedRows)
 
   return (
     <Fragment>

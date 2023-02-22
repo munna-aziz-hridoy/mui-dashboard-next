@@ -11,13 +11,17 @@ const InternalProduct = () => {
   const [refetch, setRefetch] = useState(false)
   const [loading, setLoading] = useState(false)
 
+  const [page, setPage] = useState(0)
+  const [totalPages, setTotalPages] = useState(1)
+
   useEffect(() => {
     setLoading(true)
-    getSearchedProduct('').then(data => {
-      setInternalProducts(data)
+    getSearchedProduct('', page).then(data => {
+      setInternalProducts(data.data)
+      setTotalPages(data.total_pages)
       setLoading(false)
     })
-  }, [refetch])
+  }, [refetch, page])
 
   return (
     <Fragment>
@@ -42,7 +46,7 @@ const InternalProduct = () => {
 
         {loading && <CircularProgress color='inherit' style={{ margin: '0 auto', display: 'inherit' }} />}
 
-        <TableCollapsible products={internalProducts} />
+        <TableCollapsible products={internalProducts} pageCount={setPage} totalPages={totalPages} />
       </Card>
     </Fragment>
   )

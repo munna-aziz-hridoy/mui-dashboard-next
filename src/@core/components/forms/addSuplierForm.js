@@ -74,11 +74,11 @@ const AddSuplierForm = ({ refetch }) => {
               )
             }}
           />
-          {emailLength > 20 && (
+          {/* {emailLength > 20 && (
             <Typography variant='body2' color='error' fontSize={12}>
               Email can't be more than 20 character
             </Typography>
-          )}
+          )} */}
         </Grid>
         <Grid item xs={6}>
           <TextField

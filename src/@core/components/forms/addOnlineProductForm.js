@@ -57,11 +57,11 @@ const AddOnlineProduct = ({ refetch }) => {
             placeholder='Product Name'
             required
           />
-          {name.length > 20 && (
+          {/* {name.length > 20 && (
             <Typography variant='body2' color='error' fontSize={12}>
               Name should be under 20 character
             </Typography>
-          )}
+          )} */}
         </Grid>
         <Grid item xs={6}>
           <TextField
