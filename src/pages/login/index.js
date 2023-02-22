@@ -38,6 +38,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import { loginUser } from 'src/@core/apiFunction/authentication'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -60,11 +61,10 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 const LoginPage = () => {
   // ** State
   const [values, setValues] = useState({
+    username: '',
     password: '',
     showPassword: false
   })
-
-  console.log('working')
 
   // ** Hook
   const theme = useTheme()
@@ -80,6 +80,14 @@ const LoginPage = () => {
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
+  }
+
+  const handleLogin = e => {
+    e.preventDefault()
+    const { username, password } = values
+    if (username && password) {
+      loginUser({ username, password }).then(data => console.log(data))
+    }
   }
 
   return (
@@ -166,7 +174,13 @@ const LoginPage = () => {
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField
+              onChange={handleChange('username')}
+              autoFocus
+              fullWidth
+              label='Username'
+              sx={{ marginBottom: 4 }}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
@@ -202,7 +216,8 @@ const LoginPage = () => {
               size='large'
               variant='contained'
               sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
+              // onClick={() => router.push('/')}
+              onClick={handleLogin}
             >
               Login
             </Button>
@@ -211,7 +226,7 @@ const LoginPage = () => {
                 New on our platform?
               </Typography>
               <Typography variant='body2'>
-                <Link passHref href='/pages/register'>
+                <Link passHref href='/register'>
                   <LinkStyled>Create an account</LinkStyled>
                 </Link>
               </Typography>
