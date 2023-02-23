@@ -9,7 +9,7 @@ import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import SalesTable from 'src/views/tables/SalesTable'
 
 import 'react-datepicker/dist/react-datepicker.css'
-import { uploadOnlineSalesCsv } from 'src/@core/apiFunction/sales'
+import { uploadOnlineSalesCsv } from 'src/@core/apiFunction/csvUpload'
 import { getToken } from 'src/@core/utils/manageToken'
 
 const CustomInput = forwardRef((props, ref) => {

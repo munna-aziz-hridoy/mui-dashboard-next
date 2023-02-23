@@ -1,13 +1,17 @@
 import { Button, Card, CardHeader, CircularProgress, Divider, Typography } from '@mui/material'
 import React, { useEffect, useState, Fragment } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
+import { uploadInternalProductCsv } from 'src/@core/apiFunction/csvUpload'
 import { getSearchedProduct } from 'src/@core/apiFunction/product'
 import CsvUpload from 'src/@core/components/file-upload/csvUpload'
 import AddInternalProduct from 'src/@core/components/forms/addInternalProductForm'
 import { getToken } from 'src/@core/utils/manageToken'
+import AffectedTable from 'src/views/tables/affectedTable'
 import TableCollapsible from 'src/views/tables/TableCollapsible'
 
 const InternalProduct = () => {
   const [internalProducts, setInternalProducts] = useState([])
+  const [affectedRows, setAffectedRows] = useState([])
 
   const [refetch, setRefetch] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -26,6 +30,25 @@ const InternalProduct = () => {
     })
   }, [refetch, page])
 
+  const handleUploadInternalProductCsv = (csv, setCsv) => {
+    if (csv) {
+      const internalProductData = new FormData()
+      internalProductData.append('internal_product_file', csv)
+      uploadInternalProductCsv(internalProductData, access_token).then(data => {
+        console.log(data)
+        if (data.success) {
+          toast.success(data.message)
+        } else {
+          toast.error(data.message)
+          setAffectedRows(data.affected_rows)
+        }
+        setCsv([])
+
+        setRefetch(prev => !prev)
+      })
+    }
+  }
+
   return (
     <Fragment>
       <Button
@@ -35,7 +58,10 @@ const InternalProduct = () => {
       >
         Download Sample CSV
       </Button>
-      <CsvUpload />
+      <CsvUpload handleUploadCsv={handleUploadInternalProductCsv} />
+
+      {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />}
+
       <Card>
         <CardHeader title='Add internal Product' titleTypographyProps={{ variant: 'h6' }} />
 
@@ -51,6 +77,7 @@ const InternalProduct = () => {
 
         <TableCollapsible products={internalProducts} pageCount={setPage} totalPages={totalPages} />
       </Card>
+      <Toaster />
     </Fragment>
   )
 }

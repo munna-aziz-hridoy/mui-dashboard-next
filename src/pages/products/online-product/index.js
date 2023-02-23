@@ -4,7 +4,7 @@ import { Button, Card, CardHeader, CircularProgress, Divider, Typography } from 
 import toast, { Toaster } from 'react-hot-toast'
 
 import { getOnlineProducts } from 'src/@core/apiFunction/product'
-import { uploadOnlineProductCsv } from 'src/@core/apiFunction/sales'
+import { uploadOnlineProductCsv } from 'src/@core/apiFunction/csvUpload'
 import CsvUpload from 'src/@core/components/file-upload/csvUpload'
 import AddOnlineProduct from 'src/@core/components/forms/addOnlineProductForm'
 import TableDense from 'src/views/tables/TableDense'

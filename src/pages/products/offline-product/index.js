@@ -26,7 +26,7 @@ import TableDense from 'src/views/tables/TableDense'
 import toast, { Toaster } from 'react-hot-toast'
 
 import middleCategoryData from 'src/@core/utils/cat-data'
-import { uploadOfflineProductCsv } from 'src/@core/apiFunction/sales'
+import { uploadOfflineProductCsv } from 'src/@core/apiFunction/csvUpload'
 import AffectedTable from 'src/views/tables/affectedTable'
 import { getToken } from 'src/@core/utils/manageToken'
 

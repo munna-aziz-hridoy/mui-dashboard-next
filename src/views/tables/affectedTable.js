@@ -38,7 +38,11 @@ const AffectedTable = ({ affectedRows, setAffectedRows }) => {
             <TableRow style={{ background: 'red' }}>
               <TableCell width={130}>Row Number</TableCell>
               <TableCell>Product Name</TableCell>
-              <TableCell width={130}>{pathname.includes('offline') ? 'Bar Code' : 'Product ID'}</TableCell>
+              {pathname.includes('internal-product') ? (
+                <TableCell></TableCell>
+              ) : (
+                <TableCell width={130}>{pathname.includes('offline') ? 'Bar Code' : 'Product ID'}</TableCell>
+              )}
               <TableCell>Rejected reason</TableCell>
             </TableRow>
           </TableHead>

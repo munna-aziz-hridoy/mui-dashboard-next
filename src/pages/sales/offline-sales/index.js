@@ -11,7 +11,7 @@ import middleCategoryData from 'src/@core/utils/cat-data'
 import toast, { Toaster } from 'react-hot-toast'
 
 import 'react-datepicker/dist/react-datepicker.css'
-import { uploadOfflineSalesCsv } from 'src/@core/apiFunction/sales'
+import { uploadOfflineSalesCsv } from 'src/@core/apiFunction/csvUpload'
 import { getToken } from 'src/@core/utils/manageToken'
 
 const CustomInput = forwardRef((props, ref) => {
