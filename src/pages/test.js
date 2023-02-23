@@ -45,7 +45,7 @@ const Test = () => {
   return (
     <div>
       {data?.map((item, i) => (
-        <p> Item - {i}</p>
+        <p key={i}> Item - {i}</p>
       ))}
 
       <div ref={bottomBoundaryRef} />
