@@ -150,8 +150,10 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
         style={{ display: openProductList ? 'block' : 'none' }}
         borderRadius={1}
         boxShadow={5}
+        height={400}
+        overflow='auto'
       >
-        <List>
+        <List style={{ overflow: 'auto' }}>
           {productLoading ? (
             <ListItem>
               <CircularProgress color='inherit' style={{ margin: '0 auto' }} />
