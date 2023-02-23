@@ -41,11 +41,12 @@ const TableCustomized = ({ invoices, loading, refetch, setRefetch }) => {
         <Table sx={{ minWidth: 700 }} aria-label='customized table'>
           <TableHead>
             <TableRow>
-              <StyledTableCell></StyledTableCell>
+              <StyledTableCell width={20}></StyledTableCell>
               <StyledTableCell>Date</StyledTableCell>
               <StyledTableCell>Invoice</StyledTableCell>
               <StyledTableCell>Suplier</StyledTableCell>
               <StyledTableCell>Purchase Status</StyledTableCell>
+              <StyledTableCell>Total Product Qyt</StyledTableCell>
               <StyledTableCell>Grand Total</StyledTableCell>
               <StyledTableCell>Paid</StyledTableCell>
               <StyledTableCell>Due</StyledTableCell>

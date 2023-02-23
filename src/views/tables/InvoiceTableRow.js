@@ -18,7 +18,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: '#8336ff'
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14
+    fontSize: 13
   }
 }))
 
@@ -39,8 +39,20 @@ const InvoiceTableRow = ({ invoice, refetch, refetchValue }) => {
   const [openViewPaymentModal, setOpenViewPaymentModal] = useState(false)
   const [openInvoiceImageModal, setOpenInvoiceImageModal] = useState(false)
 
-  const { amount_paid, created_at, id, invoice_total, payment_status, stock_status, supplier, supplier_document } =
-    invoice
+  const {
+    amount_paid,
+    created_at,
+    id,
+    invoice_total,
+    payment_status,
+    stock_status,
+    supplier,
+    supplier_document,
+    invoice_items
+  } = invoice
+
+  const totalQuantityArr = invoice_items?.map(item => item.quantity)
+  const totalProductQuantity = totalQuantityArr?.reduce((prev, next) => prev + next)
 
   return (
     <Fragment>
@@ -58,17 +70,16 @@ const InvoiceTableRow = ({ invoice, refetch, refetchValue }) => {
           }}
         >
           <img src={supplier_document} style={{ width: '60px', height: '90px' }} />
-
-          {/* <Image src={supplier_document} width={60} height={90} /> */}
         </StyledTableCell>
 
         <StyledTableCell>{supplier ? supplier?.name : ''}</StyledTableCell>
         <StyledTableCell>{stock_status}</StyledTableCell>
-        <StyledTableCell>{invoice_total}</StyledTableCell>
+        <StyledTableCell>{totalProductQuantity} unit</StyledTableCell>
+        <StyledTableCell>¥{invoice_total}</StyledTableCell>
         <StyledTableCell>
-          {payment_status === 'Unpaid' ? 0 : payment_status === 'Paid' ? invoice_total : amount_paid}
+          {payment_status === 'Unpaid' ? '¥' + 0 : payment_status === 'Paid' ? '¥' + invoice_total : '¥' + amount_paid}
         </StyledTableCell>
-        <StyledTableCell>{invoice_total - amount_paid}</StyledTableCell>
+        <StyledTableCell>¥{invoice_total - amount_paid}</StyledTableCell>
         <StyledTableCell align='center'>
           <Typography
             bgcolor={payment_status === 'Paid' ? '#56CA00' : payment_status === 'Partial' ? '#FFB400' : '#FF4C51'}

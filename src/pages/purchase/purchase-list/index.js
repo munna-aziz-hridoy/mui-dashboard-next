@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useState } from 'react'
 
 //** MUI import
-import { Card, CardHeader, Divider, Grid, TextField, Button } from '@mui/material'
+import { Card, CardHeader, Divider, Grid, TextField, Button, Box } from '@mui/material'
 
 import { AiOutlinePlus } from 'react-icons/ai'
 
@@ -62,6 +62,15 @@ const PurchaseList = ({}) => {
     setRefetch(prev => !prev)
   }
 
+  const handleResetFilter = () => {
+    setProductName('')
+    setEndDate('')
+    setStartDate('')
+    setSupplier('')
+    setPaymentStatus('')
+    setRefetch(prev => !prev)
+  }
+
   return (
     <>
       <Card style={{ padding: '20px', overflow: 'visible', marginBottom: '30px' }}>
@@ -101,9 +110,14 @@ const PurchaseList = ({}) => {
           <SelectPaymentSearch setPayment={setPaymentStatus} />
 
           <Grid item xs={12}>
-            <Button onClick={handleSearch} fullWidth variant='contained'>
-              Search
-            </Button>
+            <Box component='div' display='flex' gap={5}>
+              <Button onClick={handleSearch} fullWidth variant='contained'>
+                Search
+              </Button>
+              <Button onClick={handleResetFilter} fullWidth variant='outlined'>
+                Reset Filter
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </Card>

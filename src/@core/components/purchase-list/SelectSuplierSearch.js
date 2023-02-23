@@ -39,21 +39,23 @@ const SelectSuplierSearch = ({ setSupplier }) => {
     }
   }
 
+  const handleInputClick = () => {
+    setOpenSuplierList(prev => !prev)
+    setSuplierLoading(true)
+    getSearchedSuplier('', access_token).then(data => {
+      setSearchedSuplier(data)
+      setSuplierLoading(false)
+    })
+  }
+
   return (
     <Grid item xs={12} sm={4} style={{ position: 'relative' }}>
       <TextField
-        onClick={() => {
-          setOpenSuplierList(prev => !prev)
-          setSuplierLoading(true)
-          getSearchedSuplier('').then(data => {
-            setSearchedSuplier(data)
-            setSuplierLoading(false)
-          })
-        }}
+        onClick={handleInputClick}
         onChange={handleSearchSuplier}
         fullWidth
-        label='Search Suplier'
-        placeholder='Search Suplier'
+        label='Search By Suplier'
+        placeholder='Search By Suplier'
         value={suplierName}
       />
 

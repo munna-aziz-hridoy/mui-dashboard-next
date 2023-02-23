@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { getSearchedProduct } from 'src/@core/apiFunction/product'
 import AddProduct from 'src/@core/components/modal/addProductModal'
 
@@ -17,6 +17,7 @@ const listStyle = {
 
 const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
   const [productName, setProductName] = useState('')
+  const [searchValue, setSearchValue] = useState('')
 
   const [searchedProduct, setSearchedProduct] = useState([])
 
@@ -24,20 +25,68 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
   const [openProductModal, setOpenProductModal] = useState(false)
   const [openProductList, setOpenProductList] = useState(false)
 
+  const [page, setPage] = useState(1)
+  const [totalPage, setTotalPage] = useState(1)
+
+  const bottomBoundaryRef = useRef()
+
   const { access_token } = getToken()
 
   useEffect(() => {
     setSelectedProduct([])
   }, [clearForm])
 
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     ([entry]) => {
+  //       if (entry.isIntersecting) {
+  //         setPage(prev => {
+  //           if (totalPage > 1) {
+  //             return prev + 1
+  //           } else {
+  //             return prev
+  //           }
+  //         })
+  //       }
+  //     },
+  //     {
+  //       root: null,
+  //       rootMargin: '0px',
+  //       threshold: 1.0
+  //     }
+  //   )
+
+  //   if (bottomBoundaryRef.current) {
+  //     observer.observe(bottomBoundaryRef.current)
+  //   }
+
+  //   return () => {
+  //     if (bottomBoundaryRef.current) {
+  //       observer.unobserve(bottomBoundaryRef.current)
+  //     }
+  //   }
+  // }, [])
+
+  // useEffect(() => {
+  //   setProductLoading(true)
+  //   setOpenProductList(true)
+  //   getSearchedProduct(searchValue, page, access_token).then(data => {
+  //     setSearchedProduct(data.data)
+  //     setTotalPage(data.total_pages)
+  //     setProductLoading(false)
+  //   })
+  // }, [searchValue, page])
+
   const handleSearchProduct = e => {
     const searchText = e.target.value
+
     setProductName(searchText)
     if (searchText !== '') {
       setProductLoading(true)
       setOpenProductList(true)
       getSearchedProduct(searchText, 0, access_token).then(data => {
         setSearchedProduct(data.data)
+        setTotalPage(data.total_pages)
         setProductLoading(false)
       })
     } else {
@@ -69,10 +118,11 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
 
   const handleInputClick = () => {
     setOpenProductList(prev => !prev)
-    getSearchedProduct('', 0, access_token).then(data => setSearchedProduct(data.data))
+    getSearchedProduct('', 0, access_token).then(data => {
+      setSearchedProduct(data.data)
+      setTotalPage(data.total_pages)
+    })
   }
-
-  console.log(searchedProduct)
 
   return (
     <Grid item xs={12} marginBottom={8} style={{ position: 'relative' }}>
@@ -108,16 +158,14 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
             </ListItem>
           ) : searchedProduct?.length !== 0 ? (
             searchedProduct?.map(item => (
-              <ListItem
-                key={item?.id}
-                onClick={() => handleSelectProduct(item)}
-                color='#fff'
-                style={{ cursor: 'pointer' }}
-              >
-                <Typography color='#fff' variant='body1'>
-                  {item.product_name}
-                </Typography>
-              </ListItem>
+              <Fragment key={item?.id}>
+                <ListItem onClick={() => handleSelectProduct(item)} color='#fff' style={{ cursor: 'pointer' }}>
+                  <Typography color='#fff' variant='body1'>
+                    {item.product_name}
+                  </Typography>
+                </ListItem>
+                <div ref={bottomBoundaryRef} />
+              </Fragment>
             ))
           ) : (
             <ListItem>
