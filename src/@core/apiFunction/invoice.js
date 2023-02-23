@@ -1,16 +1,13 @@
 import API_URL from 'src/@core/utils/mainUrl'
-import { getToken } from '../utils/manageToken'
 
-const token = getToken()
-
-export const postInvoice = async postData => {
+export const postInvoice = async (postData, token) => {
   const url = `${API_URL}/invoice/`
 
   const res = await fetch(url, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      authorization: `Bearer ${token.access_token}`
+      authorization: `Bearer ${token}`
     },
     body: JSON.stringify(postData)
   })
@@ -23,7 +20,7 @@ export const postInvoice = async postData => {
   }
 }
 
-export const getAllInvoiceList = async (searchText, dateRange, supplier, paymentStatus) => {
+export const getAllInvoiceList = async (searchText, dateRange, supplier, paymentStatus, token) => {
   const dateRangeFormated =
     dateRange[0] && dateRange[1] ? `${dateRange[0].split(' ')[0]},${dateRange[1].split(' ')[0]}` : ''
 
@@ -32,7 +29,7 @@ export const getAllInvoiceList = async (searchText, dateRange, supplier, payment
   }&invoice_date__date__range=${dateRangeFormated}&payment_status=${paymentStatus || ''}`
   const res = await fetch(url, {
     headers: {
-      authorization: `Bearer ${token.access_token}`
+      authorization: `Bearer ${token}`
     }
   })
 
@@ -45,14 +42,14 @@ export const getAllInvoiceList = async (searchText, dateRange, supplier, payment
   }
 }
 
-export const postPayment = async postData => {
+export const postPayment = async (postData, token) => {
   const url = `${API_URL}/payment/`
 
   const res = await fetch(url, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      authorization: `Bearer ${token.access_token}`
+      authorization: `Bearer ${token}`
     },
     body: JSON.stringify(postData)
   })
@@ -66,11 +63,11 @@ export const postPayment = async postData => {
   }
 }
 
-export const getInvoicePaymentDetails = async invoiceId => {
+export const getInvoicePaymentDetails = async (invoiceId, token) => {
   const url = `${API_URL}/invoice/${invoiceId}/payment_detail/`
 
   const res = await fetch(url, {
-    headers: { authorization: `Bearer ${token.access_token}` }
+    headers: { authorization: `Bearer ${token}` }
   })
   const data = await res.json()
 
@@ -81,11 +78,11 @@ export const getInvoicePaymentDetails = async invoiceId => {
   }
 }
 
-export const getAllPayment = async () => {
+export const getAllPayment = async token => {
   const url = `${API_URL}/payment/`
   const res = await fetch(url, {
     headers: {
-      authorization: `Bearer ${token.access_token}`
+      authorization: `Bearer ${token}`
     }
   })
   const data = await res.json()
@@ -97,12 +94,12 @@ export const getAllPayment = async () => {
   }
 }
 
-export const uploadInvoiceImage = async formData => {
+export const uploadInvoiceImage = async (formData, token) => {
   const url = `${API_URL}/upload-image/`
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      authorization: `Bearer ${token.access_token}`
+      authorization: `Bearer ${token}`
     },
     body: formData
   })

@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 export const saveToken = (accessToken, refreshToken) => {
   const tokens = {
     access_token: accessToken,
@@ -7,13 +9,17 @@ export const saveToken = (accessToken, refreshToken) => {
 }
 
 export const getToken = () => {
-  const tokenString = window.localStorage.getItem('pims-credentials-token')
+  const windows = window || undefined
 
-  if (tokenString) {
-    const tokens = JSON.parse(tokenString)
-    return { success: true, ...tokens }
-  } else {
-    return { success: false }
+  if (windows !== 'undefined') {
+    let tokenString = localStorage.getItem('pims-credentials-token')
+
+    if (tokenString) {
+      const tokens = JSON.parse(tokenString)
+      return { success: true, ...tokens }
+    } else {
+      return { success: false }
+    }
   }
 }
 

@@ -3,6 +3,7 @@ import React, { useEffect, useState, Fragment } from 'react'
 import { getSearchedProduct } from 'src/@core/apiFunction/product'
 import CsvUpload from 'src/@core/components/file-upload/csvUpload'
 import AddInternalProduct from 'src/@core/components/forms/addInternalProductForm'
+import { getToken } from 'src/@core/utils/manageToken'
 import TableCollapsible from 'src/views/tables/TableCollapsible'
 
 const InternalProduct = () => {
@@ -14,9 +15,11 @@ const InternalProduct = () => {
   const [page, setPage] = useState(0)
   const [totalPages, setTotalPages] = useState(1)
 
+  const { access_token } = getToken()
+
   useEffect(() => {
     setLoading(true)
-    getSearchedProduct('', page).then(data => {
+    getSearchedProduct('', page, access_token).then(data => {
       setInternalProducts(data.data)
       setTotalPages(data.total_pages)
       setLoading(false)

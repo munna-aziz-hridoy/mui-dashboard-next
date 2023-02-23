@@ -4,12 +4,15 @@ import React, { useEffect, useState } from 'react'
 
 import { Grid, FormControl, RadioGroup, Radio, FormControlLabel } from '@mui/material'
 import { getTaxChoices } from 'src/@core/apiFunction/product'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const FormSelectTax = ({ setPurchaseData, setTotalTax, invoiceTotal }) => {
   const [taxChoices, setTaxChoices] = useState([])
 
+  const { access_token } = getToken()
+
   useEffect(() => {
-    getTaxChoices().then(data => setTaxChoices(data))
+    getTaxChoices(access_token).then(data => setTaxChoices(data))
   }, [])
 
   const handleSetTax = e => {

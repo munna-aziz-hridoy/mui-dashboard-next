@@ -9,6 +9,7 @@ import CsvUpload from 'src/@core/components/file-upload/csvUpload'
 import AddOnlineProduct from 'src/@core/components/forms/addOnlineProductForm'
 import TableDense from 'src/views/tables/TableDense'
 import AffectedTable from 'src/views/tables/affectedTable'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const OnlineProduct = () => {
   const [onlineProducts, setOnlineProducts] = useState([])
@@ -19,9 +20,11 @@ const OnlineProduct = () => {
 
   const [affectedRows, setAffectedRows] = useState([])
 
+  const { access_token } = getToken()
+
   useEffect(() => {
     setLoading(true)
-    getOnlineProducts(page).then(data => {
+    getOnlineProducts(page, access_token).then(data => {
       if (data.success) {
         setOnlineProducts(data.data)
         setTotalPages(data?.total_pages)
@@ -34,7 +37,7 @@ const OnlineProduct = () => {
     if (csv) {
       const onlineProductData = new FormData()
       onlineProductData.append('online_product_file', csv)
-      uploadOnlineProductCsv(onlineProductData).then(data => {
+      uploadOnlineProductCsv(onlineProductData, access_token).then(data => {
         if (data.success) {
           toast.success(data.message)
         } else {

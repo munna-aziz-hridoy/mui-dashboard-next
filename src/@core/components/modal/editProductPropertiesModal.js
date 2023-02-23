@@ -18,6 +18,7 @@ import {
 } from '@mui/material'
 
 import { getUnitChoice } from 'src/@core/apiFunction/product'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const style = {
   position: 'absolute',
@@ -37,8 +38,10 @@ const EditProduct = ({ open, setOpen, productData, setProducts }) => {
   const { product, product_name, product_unit } = productData
   const [units, setUnits] = useState([])
 
+  const { access_token } = getToken()
+
   useEffect(() => {
-    getUnitChoice().then(data => setUnits(data))
+    getUnitChoice(access_token).then(data => setUnits(data))
   }, [])
 
   const handleSetProductProperty = (property, e, isNumber) => {

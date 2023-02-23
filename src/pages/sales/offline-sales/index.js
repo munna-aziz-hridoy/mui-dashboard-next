@@ -12,6 +12,7 @@ import toast, { Toaster } from 'react-hot-toast'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import { uploadOfflineSalesCsv } from 'src/@core/apiFunction/sales'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Sales Date' autoComplete='off' />
@@ -20,12 +21,14 @@ const CustomInput = forwardRef((props, ref) => {
 const OfflineSales = () => {
   const [middleCatData, setMiddleCatData] = useState(null)
 
+  const { access_token } = getToken()
+
   const handleUploadOfflineSalesCsv = (csv, setCsv) => {
     if (csv) {
       const offlineSalesData = new FormData()
       offlineSalesData.append('offline_sell_file', offlineSalesData)
 
-      uploadOfflineSalesCsv(offlineSalesData).then(data => {
+      uploadOfflineSalesCsv(offlineSalesData, access_token).then(data => {
         toast.success('Successfully uploaded Sales Data')
         setCsv([])
       })

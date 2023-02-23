@@ -4,6 +4,7 @@ import { getSearchedSuplier } from 'src/@core/apiFunction/suplier'
 // ** MUI import
 
 import { Grid, TextField, Box, List, ListItem, CircularProgress, Typography } from '@mui/material'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const listStyle = {
   background: '#100720',
@@ -21,13 +22,15 @@ const SelectSuplierSearch = ({ setSupplier }) => {
 
   const [suplierName, setSuplierName] = useState('')
 
+  const { access_token } = getToken()
+
   const handleSearchSuplier = e => {
     const searchText = e.target.value
     setSuplierName(searchText)
     if (searchText !== '') {
       setSuplierLoading(true)
       setOpenSuplierList(true)
-      getSearchedSuplier(searchText).then(data => {
+      getSearchedSuplier(searchText, access_token).then(data => {
         setSearchedSuplier(data)
         setSuplierLoading(false)
       })

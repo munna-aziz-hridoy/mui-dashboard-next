@@ -3,9 +3,12 @@ import React, { useState } from 'react'
 import { Grid, TextField, Button, Typography } from '@mui/material'
 import { addOfflineProduct } from 'src/@core/apiFunction/product'
 import { toast } from 'react-hot-toast'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const AddOfflineProduct = ({ refetch }) => {
   const [name, setName] = useState('')
+
+  const { access_token } = getToken()
   const handleAddOnlineProduct = e => {
     e.preventDefault()
 
@@ -16,7 +19,7 @@ const AddOfflineProduct = ({ refetch }) => {
 
     const productData = { product_name, product_sku, barcode, category }
 
-    addOfflineProduct(productData).then(data => {
+    addOfflineProduct(productData, access_token).then(data => {
       if (data.success) {
         toast.success('Product added successfully')
         e.target.product_name.value = ''

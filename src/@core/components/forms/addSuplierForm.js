@@ -6,9 +6,12 @@ import { Phone, AccountOutline, EmailOutline } from 'mdi-material-ui'
 import { FaAddressCard, FaFax } from 'react-icons/fa'
 import { addSupplier } from 'src/@core/apiFunction/suplier'
 import { toast } from 'react-hot-toast'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const AddSuplierForm = ({ refetch }) => {
   const [emailLength, setEmailLength] = useState(0)
+
+  const { access_token } = getToken()
 
   const handleAddSuplier = e => {
     e.preventDefault()
@@ -21,7 +24,7 @@ const AddSuplierForm = ({ refetch }) => {
 
     const supplierData = { name, email, phone, fax, address }
 
-    addSupplier(supplierData).then(data => {
+    addSupplier(supplierData, access_token).then(data => {
       if (data.success) {
         toast.success('Supplier is added')
         e.target.name.value = ''

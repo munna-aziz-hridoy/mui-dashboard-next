@@ -15,6 +15,7 @@ import TableCustomized from 'src/views/tables/TableCustomized'
 import { useRouter } from 'next/router'
 import formatedDate from 'src/@core/utils/getFormatedDate'
 import { getAllInvoiceList } from 'src/@core/apiFunction/invoice'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Purchase Date' autoComplete='off' />
@@ -33,16 +34,28 @@ const PurchaseList = ({}) => {
 
   const router = useRouter()
 
-  useEffect(async () => {
+  const { access_token } = getToken()
+
+  useEffect(() => {
     setLoading(true)
 
     const formatedStartDate = startDate ? formatedDate(startDate) : ''
     const formatedEndDate = endDate ? formatedDate(endDate) : ''
 
-    await getAllInvoiceList(productName, [formatedStartDate, formatedEndDate], supplier, paymentStatus).then(data => {
-      setInvoices(data)
-      setLoading(false)
-    })
+    async function fetchData() {
+      await getAllInvoiceList(
+        productName,
+        [formatedStartDate, formatedEndDate],
+        supplier,
+        paymentStatus,
+        access_token
+      ).then(data => {
+        setInvoices(data)
+        setLoading(false)
+      })
+    }
+
+    fetchData()
   }, [refetch])
 
   const handleSearch = () => {

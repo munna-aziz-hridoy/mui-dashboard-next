@@ -5,6 +5,7 @@ import AddProduct from 'src/@core/components/modal/addProductModal'
 // ** MUI import
 
 import { Grid, TextField, Box, List, ListItem, CircularProgress, Typography, Button } from '@mui/material'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const listStyle = {
   // background: '#c140f5',
@@ -23,6 +24,8 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
   const [openProductModal, setOpenProductModal] = useState(false)
   const [openProductList, setOpenProductList] = useState(false)
 
+  const { access_token } = getToken()
+
   useEffect(() => {
     setSelectedProduct([])
   }, [clearForm])
@@ -33,8 +36,8 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
     if (searchText !== '') {
       setProductLoading(true)
       setOpenProductList(true)
-      getSearchedProduct(searchText).then(data => {
-        setSearchedProduct(data)
+      getSearchedProduct(searchText, 0, access_token).then(data => {
+        setSearchedProduct(data.data)
         setProductLoading(false)
       })
     } else {
@@ -66,8 +69,10 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
 
   const handleInputClick = () => {
     setOpenProductList(prev => !prev)
-    getSearchedProduct('').then(data => setSearchedProduct(data))
+    getSearchedProduct('', 0, access_token).then(data => setSearchedProduct(data.data))
   }
+
+  console.log(searchedProduct)
 
   return (
     <Grid item xs={12} marginBottom={8} style={{ position: 'relative' }}>

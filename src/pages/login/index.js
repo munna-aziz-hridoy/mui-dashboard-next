@@ -42,7 +42,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { loginUser } from 'src/@core/apiFunction/authentication'
-import { saveToken } from 'src/@core/utils/manageToken'
+import { getToken, saveToken } from 'src/@core/utils/manageToken'
 
 import useAuthStore from 'src/store/authStore'
 
@@ -81,6 +81,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (user) {
       router.push('/')
+
       return null
     }
   }, [])
@@ -246,6 +247,7 @@ const LoginPage = () => {
     </Box>
   )
 }
+
 LoginPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
 
 export default LoginPage

@@ -3,14 +3,17 @@ import { getStockStatus } from 'src/@core/apiFunction/product'
 
 // ** MUI import
 import { Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const FormStockStatus = ({ setPurchaseData, clearForm }) => {
   const [stockStatus, setStockStatus] = useState([])
 
   const [selectedStatus, setSelectedStatus] = useState('')
 
+  const { access_token } = getToken()
+
   useEffect(() => {
-    getStockStatus().then(data => setStockStatus(data))
+    getStockStatus(access_token).then(data => setStockStatus(data))
   }, [])
 
   useEffect(() => {

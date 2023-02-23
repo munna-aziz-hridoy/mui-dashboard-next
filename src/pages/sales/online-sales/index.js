@@ -16,11 +16,13 @@ const CustomInput = forwardRef((props, ref) => {
 })
 
 const OnlineSales = () => {
+  const { access_token } = getToken()
+
   const handleUploadOnlineSalesData = (csv, setCsv) => {
     if (csv) {
       const onlineSalesData = new FormData()
       onlineSalesData.append('online_sell_file', onlineSalesData)
-      uploadOnlineSalesCsv(onlineSalesData).then(data => {
+      uploadOnlineSalesCsv(onlineSalesData, access_token).then(data => {
         if (data.success) {
           toast.success('Successfully uploaded sales data')
           setCsv([])

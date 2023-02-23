@@ -1,42 +1,39 @@
 import API_URL from 'src/@core/utils/mainUrl'
-import { getToken } from '../utils/manageToken'
 
-const token = getToken()
-
-export const uploadOfflineSalesCsv = async formData => {
+export const uploadOfflineSalesCsv = async (formData, token) => {
   // const url = `${API_URL}/offline-sell-upload/`
   const url = 'https://pims.goldlavender.jp/offline-sell-upload/'
 
-  const data = await uploadCsv(url, formData)
+  const data = await uploadCsv(url, formData, token)
 
   return data
 }
 
-export const uploadOnlineSalesCsv = async formData => {
+export const uploadOnlineSalesCsv = async (formData, token) => {
   const url = `${API_URL}/online-sell-upload/`
-  const data = await uploadCsv(url, formData)
+  const data = await uploadCsv(url, formData, token)
   return data
 }
 
-export const uploadOfflineProductCsv = async formData => {
+export const uploadOfflineProductCsv = async (formData, token) => {
   const url = `${API_URL}/offline-product-upload/`
-  const data = await uploadCsv(url, formData)
+  const data = await uploadCsv(url, formData, token)
   return data
 }
 
-export const uploadOnlineProductCsv = async formData => {
+export const uploadOnlineProductCsv = async (formData, token) => {
   const url = `${API_URL}/online-product-upload/`
-  const data = await uploadCsv(url, formData)
+  const data = await uploadCsv(url, formData, token)
   return data
 }
 
 // helper function to upload csv
 
-const uploadCsv = async (url, formData) => {
+const uploadCsv = async (url, formData, token) => {
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      authorization: `Bearer ${token.access_token}`
+      authorization: `Bearer ${token}`
     },
     body: formData
   })

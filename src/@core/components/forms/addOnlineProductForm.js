@@ -3,10 +3,13 @@ import React, { useState } from 'react'
 import { Grid, TextField, Button, Typography } from '@mui/material'
 import { addOnlineProduct } from 'src/@core/apiFunction/product'
 import { toast } from 'react-hot-toast'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const AddOnlineProduct = ({ refetch }) => {
   const [id, setId] = useState('')
   const [name, setName] = useState('')
+
+  const { access_token } = getToken()
 
   const handleAddOnlineProduct = e => {
     e.preventDefault()
@@ -29,7 +32,7 @@ const AddOnlineProduct = ({ refetch }) => {
       sku
     }
 
-    addOnlineProduct(productData).then(data => {
+    addOnlineProduct(productData, access_token).then(data => {
       if (data.success) {
         toast.success('Product added successfully')
         e.target.product_name.value = ''

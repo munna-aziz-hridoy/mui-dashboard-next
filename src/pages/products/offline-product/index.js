@@ -28,6 +28,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import middleCategoryData from 'src/@core/utils/cat-data'
 import { uploadOfflineProductCsv } from 'src/@core/apiFunction/sales'
 import AffectedTable from 'src/views/tables/affectedTable'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const InternalProduct = () => {
   const [offlineProducts, setOfflineProducts] = useState([])
@@ -41,9 +42,11 @@ const InternalProduct = () => {
 
   const [affectedRows, setAffectedRows] = useState([])
 
+  const { access_token } = getToken()
+
   useEffect(() => {
     setLoading(true)
-    getOfflineProducts(page).then(data => {
+    getOfflineProducts(page, access_token).then(data => {
       if (data.success) {
         setOfflineProducts(data.data)
         setTotalPages(data?.total_pages)
@@ -59,7 +62,7 @@ const InternalProduct = () => {
       offlineProductData.append('middle_cat_code', middleCatData.middle_cat_code)
       offlineProductData.append('middle_cat_name', middleCatData.middle_cat_name)
 
-      uploadOfflineProductCsv(offlineProductData).then(data => {
+      uploadOfflineProductCsv(offlineProductData, access_token).then(data => {
         if (data.success) {
           toast.success(data.message)
         } else {

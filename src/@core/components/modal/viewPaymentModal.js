@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Box, Modal, Card, CardContent, CardHeader, Typography } from '@mui/material'
 import { getInvoicePaymentDetails } from 'src/@core/apiFunction/invoice'
 import PaymentTable from 'src/views/tables/PaymentTable'
+import { getToken } from 'src/@core/utils/manageToken'
 
 // ** Icon imports
 
@@ -23,8 +24,11 @@ const style = {
 
 const ViewPaymentModal = ({ open, setOpen, invoiceId, refetchValue }) => {
   const [paymentDetails, setPaymentDetails] = useState([])
+
+  const { access_token } = getToken()
+
   useEffect(() => {
-    getInvoicePaymentDetails(invoiceId).then(data => {
+    getInvoicePaymentDetails(invoiceId, access_token).then(data => {
       if (data.success) {
         setPaymentDetails(data.data)
       }

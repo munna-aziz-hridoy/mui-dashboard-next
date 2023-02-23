@@ -1,14 +1,14 @@
 import API_URL from 'src/@core/utils/mainUrl'
-import { getToken } from '../utils/manageToken'
 
-const token = getToken()
-
-export const getSearchedSuplier = async searchValue => {
+export const getSearchedSuplier = async (searchValue, token) => {
   const url = `${API_URL}/supplier/?search=${searchValue}`
 
   const res = await fetch(url, {
-    authorization: `Bearer ${token.access_token}`
+    headers: {
+      authorization: `Bearer ${token}`
+    }
   })
+
   const data = await res.json()
 
   if (data?.data) {
@@ -18,14 +18,14 @@ export const getSearchedSuplier = async searchValue => {
   }
 }
 
-export const addSupplier = async supplierData => {
+export const addSupplier = async (supplierData, token) => {
   const url = `${API_URL}/supplier/`
 
   const res = await fetch(url, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      authorization: `Bearer ${token.access_token}`
+      authorization: `Bearer ${token}`
     },
     body: JSON.stringify(supplierData)
   })

@@ -3,15 +3,18 @@ import React, { Fragment, useEffect, useState } from 'react'
 import AddSuplierForm from 'src/@core/components/forms/addSuplierForm'
 import TableSupplier from 'src/views/tables/TableSupplier'
 import { getSearchedSuplier } from 'src/@core/apiFunction/suplier'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const Supplier = () => {
   const [supplier, setSupplier] = useState([])
   const [refetch, setRefetch] = useState(false)
   const [loading, setLoading] = useState(false)
 
+  const { access_token } = getToken()
+
   useEffect(() => {
     setLoading(true)
-    getSearchedSuplier('').then(data => {
+    getSearchedSuplier('', access_token).then(data => {
       setSupplier(data)
       setLoading(false)
     })

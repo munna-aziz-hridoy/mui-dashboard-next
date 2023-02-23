@@ -4,6 +4,7 @@ import { getPaymentChoice } from 'src/@core/apiFunction/product'
 // ** MUI import
 import { Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import PartialPaymentModal from '../modal/partialPaymentModal'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const FormPaymentStatus = ({ setPurchaseData, clearForm }) => {
   const [paymentStatus, setPaymentStatus] = useState([])
@@ -11,8 +12,10 @@ const FormPaymentStatus = ({ setPurchaseData, clearForm }) => {
 
   const [selectedStatus, setSelectedStatus] = useState('')
 
+  const { access_token } = getToken()
+
   useEffect(() => {
-    getPaymentChoice().then(data => setPaymentStatus(data))
+    getPaymentChoice(access_token).then(data => setPaymentStatus(data))
   }, [])
 
   useEffect(() => {

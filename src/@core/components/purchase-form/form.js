@@ -39,6 +39,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { postInvoice, uploadInvoiceImage } from 'src/@core/apiFunction/invoice'
 import FormStockStatus from './formStockStatus'
 import formatedDate from 'src/@core/utils/getFormatedDate'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const AddPurchaseForm = () => {
   const invoice_date = formatedDate(new Date())
@@ -66,6 +67,8 @@ const AddPurchaseForm = () => {
   const [showError, setShowError] = useState(false)
 
   const [loading, setLoading] = useState(false)
+
+  const { access_token } = getToken()
 
   useEffect(() => {
     if (selectedProduct.length !== 0) {
@@ -104,12 +107,12 @@ const AddPurchaseForm = () => {
       }
     })
 
-    uploadInvoiceImage(invoiceFile).then(imageData => {
+    uploadInvoiceImage(invoiceFile, access_token).then(imageData => {
       if (imageData.success) {
         const supplier_document = imageData?.id
         const data = { ...purchaseData, supplier_document, invoice_items }
 
-        postInvoice(data)
+        postInvoice(data, access_token)
           .then(data => {
             if (data.success) {
               setClearForm(true)

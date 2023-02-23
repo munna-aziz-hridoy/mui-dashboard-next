@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Grid, TextField, Button, Autocomplete, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import { addInternalProduct, getOfflineProducts, getOnlineProducts, getUnitChoice } from 'src/@core/apiFunction/product'
 import { toast } from 'react-hot-toast'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const AddInternalProduct = ({ closeModal, refetch }) => {
   const [offlineProducts, setOfflineProducts] = useState([])
@@ -17,20 +18,22 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
 
   const [unitValue, setUnitValue] = useState('')
 
+  const { access_token } = getToken()
+
   useEffect(() => {
-    getOfflineProducts().then(data => {
+    getOfflineProducts('', access_token).then(data => {
       if (data?.success) {
         setOfflineProducts(data?.data)
       }
     })
 
-    getOnlineProducts().then(data => {
+    getOnlineProducts('', access_token).then(data => {
       if (data?.success) {
         setOnlineProducts(data?.data)
       }
     })
 
-    getUnitChoice().then(data => {
+    getUnitChoice(access_token).then(data => {
       setUnits(data)
     })
   }, [])
@@ -52,7 +55,7 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
       onlineProduct: onlineProductId
     }
 
-    addInternalProduct(productData).then(data => {
+    addInternalProduct(productData, access_token).then(data => {
       if (data.success) {
         toast.success('Internal Product added')
         e.target.product_name.value = ''

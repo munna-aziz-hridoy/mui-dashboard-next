@@ -3,12 +3,15 @@ import { getPaymentChoice } from 'src/@core/apiFunction/product'
 
 // ** MUI import
 import { Grid, FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const SelectPaymentSearch = ({ setPayment }) => {
   const [paymentStatus, setPaymentStatus] = useState([])
 
+  const { access_token } = getToken()
+
   useEffect(() => {
-    getPaymentChoice().then(data => setPaymentStatus(data))
+    getPaymentChoice(access_token).then(data => setPaymentStatus(data))
   }, [])
 
   return (

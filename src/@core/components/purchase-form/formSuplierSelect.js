@@ -5,6 +5,7 @@ import AddSuplier from 'src/@core/components/modal/addSuplierModal'
 // ** MUI import
 
 import { Grid, TextField, Box, List, ListItem, CircularProgress, Typography, Button } from '@mui/material'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
   const [openSuplierModal, setOpenSuplierModal] = useState(false)
@@ -14,6 +15,7 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
   const [searchedSuplier, setSearchedSuplier] = useState([])
 
   const [suplierName, setSuplierName] = useState('')
+  const { access_token } = getToken()
 
   useEffect(() => {
     setSuplierName('')
@@ -25,7 +27,7 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
     if (searchText !== '') {
       setSuplierLoading(true)
       setOpenSuplierList(true)
-      getSearchedSuplier(searchText).then(data => {
+      getSearchedSuplier(searchText, access_token).then(data => {
         setSearchedSuplier(data)
         setSuplierLoading(false)
       })
@@ -37,7 +39,7 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
   const handleInputClick = () => {
     setOpenSuplierList(prev => !prev)
     setSuplierLoading(true)
-    getSearchedSuplier('').then(data => {
+    getSearchedSuplier('', access_token).then(data => {
       setSearchedSuplier(data)
       setSuplierLoading(false)
     })

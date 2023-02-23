@@ -7,6 +7,7 @@ import { Box, Modal, Card, CardContent, Grid, TextField, CardHeader, Button, Typ
 
 import toast from 'react-hot-toast'
 import { postPayment } from 'src/@core/apiFunction/invoice'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const style = {
   position: 'absolute',
@@ -25,6 +26,8 @@ const style = {
 const AddPaymentModal = ({ open, setOpen, invoiceDue, invoiceId, refetch }) => {
   const [errorText, setErrorText] = useState('')
 
+  const { access_token } = getToken()
+
   const handleAddPayment = e => {
     e.preventDefault()
 
@@ -37,7 +40,7 @@ const AddPaymentModal = ({ open, setOpen, invoiceDue, invoiceId, refetch }) => {
       return setErrorText('Input number for amount')
     }
 
-    postPayment({ amount, invoice: invoiceId })
+    postPayment({ amount, invoice: invoiceId }, access_token)
       .then(data => {
         if (data.success) {
           refetch(prev => !prev)
