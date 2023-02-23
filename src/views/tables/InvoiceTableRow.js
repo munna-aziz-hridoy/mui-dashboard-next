@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import Image from 'next/image'
-import { TableRow, TableCell, Typography, Card, Button } from '@mui/material'
+import { TableRow, TableCell, Typography, Card, Button, Box } from '@mui/material'
 import { tableCellClasses } from '@mui/material/TableCell'
 import { styled } from '@mui/material/styles'
 
@@ -45,14 +45,12 @@ const InvoiceTableRow = ({ invoice, refetch, refetchValue }) => {
   return (
     <Fragment>
       <StyledTableRow style={{ cursor: 'pointer' }} onClick={() => setOpenInvoiceModal(true)}>
-        <StyledTableCell align='center'>
-          <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-            <Button>
-              <AiFillEye fontSize={18} color='#100720' />
-            </Button>{' '}
-            {created_at?.split(' ')[0]}
-          </div>
+        <StyledTableCell>
+          <Button>
+            <AiFillEye fontSize={18} color='#100720' />
+          </Button>
         </StyledTableCell>
+        <StyledTableCell align='left'>{created_at?.split(' ')[0]}</StyledTableCell>
         <StyledTableCell
           onClick={e => {
             e.stopPropagation()

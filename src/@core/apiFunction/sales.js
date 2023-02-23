@@ -1,4 +1,7 @@
 import API_URL from 'src/@core/utils/mainUrl'
+import { getToken } from '../utils/manageToken'
+
+const token = getToken()
 
 export const uploadOfflineSalesCsv = async formData => {
   // const url = `${API_URL}/offline-sell-upload/`
@@ -32,9 +35,12 @@ export const uploadOnlineProductCsv = async formData => {
 const uploadCsv = async (url, formData) => {
   const res = await fetch(url, {
     method: 'POST',
+    headers: {
+      authorization: `Bearer ${token.access_token}`
+    },
     body: formData
   })
-  console.log(res)
+
   const data = await res.json()
 
   if (data?.affected_rows) return { success: false, message: data.detail, affected_rows: data?.affected_rows }

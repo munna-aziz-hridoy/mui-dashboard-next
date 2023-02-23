@@ -1,10 +1,15 @@
 import API_URL from 'src/@core/utils/mainUrl'
+import { getToken } from '../utils/manageToken'
+
+const token = getToken()
 
 // get searched product item
 export const getSearchedProduct = async (searchValue, page) => {
   const url = `${API_URL}/internal_product/?search=${searchValue}`
 
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: { authorization: `Bearer ${token.access_token}` }
+  })
   const data = await res.json()
 
   if (data?.data) {
@@ -19,7 +24,11 @@ export const getSearchedProduct = async (searchValue, page) => {
 export const getUnitChoice = async () => {
   const url = `${API_URL}/common/unit-type-choices/`
 
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token.access_token}`
+    }
+  })
   const data = await res.json()
 
   if (data) {
@@ -33,7 +42,11 @@ export const getUnitChoice = async () => {
 
 export const getPaymentChoice = async () => {
   const url = `${API_URL}/common/payment-status-choices/`
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token.access_token}`
+    }
+  })
   const data = await res.json()
 
   if (data) {
@@ -47,7 +60,11 @@ export const getPaymentChoice = async () => {
 
 export const getTaxChoices = async () => {
   const url = `${API_URL}/common/tax-percentage-choices/`
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token.access_token}`
+    }
+  })
   const data = await res.json()
 
   if (data) {
@@ -61,7 +78,11 @@ export const getTaxChoices = async () => {
 
 export const getStockStatus = async () => {
   const url = `${API_URL}/common/invoice-stock-choices/`
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token.access_token}`
+    }
+  })
   const data = await res.json()
 
   if (data) {
@@ -76,7 +97,11 @@ export const getStockStatus = async () => {
 export const getOnlineProducts = async page => {
   const url = page > 1 ? `${API_URL}/online_product/?page=${page}` : `${API_URL}/online_product/`
 
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token.access_token}`
+    }
+  })
 
   if (res.status !== 200) return { success: false, data: [] }
   const data = await res.json()
@@ -93,7 +118,11 @@ export const getOnlineProducts = async page => {
 export const getOfflineProducts = async page => {
   const url = page > 1 ? `${API_URL}/offline_product/?page=${page}` : `${API_URL}/offline_product/`
 
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token.access_token}`
+    }
+  })
   if (res.status !== 200) return { success: false, data: [] }
   const data = await res.json()
 
@@ -112,7 +141,8 @@ export const addInternalProduct = async productData => {
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+      authorization: `Bearer ${token.access_token}`
     },
     body: JSON.stringify(productData)
   })
@@ -135,7 +165,8 @@ export const addOnlineProduct = async productData => {
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+      authorization: `Bearer ${token.access_token}`
     },
     body: JSON.stringify(productData)
   })
@@ -158,7 +189,8 @@ export const addOfflineProduct = async productData => {
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+      authorization: `Bearer ${token.access_token}`
     },
     body: JSON.stringify(productData)
   })

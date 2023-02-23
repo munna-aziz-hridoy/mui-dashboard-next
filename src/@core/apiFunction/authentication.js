@@ -9,8 +9,11 @@ export const loginUser = async userData => {
     },
     body: JSON.stringify(userData)
   })
-
-  const data = await res.json()
-  console.log(data)
-  return data
+  if (res.status !== 200) {
+    const data = await res.json()
+    return { success: false, message: data?.detail }
+  } else {
+    const data = await res.json()
+    return { success: true, ...data }
+  }
 }

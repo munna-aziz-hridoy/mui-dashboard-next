@@ -15,6 +15,8 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
 
   const [units, setUnits] = useState([])
 
+  const [unitValue, setUnitValue] = useState('')
+
   useEffect(() => {
     getOfflineProducts().then(data => {
       if (data?.success) {
@@ -132,6 +134,8 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
               id='form-layouts-separator-select'
               labelId='form-layouts-separator-select-label'
               required
+              value={unitValue}
+              onChange={e => setUnitValue(e.target.value)}
             >
               {units?.map((item, i) => (
                 <MenuItem key={i} value={item}>

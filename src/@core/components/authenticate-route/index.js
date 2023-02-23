@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
+
+import useAuthStore from 'src/store/authStore'
 
 function Authenticate({ children }) {
   const router = useRouter()
-  const [authorized, setAuthorized] = useState(true)
+
+  const { user } = useAuthStore()
 
   useEffect(() => {
-    if (!authorized) {
+    if (!user) {
       router.push('/login')
       return null
     }
@@ -16,7 +19,7 @@ function Authenticate({ children }) {
     return children
   }
 
-  return authorized && children
+  return user && children
 }
 
 export default Authenticate

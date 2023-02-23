@@ -22,6 +22,8 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
+import useAuthStore from 'src/store/authStore'
+import { removeToken } from 'src/@core/utils/manageToken'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -38,6 +40,7 @@ const UserDropdown = () => {
 
   // ** Hooks
   const router = useRouter()
+  const { removeUser } = useAuthStore()
 
   const handleDropdownOpen = event => {
     setAnchorEl(event.currentTarget)
@@ -46,6 +49,10 @@ const UserDropdown = () => {
   const handleDropdownClose = url => {
     if (url) {
       router.push(url)
+      if (url === '/login') {
+        removeUser()
+        removeToken()
+      }
     }
     setAnchorEl(null)
   }
@@ -106,25 +113,25 @@ const UserDropdown = () => {
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
             <AccountOutline sx={{ marginRight: 2 }} />
             Profile
           </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        </MenuItem> */}
+        {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
             <EmailOutline sx={{ marginRight: 2 }} />
             Inbox
           </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        </MenuItem> */}
+        {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
             <MessageOutline sx={{ marginRight: 2 }} />
             Chat
           </Box>
-        </MenuItem>
-        <Divider />
+        </MenuItem> */}
+        {/* <Divider />
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
             <CogOutline sx={{ marginRight: 2 }} />
@@ -143,8 +150,8 @@ const UserDropdown = () => {
             FAQ
           </Box>
         </MenuItem>
-        <Divider />
-        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+        <Divider /> */}
+        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/login')}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
           Logout
         </MenuItem>

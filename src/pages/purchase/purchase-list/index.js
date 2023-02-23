@@ -97,7 +97,6 @@ const PurchaseList = ({}) => {
 
       <Button
         variant='contained'
-        marginBottom={10}
         style={{ display: 'inline-block', marginBottom: '20px' }}
         onClick={() => router.push('/purchase/add-purchase')}
       >

@@ -1,9 +1,12 @@
 // ** React Imports
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+
+import toast, { Toaster } from 'react-hot-toast'
+import jwt from 'jsonwebtoken'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -39,6 +42,9 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { loginUser } from 'src/@core/apiFunction/authentication'
+import { saveToken } from 'src/@core/utils/manageToken'
+
+import useAuthStore from 'src/store/authStore'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -70,6 +76,15 @@ const LoginPage = () => {
   const theme = useTheme()
   const router = useRouter()
 
+  const { user, addUser } = useAuthStore()
+
+  useEffect(() => {
+    if (user) {
+      router.push('/')
+      return null
+    }
+  }, [])
+
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
@@ -86,7 +101,16 @@ const LoginPage = () => {
     e.preventDefault()
     const { username, password } = values
     if (username && password) {
-      loginUser({ username, password }).then(data => console.log(data))
+      loginUser({ username, password }).then(data => {
+        if (data.success) {
+          toast.success('Login successfull')
+          saveToken(data.access, data.refresh)
+          const tokenData = jwt.decode(data.access)
+          addUser(tokenData)
+          console.log(tokenData)
+          router.push('/')
+        }
+      })
     }
   }
 
@@ -211,55 +235,14 @@ const LoginPage = () => {
                 <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
               </Link>
             </Box>
-            <Button
-              fullWidth
-              size='large'
-              variant='contained'
-              sx={{ marginBottom: 7 }}
-              // onClick={() => router.push('/')}
-              onClick={handleLogin}
-            >
+            <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} onClick={handleLogin}>
               Login
             </Button>
-            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Typography variant='body2' sx={{ marginRight: 2 }}>
-                New on our platform?
-              </Typography>
-              <Typography variant='body2'>
-                <Link passHref href='/register'>
-                  <LinkStyled>Create an account</LinkStyled>
-                </Link>
-              </Typography>
-            </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Facebook sx={{ color: '#497ce2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Twitter sx={{ color: '#1da1f2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Github
-                    sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
-                  />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Google sx={{ color: '#db4437' }} />
-                </IconButton>
-              </Link>
-            </Box>
           </form>
         </CardContent>
       </Card>
       <FooterIllustrationsV1 />
+      <Toaster />
     </Box>
   )
 }

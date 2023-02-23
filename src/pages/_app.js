@@ -27,7 +27,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 // ** Global css styles
 import '../../styles/globals.css'
 import '../../styles/invoice.css'
-import Authenticate from 'src/@core/components/authenticate'
+import Authenticate from 'src/@core/components/authenticate-route'
 
 const clientSideEmotionCache = createEmotionCache()
 

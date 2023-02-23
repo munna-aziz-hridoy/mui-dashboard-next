@@ -1,4 +1,7 @@
 import API_URL from 'src/@core/utils/mainUrl'
+import { getToken } from '../utils/manageToken'
+
+const token = getToken()
 
 export const postInvoice = async postData => {
   const url = `${API_URL}/invoice/`
@@ -6,7 +9,8 @@ export const postInvoice = async postData => {
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+      authorization: `Bearer ${token.access_token}`
     },
     body: JSON.stringify(postData)
   })
@@ -26,7 +30,11 @@ export const getAllInvoiceList = async (searchText, dateRange, supplier, payment
   const url = `${API_URL}/invoice/?search=${
     searchText || supplier || ''
   }&invoice_date__date__range=${dateRangeFormated}&payment_status=${paymentStatus || ''}`
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token.access_token}`
+    }
+  })
 
   const data = await res.json()
 
@@ -43,7 +51,8 @@ export const postPayment = async postData => {
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+      authorization: `Bearer ${token.access_token}`
     },
     body: JSON.stringify(postData)
   })
@@ -60,7 +69,9 @@ export const postPayment = async postData => {
 export const getInvoicePaymentDetails = async invoiceId => {
   const url = `${API_URL}/invoice/${invoiceId}/payment_detail/`
 
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: { authorization: `Bearer ${token.access_token}` }
+  })
   const data = await res.json()
 
   if (data?.payments) {
@@ -72,7 +83,11 @@ export const getInvoicePaymentDetails = async invoiceId => {
 
 export const getAllPayment = async () => {
   const url = `${API_URL}/payment/`
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token.access_token}`
+    }
+  })
   const data = await res.json()
 
   if (data?.length) {
@@ -86,6 +101,9 @@ export const uploadInvoiceImage = async formData => {
   const url = `${API_URL}/upload-image/`
   const res = await fetch(url, {
     method: 'POST',
+    headers: {
+      authorization: `Bearer ${token.access_token}`
+    },
     body: formData
   })
   const data = await res.json()

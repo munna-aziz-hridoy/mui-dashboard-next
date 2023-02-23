@@ -42,11 +42,6 @@ const AddOfflineProduct = ({ refetch }) => {
             placeholder='Product Name'
             required
           />
-          {/* {name.length > 20 && (
-            <Typography variant='body2' color='error' fontSize={12}>
-              Name should be under 20 character
-            </Typography>
-          )} */}
         </Grid>
         <Grid item xs={6}>
           <TextField type='number' name='product_sku' fullWidth label='Prodct Sku' placeholder='Product Sku' required />
@@ -58,50 +53,6 @@ const AddOfflineProduct = ({ refetch }) => {
         <Grid item xs={6}>
           <TextField name='category' fullWidth label='Category' placeholder='Category' />
         </Grid>
-
-        {/* <Grid item xs={6}>
-          <Autocomplete
-            onChange={(e, value) => {
-              const productId = value.map(item => parseFloat(item.product_sku))
-              setOfflineProductId(productId)
-            }}
-            multiple
-            options={offlineProducts}
-            getOptionLabel={option => option.product_name}
-            renderInput={params => <TextField name='offlineProduct' {...params} label='Offline Products' />}
-          />
-        </Grid>
-
-        <Grid item xs={6}>
-          <Autocomplete
-            onChange={(e, value) => {
-              const productId = value.map(item => parseFloat(item.product_ID))
-              setOnlineProductId(productId)
-            }}
-            multiple
-            options={onlineProducts}
-            getOptionLabel={option => option.product_name}
-            renderInput={params => <TextField name='onlineProduct' {...params} label='Online Products' />}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <FormControl fullWidth>
-            <InputLabel id='form-layouts-separator-select-label'>Product Unit</InputLabel>
-            <Select
-              name='product_unit'
-              label='Product Unit'
-              id='form-layouts-separator-select'
-              labelId='form-layouts-separator-select-label'
-            >
-              {units?.map((item, i) => (
-                <MenuItem key={i} value={item}>
-                  {item}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid> */}
 
         <Grid item xs={12}>
           <Button type='submit' variant='contained' size='large'>
