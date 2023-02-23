@@ -13,6 +13,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   height: 850,
+  maxWidth: 550,
   maxHeight: '95vh',
   bgcolor: 'background.paper',
   boxShadow: 24,
@@ -30,7 +31,7 @@ const ViewInvoiceImageModal = ({ open, setOpen, invoiceImage }) => {
         <Card style={{ cursor: 'zoom-in' }}>
           <TransformWrapper>
             <TransformComponent>
-              <img src={invoiceImage} />
+              <img src={invoiceImage} style={{ width: '100%' }} />
             </TransformComponent>
           </TransformWrapper>
         </Card>
