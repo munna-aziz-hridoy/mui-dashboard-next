@@ -89,6 +89,24 @@ export const getStockStatus = async token => {
   }
 }
 
+// invoice status choices
+
+export const getInvoiceStatusChoices = async token => {
+  const url = `${API_URL}/common/invoice-type-choices/`
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+
+  const data = await res.json()
+  if (data) {
+    return data
+  } else {
+    return []
+  }
+}
+
 // online product
 
 export const getOnlineProducts = async (page, token) => {
@@ -200,4 +218,19 @@ export const addOfflineProduct = async (productData, token) => {
       success: false
     }
   }
+}
+
+export const internalProductDetailsInfo = async (id, token) => {
+  const url = `${API_URL}/internal_product/${id}/purchase_detail/`
+
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+
+  console.log(res)
+
+  const data = await res.json()
+  console.log(data)
 }

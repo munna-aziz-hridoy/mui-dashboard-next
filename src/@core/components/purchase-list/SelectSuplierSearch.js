@@ -49,14 +49,20 @@ const SelectSuplierSearch = ({ setSupplier }) => {
   }
 
   return (
-    <Grid item xs={12} sm={4} style={{ position: 'relative' }}>
+    <Grid item xs={3} style={{ position: 'relative' }}>
       <TextField
         onClick={handleInputClick}
         onChange={handleSearchSuplier}
+        onBlur={() => {
+          setTimeout(() => {
+            setOpenSuplierList(false)
+          }, [200])
+        }}
         fullWidth
         label='Search By Suplier'
         placeholder='Search By Suplier'
         value={suplierName}
+        size='small'
       />
 
       <Box

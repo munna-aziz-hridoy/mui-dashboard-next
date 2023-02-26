@@ -28,6 +28,7 @@ const FormShippingCost = ({ setPurchaseData, clearForm }) => {
         label='Shipping Cost'
         placeholder='Shipping cost'
         value={shipping}
+        size='small'
       />
       {shipping < 0 && (
         <Typography variant='body2' color='error' fontSize={12}>

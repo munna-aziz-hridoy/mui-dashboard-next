@@ -93,7 +93,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
               fontSize: '24px'
             }}
           >
-            <UserIcon icon={IconTag} />
+            <UserIcon icon={IconTag} isActive={isNavLinkActive()} />
           </ListItemIcon>
 
           <MenuItemTextMetaWrapper>

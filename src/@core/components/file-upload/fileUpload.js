@@ -55,18 +55,21 @@ const FileUpload = ({ setFiles, clearForm }) => {
       <ImageUploading value={images} onChange={onChange} dataURLKey='data_url'>
         {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
           // write your building UI
-          <div style={{ display: 'flex', gap: '5px', flexDirection: 'column' }} className='upload__image-wrapper'>
-            <button style={btnContainerstyle} onClick={onImageUpload} {...dragProps}>
-              {/* Click or Drop here */}
-              <Typography style={uploadBtnStyle}>
-                <BsCloudUpload fontSize={20} />
-                Upload Invoice
-              </Typography>
-            </button>
+          <div style={{ display: 'flex', gap: '5px' }} className='upload__image-wrapper'>
             {images.length < 1 && (
-              <Typography variant='body2' color='error' fontSize={12}>
-                Upload invoice image
-              </Typography>
+              <div>
+                <button style={btnContainerstyle} onClick={onImageUpload} {...dragProps}>
+                  {/* Click or Drop here */}
+                  <Typography style={uploadBtnStyle}>
+                    <BsCloudUpload fontSize={20} />
+                    Upload Invoice
+                  </Typography>
+                </button>
+
+                <Typography variant='body2' color='error' fontSize={12}>
+                  Upload invoice image
+                </Typography>
+              </div>
             )}
 
             {imageList.map((image, index) => (

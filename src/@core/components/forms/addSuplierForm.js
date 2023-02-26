@@ -50,6 +50,7 @@ const AddSuplierForm = ({ refetch }) => {
             label='Full Name'
             placeholder='Suplier Name'
             name='name'
+            size='small'
             required
             InputProps={{
               startAdornment: (
@@ -66,6 +67,7 @@ const AddSuplierForm = ({ refetch }) => {
             fullWidth
             type='email'
             label='Email'
+            size='small'
             placeholder='Suplier Email'
             name='email'
             helperText='You can use letters, numbers & periods'
@@ -89,6 +91,7 @@ const AddSuplierForm = ({ refetch }) => {
             type='phone'
             label='Phone No.'
             name='phone'
+            size='small'
             placeholder='Suplier Phone'
             InputProps={{
               startAdornment: (
@@ -102,6 +105,7 @@ const AddSuplierForm = ({ refetch }) => {
         <Grid item xs={6}>
           <TextField
             fullWidth
+            size='small'
             type='fax'
             label='Fax.'
             placeholder='Fax'
@@ -118,6 +122,7 @@ const AddSuplierForm = ({ refetch }) => {
         <Grid item xs={12}>
           <TextField
             fullWidth
+            size='small'
             multiline
             minRows={3}
             label='Address'
@@ -134,7 +139,7 @@ const AddSuplierForm = ({ refetch }) => {
           />
         </Grid>
         <Grid item xs={12}>
-          <Button type='submit' variant='contained' size='large'>
+          <Button type='submit' variant='contained' size='small'>
             Add Supplier
           </Button>
         </Grid>

@@ -40,13 +40,14 @@ import { postInvoice, uploadInvoiceImage } from 'src/@core/apiFunction/invoice'
 import FormStockStatus from './formStockStatus'
 import formatedDate from 'src/@core/utils/getFormatedDate'
 import { getToken } from 'src/@core/utils/manageToken'
+import FormInvoiceStatus from './formInvoiceStatus'
 
 const AddPurchaseForm = () => {
   const invoice_date = formatedDate(new Date())
 
   // ** States
   const [purchaseData, setPurchaseData] = useState({
-    invoice_type: 'Purchase',
+    invoice_type: 'Regular Order',
     tax: 0,
     tax_percentage: 0,
     discount: 0,
@@ -137,6 +138,8 @@ const AddPurchaseForm = () => {
     })
   }
 
+  console.log(purchaseData)
+
   return (
     <Card>
       <CardHeader title='Add New Purchase' titleTypographyProps={{ variant: 'h6' }} />
@@ -149,8 +152,10 @@ const AddPurchaseForm = () => {
             <Grid container spacing={5}>
               {/* purchase form start */}
 
-              <Grid item xs={8}>
-                <Grid container spacing={2}>
+              <Grid item xs={7}>
+                <Grid container spacing={3}>
+                  <FormInvoiceStatus setPurchaseData={setPurchaseData} clearForm={clearForm} />
+
                   <FormDatePicker purchaseData={purchaseData} setPurchaseData={setPurchaseData} />
 
                   <FormSuplierSelect setPurchaseData={setPurchaseData} clearForm={clearForm} />
@@ -158,63 +163,64 @@ const AddPurchaseForm = () => {
                   <FormPaymentStatus setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
                   <FormStockStatus setPurchaseData={setPurchaseData} clearForm={clearForm} />
-
-                  <FormSelectProduct
-                    setSelectedProduct={setSelectedProduct}
-                    // selectedProduct={selectedProduct}
-                    clearForm={clearForm}
-                    // showError={showError}
-                  />
-
-                  {/* Product list table */}
-
-                  <TableStickyHeader
-                    products={selectedProduct}
-                    setProducts={setSelectedProduct}
-                    invoiceTotal={invoiceTotal}
-                    setInvoiceTotal={setInvoiceTotal}
-                    setTotalTax={setTotalTax}
-                  />
-
-                  {selectedProduct?.length !== 0 && (
-                    <>
-                      <FormDiscount setPurchaseData={setPurchaseData} clearForm={clearForm} />
-
-                      <FormShippingCost setPurchaseData={setPurchaseData} clearForm={clearForm} />
-                      <FormChangeTax
-                        setTotalTax={setTotalTax}
-                        purchaseData={purchaseData}
-                        totalTax={totalTax}
-                        clearForm={clearForm}
-                        invoiceTotal={invoiceTotal}
-                      />
-                      <FormSelectTax
-                        setPurchaseData={setPurchaseData}
-                        setTotalTax={setTotalTax}
-                        invoiceTotal={invoiceTotal}
-                        clearForm={clearForm}
-                      />
-                    </>
-                  )}
-
-                  <Grid item xs={12}>
-                    <FormInvoiceNote setPurchaseData={setPurchaseData} clearForm={clearForm} />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <Typography fontWeight={600} variant='h6'>
-                      Invoice Total:{' '}
-                      {invoiceTotal + totalTax - (purchaseData?.discount || 0) + (purchaseData?.shipping_cost || 0)}
-                    </Typography>
-                  </Grid>
                 </Grid>
               </Grid>
 
-              <Grid item xs={4} padding={0}>
+              <Grid item xs={5} padding={0}>
                 <FormControl fullWidth>
                   <FileUpload setFiles={setInvoiceFile} clearForm={clearForm} file={invoiceFile} />
                 </FormControl>
               </Grid>
+
+              <FormSelectProduct
+                setSelectedProduct={setSelectedProduct}
+                // selectedProduct={selectedProduct}
+                clearForm={clearForm}
+                // showError={showError}
+              />
+
+              {/* Product list table */}
+
+              <TableStickyHeader
+                products={selectedProduct}
+                setProducts={setSelectedProduct}
+                invoiceTotal={invoiceTotal}
+                setInvoiceTotal={setInvoiceTotal}
+                setTotalTax={setTotalTax}
+              />
+
+              {selectedProduct?.length !== 0 && (
+                <>
+                  <FormDiscount setPurchaseData={setPurchaseData} clearForm={clearForm} />
+
+                  <FormShippingCost setPurchaseData={setPurchaseData} clearForm={clearForm} />
+                  <FormChangeTax
+                    setTotalTax={setTotalTax}
+                    purchaseData={purchaseData}
+                    totalTax={totalTax}
+                    clearForm={clearForm}
+                    invoiceTotal={invoiceTotal}
+                  />
+                  <FormSelectTax
+                    setPurchaseData={setPurchaseData}
+                    setTotalTax={setTotalTax}
+                    invoiceTotal={invoiceTotal}
+                    clearForm={clearForm}
+                  />
+                </>
+              )}
+
+              <Grid item xs={12}>
+                <FormInvoiceNote setPurchaseData={setPurchaseData} clearForm={clearForm} />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography fontWeight={600} variant='h6'>
+                  Invoice Total:{' '}
+                  {invoiceTotal + totalTax - (purchaseData?.discount || 0) + (purchaseData?.shipping_cost || 0)}
+                </Typography>
+              </Grid>
+
               <Grid item xs={12}>
                 <Divider sx={{ marginBottom: 0 }} />
               </Grid>

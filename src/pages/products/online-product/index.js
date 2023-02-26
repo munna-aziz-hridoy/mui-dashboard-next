@@ -58,6 +58,7 @@ const OnlineProduct = () => {
         style={{ margin: '10px', marginLeft: 'auto', display: 'block', width: '230px' }}
         variant='contained'
         color='primary'
+        size='small'
       >
         Download Sample CSV
       </Button>

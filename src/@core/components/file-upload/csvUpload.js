@@ -13,19 +13,19 @@ const CsvUpload = ({ handleUploadCsv }) => {
 
   return (
     <Card style={{ marginBottom: '20px' }}>
-      <CardHeader title='Upload CSV' />
+      <CardHeader style={{ padding: '10px 25px' }} title='Upload CSV' />
       <Box
         marginLeft={5}
         marginRight={5}
         component='div'
-        height={90}
-        border={1}
+        height={80}
+        border={2}
         borderRadius={1}
         borderColor={isDragActive ? 'red' : csvFile.length !== 0 ? 'green' : '#100720'}
         style={{ borderStyle: 'dashed', cursor: 'pointer' }}
         display='flex'
         justifyContent='center'
-        marginBottom={10}
+        marginBottom={4}
         {...getRootProps()}
       >
         <input {...getInputProps()} />
@@ -55,6 +55,7 @@ const CsvUpload = ({ handleUploadCsv }) => {
                   }}
                   variant='contained'
                   color='primary'
+                  size='small'
                 >
                   Upload
                 </Button>
@@ -65,6 +66,7 @@ const CsvUpload = ({ handleUploadCsv }) => {
                   }}
                   variant='outlined'
                   color='error'
+                  size='small'
                 >
                   Remove
                 </Button>

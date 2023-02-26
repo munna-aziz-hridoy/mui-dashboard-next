@@ -29,6 +29,7 @@ const FormDiscount = ({ setPurchaseData, clearForm }) => {
         label='Discount'
         placeholder='100'
         value={discount}
+        size='small'
       />
 
       {discount < 0 && (

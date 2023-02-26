@@ -18,7 +18,7 @@ import { getAllInvoiceList } from 'src/@core/apiFunction/invoice'
 import { getToken } from 'src/@core/utils/manageToken'
 
 const CustomInput = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Purchase Date' autoComplete='off' />
+  return <TextField size='small' fullWidth {...props} inputRef={ref} label='Purchase Date' autoComplete='off' />
 })
 
 const PurchaseList = ({}) => {
@@ -73,21 +73,22 @@ const PurchaseList = ({}) => {
 
   return (
     <>
-      <Card style={{ padding: '20px', overflow: 'visible', marginBottom: '30px' }}>
-        <CardHeader title='Purchase List' titleTypographyProps={{ variant: 'h6' }} />
+      <Card style={{ padding: '1px 20px', overflow: 'visible', marginBottom: '30px' }}>
+        <CardHeader style={{ padding: '10px 25px' }} title='Purchase List' titleTypographyProps={{ variant: 'h6' }} />
         <Divider sx={{ margin: 0 }} />
 
-        <Grid container spacing={6} marginTop={1} marginBottom={10}>
-          <Grid item xs={12}>
+        <Grid container spacing={3} marginTop={1} marginBottom={10}>
+          <Grid item xs={3}>
             <TextField
               onChange={e => {
                 setProductName(e.target.value)
               }}
               fullWidth
               placeholder='Search by product name'
+              size='small'
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={3}>
             <DatePickerWrapper>
               <DatePicker
                 selectsRange={true}
@@ -111,10 +112,10 @@ const PurchaseList = ({}) => {
 
           <Grid item xs={12}>
             <Box component='div' display='flex' gap={5}>
-              <Button onClick={handleSearch} fullWidth variant='contained'>
+              <Button onClick={handleSearch} fullWidth variant='contained' size='small'>
                 Search
               </Button>
-              <Button onClick={handleResetFilter} fullWidth variant='outlined'>
+              <Button onClick={handleResetFilter} fullWidth variant='outlined' size='small'>
                 Reset Filter
               </Button>
             </Box>
@@ -124,6 +125,7 @@ const PurchaseList = ({}) => {
 
       <Button
         variant='contained'
+        size='small'
         style={{ display: 'inline-block', marginBottom: '20px' }}
         onClick={() => router.push('/purchase/add-purchase')}
       >

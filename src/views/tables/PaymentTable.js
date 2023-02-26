@@ -4,8 +4,8 @@ import React from 'react'
 
 const PaymentTable = ({ payment }) => {
   return (
-    <TableContainer>
-      <Table>
+    <TableContainer sx={{ maxHeight: 750 }}>
+      <Table size='small' stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>Invoice Id</TableCell>

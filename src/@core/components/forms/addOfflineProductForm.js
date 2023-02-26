@@ -35,7 +35,7 @@ const AddOfflineProduct = ({ refetch }) => {
 
   return (
     <form onSubmit={handleAddOnlineProduct} style={{ padding: '20px' }}>
-      <Grid container spacing={5}>
+      <Grid container spacing={2}>
         <Grid item xs={6}>
           <TextField
             onChange={e => setName(e.target.value)}
@@ -44,21 +44,38 @@ const AddOfflineProduct = ({ refetch }) => {
             label='Prodct Name'
             placeholder='Product Name'
             required
+            size='small'
           />
         </Grid>
         <Grid item xs={6}>
-          <TextField type='number' name='product_sku' fullWidth label='Prodct Sku' placeholder='Product Sku' required />
+          <TextField
+            size='small'
+            type='number'
+            name='product_sku'
+            fullWidth
+            label='Prodct Sku'
+            placeholder='Product Sku'
+            required
+          />
         </Grid>
 
         <Grid item xs={6}>
-          <TextField type='number' name='barcode' fullWidth label='EAN number' placeholder='Bar Code' required />
+          <TextField
+            size='small'
+            type='number'
+            name='barcode'
+            fullWidth
+            label='EAN number'
+            placeholder='Bar Code'
+            required
+          />
         </Grid>
         <Grid item xs={6}>
-          <TextField name='category' fullWidth label='Category' placeholder='Category' />
+          <TextField size='small' name='category' fullWidth label='Category' placeholder='Category' />
         </Grid>
 
         <Grid item xs={12}>
-          <Button type='submit' variant='contained' size='large'>
+          <Button size='small' type='submit' variant='contained'>
             Submit
           </Button>
         </Grid>

@@ -63,6 +63,12 @@ const navigation = () => {
       path: '/purchase/purchase-list'
     },
 
+    {
+      title: 'Payment List',
+      icon: BiMoney,
+      path: '/purchase/payment-list'
+    },
+
     { sectionTitle: 'Sales' },
     {
       title: 'Offline Sales',
@@ -80,12 +86,6 @@ const navigation = () => {
       title: 'Supplier',
       icon: GrUserManager,
       path: '/others/supplier'
-    },
-
-    {
-      title: 'Payment List',
-      icon: BiMoney,
-      path: '/others/payment-list'
     }
 
     // {

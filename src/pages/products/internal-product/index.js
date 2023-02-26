@@ -55,6 +55,7 @@ const InternalProduct = () => {
         style={{ margin: '10px', marginLeft: 'auto', display: 'block', width: '230px' }}
         variant='contained'
         color='primary'
+        size='small'
       >
         Download Sample CSV
       </Button>
@@ -63,7 +64,11 @@ const InternalProduct = () => {
       {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />}
 
       <Card>
-        <CardHeader title='Add internal Product' titleTypographyProps={{ variant: 'h6' }} />
+        <CardHeader
+          style={{ padding: '10px 25px' }}
+          title='Add internal Product'
+          titleTypographyProps={{ variant: 'h6' }}
+        />
 
         <AddInternalProduct refetch={setRefetch} />
       </Card>

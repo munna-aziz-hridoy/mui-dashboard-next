@@ -1,51 +1,53 @@
 import React, { useState, useEffect } from 'react'
-import { getStockStatus } from 'src/@core/apiFunction/product'
+import { getInvoiceStatusChoices } from 'src/@core/apiFunction/product'
 
 // ** MUI import
 import { Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import { getToken } from 'src/@core/utils/manageToken'
 
-const FormStockStatus = ({ setPurchaseData, clearForm }) => {
-  const [stockStatus, setStockStatus] = useState([])
+const FormInvoiceStatus = ({ setPurchaseData, clearForm }) => {
+  const [invoiceStatus, setInvoiceStatus] = useState([])
 
   const [selectedStatus, setSelectedStatus] = useState('')
 
   const { access_token } = getToken()
 
   useEffect(() => {
-    getStockStatus(access_token).then(data => setStockStatus(data))
+    getInvoiceStatusChoices(access_token).then(data => setInvoiceStatus(data))
   }, [])
 
   useEffect(() => {
     setSelectedStatus('')
   }, [clearForm])
 
-  const handleChangeStockStatus = e => {
-    const stock = e.target.value
+  const handleChangeInvoiceStatus = e => {
+    const invoice = e.target.value
 
     setPurchaseData(prev => {
       return {
         ...prev,
-        stock_status: stock
+        invoice_type: invoice
       }
     })
-    setSelectedStatus(stock)
+    setSelectedStatus(invoice)
   }
+
+  console.log(invoiceStatus)
 
   return (
     <Grid item xs={12}>
       <FormControl size='small' fullWidth>
-        <InputLabel id='form-layouts-separator-select-label'>Stock Status</InputLabel>
+        <InputLabel id='form-layouts-separator-select-label'>Invoice Status</InputLabel>
         <Select
-          onChange={handleChangeStockStatus}
+          onChange={handleChangeInvoiceStatus}
           required
-          label='Stock Status'
+          label='Invoice Status'
           defaultValue=''
           id='form-layouts-separator-select'
           labelId='form-layouts-separator-select-label'
           value={selectedStatus}
         >
-          {stockStatus.map((item, i) => (
+          {invoiceStatus.map((item, i) => (
             <MenuItem key={i} value={item}>
               {item}
             </MenuItem>
@@ -56,4 +58,4 @@ const FormStockStatus = ({ setPurchaseData, clearForm }) => {
   )
 }
 
-export default FormStockStatus
+export default FormInvoiceStatus

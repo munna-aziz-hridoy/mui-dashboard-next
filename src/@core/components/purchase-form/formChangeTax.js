@@ -40,6 +40,7 @@ const FormChangeTax = ({ setTotalTax, purchaseData, totalTax, clearForm, invoice
         label='Tax Amount'
         placeholder='Enter Tax Amount'
         value={totalTax}
+        size='small'
       />
       {
         errorText && <Typography variant='body2' color='error' fontSize={12}>

@@ -21,6 +21,7 @@ const FormInvoiceNote = ({ setPurchaseData, clearForm }) => {
 
   return (
     <TextField
+      size='small'
       onChange={handleChangeNote}
       value={note}
       fullWidth

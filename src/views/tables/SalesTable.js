@@ -10,8 +10,8 @@ import { Divider, Typography } from '@mui/material'
 
 const SalesTable = ({ salesData }) => {
   return (
-    <TableContainer component={Paper}>
-      <Table>
+    <TableContainer component={Paper} sx={{ maxHeight: 750 }}>
+      <Table size='small' stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>Date</TableCell>

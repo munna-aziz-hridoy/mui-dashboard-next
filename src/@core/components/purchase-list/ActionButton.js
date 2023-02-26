@@ -25,6 +25,7 @@ const ActionButton = ({ viewInvoiceModal, viewPaymentModal, paymentStatus, openP
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
         variant='outlined'
+        size='small'
       >
         Action
         <IoMdArrowDropdown />

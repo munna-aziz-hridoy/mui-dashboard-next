@@ -37,8 +37,8 @@ const TableCustomized = ({ invoices, loading, refetch, setRefetch }) => {
 
   return (
     <Paper>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label='customized table'>
+      <TableContainer component={Paper} sx={{ maxHeight: 750 }}>
+        <Table size='small' stickyHeader sx={{ minWidth: 700 }} aria-label='customized table'>
           <TableHead>
             <TableRow>
               <StyledTableCell width={20}></StyledTableCell>

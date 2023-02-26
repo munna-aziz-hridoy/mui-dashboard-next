@@ -7,7 +7,7 @@ import DatePicker from 'react-datepicker'
 import formatedDate from 'src/@core/utils/getFormatedDate'
 
 const CustomInput = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Purchase Date' autoComplete='off' />
+  return <TextField size='small' fullWidth {...props} inputRef={ref} label='Purchase Date' autoComplete='off' />
 })
 
 const FormDatePicker = ({ purchaseData, setPurchaseData }) => {
@@ -26,7 +26,7 @@ const FormDatePicker = ({ purchaseData, setPurchaseData }) => {
   }
 
   return (
-    <Grid item xs={12} sm={6}>
+    <Grid item xs={12}>
       <DatePicker
         selected={selectedDate}
         required

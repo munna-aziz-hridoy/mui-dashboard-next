@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -19,35 +19,38 @@ import ChevronUp from 'mdi-material-ui/ChevronUp'
 import ChevronDown from 'mdi-material-ui/ChevronDown'
 import { Pagination } from '@mui/material'
 
-const createData = (name, calories, fat, carbs, protein, price) => {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: '2020-01-05',
-        customerId: '11091700',
-        amount: 3
-      },
-      {
-        date: '2020-01-02',
-        customerId: 'Anonymous',
-        amount: 1
-      }
-    ]
-  }
-}
+import { getToken } from 'src/@core/utils/manageToken'
+import { internalProductDetailsInfo } from 'src/@core/apiFunction/product'
+
+// const useStyles = makeStyles({
+//   table: {
+//     '& .MuiTableCell-root': {
+//       borderLeft: '1px solid rgba(224, 224, 224, 1)'
+//     }
+//   }
+// })
 
 const Row = props => {
+  const [allPurchaseUrl, setAllPurchaseUrl] = useState('')
+
   // ** Props
   const { row } = props
+  console.log(row)
+
+  const { access_token } = getToken()
 
   // ** State
   const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    setAllPurchaseUrl(row.all_purchase_link)
+  }, [row])
+
+  useEffect(() => {
+    if (row) {
+      internalProductDetailsInfo(row?.id, access_token)
+    }
+  }, [row])
 
   return (
     <Fragment>
@@ -126,10 +129,12 @@ const Row = props => {
 }
 
 const TableCollapsible = ({ products, totalPages, pageCount }) => {
+  // const classes = useStyles()
+
   return (
     <Fragment>
-      <TableContainer component={Paper}>
-        <Table aria-label='collapsible table'>
+      <TableContainer component={Paper} sx={{ maxHeight: 750 }}>
+        <Table size='small' stickyHeader aria-label='sticky table'>
           <TableHead>
             <TableRow>
               <TableCell />

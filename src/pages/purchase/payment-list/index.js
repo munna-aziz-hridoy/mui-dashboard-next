@@ -15,6 +15,8 @@ const PaymentList = () => {
     })
   }, [])
 
+  console.log(paymentList)
+
   return (
     <Card>
       <CardHeader title='Payment list' />

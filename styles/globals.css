@@ -68,4 +68,8 @@ code[class*='language-'] {
   } */
 }
 
+.MuiTableCell-root {
+  border-left: 1px solid rgba(224, 224, 224, 1) !important;
+}
+
 /* MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1oi9tye-MuiPaper-root-MuiCard-root */

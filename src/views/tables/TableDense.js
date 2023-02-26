@@ -9,8 +9,8 @@ const TableDense = ({ products, totalPages, pageCount }) => {
 
   return (
     <Fragment>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
+      <TableContainer component={Paper} sx={{ maxHeight: 750 }}>
+        <Table stickyHeader sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>

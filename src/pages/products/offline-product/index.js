@@ -79,7 +79,7 @@ const InternalProduct = () => {
   return (
     <Fragment>
       <Box component='div' display='flex' justifyContent='space-between' alignItems='center' marginBottom={5}>
-        <FormControl>
+        <FormControl size='small'>
           <InputLabel id='form-layouts-separator-select-label'>Middle Category</InputLabel>
           <Select
             style={{ width: '300px' }}
@@ -103,6 +103,7 @@ const InternalProduct = () => {
           href='https://pims-live.s3.ap-northeast-1.amazonaws.com/sample_files/OfflineSell+HEADER.csv'
           variant='contained'
           color='primary'
+          size='small'
         >
           Download Sample CSV
         </Button>
@@ -113,7 +114,11 @@ const InternalProduct = () => {
       {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />}
 
       <Card>
-        <CardHeader title='Add offline Product' titleTypographyProps={{ variant: 'h6' }} />
+        <CardHeader
+          style={{ padding: '10px 25px' }}
+          title='Add offline Product'
+          titleTypographyProps={{ variant: 'h6' }}
+        />
 
         <AddOfflineProduct refetch={setRefetch} />
       </Card>

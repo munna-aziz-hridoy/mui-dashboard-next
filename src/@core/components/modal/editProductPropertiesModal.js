@@ -53,6 +53,8 @@ const EditProduct = ({ open, setOpen, productData, setProducts }) => {
     })
   }
 
+  console.log(productData)
+
   return (
     <Modal id={product} open={open} onClose={() => setOpen(false)}>
       <Box sx={style}>
@@ -65,7 +67,8 @@ const EditProduct = ({ open, setOpen, productData, setProducts }) => {
                   <Typography variant='body2' fontSize={14}>
                     Online Name:{' '}
                     <span style={{ fontWeight: 600, fontSize: 16 }}>
-                      {productData.online_name.reduce((prev, next) => prev + next)}
+                      {productData.online_name.length > 0 &&
+                        productData.online_name?.reduce((prev, next) => prev + next)}
                     </span>
                   </Typography>
                 </Grid>
@@ -73,7 +76,8 @@ const EditProduct = ({ open, setOpen, productData, setProducts }) => {
                   <Typography variant='body2' fontSize={14}>
                     Offline Name:{' '}
                     <span style={{ fontWeight: 600, fontSize: 16 }}>
-                      {productData.offline_name.reduce((prev, next) => prev + next)}
+                      {productData?.offline_name.length > 0 &&
+                        productData.offline_name?.reduce((prev, next) => prev + next)}
                     </span>
                   </Typography>
                 </Grid>

@@ -77,8 +77,36 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
   return (
     <form onSubmit={handleAddInternalProduct} style={{ padding: '20px' }}>
       <Grid container spacing={5}>
-        <Grid item xs={12}>
-          <TextField name='product_name' fullWidth label='Prodct Name' placeholder='Product Name' required />
+        <Grid item xs={6}>
+          <TextField
+            name='product_name'
+            fullWidth
+            label='Prodct Name'
+            placeholder='Product Name'
+            required
+            size='small'
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <FormControl size='small' fullWidth>
+            <InputLabel id='form-layouts-separator-select-label'>Product Unit</InputLabel>
+            <Select
+              name='product_unit'
+              label='Product Unit'
+              id='form-layouts-separator-select'
+              labelId='form-layouts-separator-select-label'
+              required
+              value={unitValue}
+              onChange={e => setUnitValue(e.target.value)}
+              size='small'
+            >
+              {units?.map((item, i) => (
+                <MenuItem key={i} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
 
         <Grid item xs={6}>
@@ -96,7 +124,10 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
             multiple
             options={offlineProducts}
             getOptionLabel={option => option.product_name}
-            renderInput={params => <TextField name='offlineProduct' {...params} label='Offline Products' />}
+            renderInput={params => (
+              <TextField size='small' name='offlineProduct' {...params} label='Offline Products' />
+            )}
+            size='small'
           />
           {/* {offlineProductId.length === 0 && (
             <Typography variant='body2' color='error' fontSize={12}>
@@ -119,7 +150,8 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
             value={onlineProductName}
             options={onlineProducts}
             getOptionLabel={option => option.product_name}
-            renderInput={params => <TextField name='onlineProduct' {...params} label='Online Products' />}
+            renderInput={params => <TextField size='small' name='onlineProduct' {...params} label='Online Products' />}
+            size='small'
           />
           {/* {onlineProductId.length === 0 && (
             <Typography variant='body2' color='error' fontSize={12}>
@@ -129,34 +161,13 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <FormControl fullWidth>
-            <InputLabel id='form-layouts-separator-select-label'>Product Unit</InputLabel>
-            <Select
-              name='product_unit'
-              label='Product Unit'
-              id='form-layouts-separator-select'
-              labelId='form-layouts-separator-select-label'
-              required
-              value={unitValue}
-              onChange={e => setUnitValue(e.target.value)}
-            >
-              {units?.map((item, i) => (
-                <MenuItem key={i} value={item}>
-                  {item}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={12}>
           <Button
             onClick={e => {
               e.stopPropagation()
             }}
             type='submit'
             variant='contained'
-            size='large'
+            size='small'
           >
             Submit
           </Button>

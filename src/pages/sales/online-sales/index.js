@@ -13,7 +13,7 @@ import { uploadOnlineSalesCsv } from 'src/@core/apiFunction/csvUpload'
 import { getToken } from 'src/@core/utils/manageToken'
 
 const CustomInput = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Sales Date' autoComplete='off' />
+  return <TextField size='small' fullWidth {...props} inputRef={ref} label='Sales Date' autoComplete='off' />
 })
 
 const OnlineSales = () => {
@@ -41,6 +41,7 @@ const OnlineSales = () => {
         style={{ margin: '10px', marginLeft: 'auto', display: 'block', width: '230px' }}
         variant='contained'
         color='primary'
+        size='small'
       >
         Download Sample CSV
       </Button>
@@ -64,8 +65,8 @@ const OnlineSales = () => {
           </DatePickerWrapper>
         </Box>
         <Box display='flex' alignItems='center'>
-          <TextField className='search-field' style={{ borderRight: 'none' }} placeholder='Search' />
-          <Button style={{ padding: '15.5px 18px', borderRadius: '0 5px 5px 0' }} variant='outlined'>
+          <TextField className='search-field' style={{ borderRight: 'none' }} placeholder='Search' size='small' />
+          <Button style={{ padding: '8px 18px', borderRadius: '0 5px 5px 0' }} variant='outlined' size='small'>
             Search
           </Button>
         </Box>

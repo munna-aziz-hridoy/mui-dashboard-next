@@ -31,7 +31,7 @@ const FormSelectTax = ({ setPurchaseData, setTotalTax, invoiceTotal }) => {
 
   return (
     <Grid item xs={3}>
-      <FormControl>
+      <FormControl size='small'>
         {/* <FormLabel id='demo-radio-buttons-group-label'>Tax</FormLabel> */}
         <RadioGroup
           onChange={e => handleSetTax(e)}

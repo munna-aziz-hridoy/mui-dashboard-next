@@ -50,7 +50,7 @@ const AddOnlineProduct = ({ refetch }) => {
 
   return (
     <form onSubmit={handleAddOnlineProduct} style={{ padding: '20px' }}>
-      <Grid container spacing={5}>
+      <Grid container spacing={2}>
         <Grid item xs={6}>
           <TextField
             onChange={e => setName(e.target.value)}
@@ -59,6 +59,7 @@ const AddOnlineProduct = ({ refetch }) => {
             label='Prodct Name'
             placeholder='Product Name'
             required
+            size='small'
           />
           {/* {name.length > 20 && (
             <Typography variant='body2' color='error' fontSize={12}>
@@ -75,6 +76,7 @@ const AddOnlineProduct = ({ refetch }) => {
             label='Prodct Id'
             placeholder='Product Id'
             required
+            size='small'
           />
 
           {id.length > 3 && (
@@ -91,21 +93,30 @@ const AddOnlineProduct = ({ refetch }) => {
             label='Regular Price'
             placeholder='Regular Price'
             required
+            size='small'
           />
         </Grid>
         <Grid item xs={6}>
-          <TextField type='number' name='sale_price' fullWidth label='Sale Price' placeholder='Sale Price' required />
+          <TextField
+            type='number'
+            name='sale_price'
+            fullWidth
+            label='Sale Price'
+            placeholder='Sale Price'
+            required
+            size='small'
+          />
         </Grid>
         <Grid item xs={6}>
-          <TextField name='category' fullWidth label='Category' placeholder='Category' />
+          <TextField name='category' fullWidth label='Category' placeholder='Category' size='small' />
         </Grid>
 
         <Grid item xs={6}>
-          <TextField type='number' name='sku' fullWidth label='Sku' placeholder='Sku' />
+          <TextField type='number' name='sku' fullWidth label='Sku' placeholder='Sku' size='small' />
         </Grid>
 
         <Grid item xs={12}>
-          <Button type='submit' variant='contained' size='large'>
+          <Button type='submit' variant='contained' size='small'>
             Submit
           </Button>
         </Grid>

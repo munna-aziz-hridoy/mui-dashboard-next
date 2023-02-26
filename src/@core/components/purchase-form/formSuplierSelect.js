@@ -56,16 +56,24 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
     setOpenSuplierList(false)
   }
 
+  console.log(suplierName)
+
   return (
-    <Grid item xs={12} sm={6} style={{ position: 'relative' }}>
+    <Grid item xs={12} position='relative'>
       <TextField
         onClick={handleInputClick}
         onChange={handleSearchSuplier}
+        onBlur={() => {
+          setTimeout(() => {
+            setOpenSuplierList(false)
+          }, [200])
+        }}
         fullWidth
         label='Search Suplier'
         placeholder='Search Suplier'
         value={suplierName}
         required
+        size='small'
       />
 
       {/* {!suplierName && (
@@ -75,6 +83,7 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
       )} */}
 
       <Box
+        component='div'
         style={{ display: openSuplierList ? 'block' : 'none', width: '92%' }}
         borderRadius={1}
         boxShadow={5}
@@ -93,7 +102,7 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
             searchedSuplier?.map(item => (
               <ListItem
                 key={item?.id}
-                onClick={() => handleSetPurchaseData(item)}
+                onClick={e => handleSetPurchaseData(item)}
                 color='#fff'
                 style={{ cursor: 'pointer' }}
               >

@@ -48,8 +48,8 @@ const FormPaymentStatus = ({ setPurchaseData, clearForm }) => {
   }
 
   return (
-    <Grid item xs={12} sm={6}>
-      <FormControl fullWidth>
+    <Grid item xs={12}>
+      <FormControl size='small' fullWidth>
         <InputLabel id='form-layouts-separator-select-label'>Payment Status</InputLabel>
         <Select
           onChange={handleChangePaymentStatus}

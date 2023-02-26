@@ -129,10 +129,16 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
       <TextField
         onClick={handleInputClick}
         onChange={handleSearchProduct}
+        onBlur={() => {
+          setTimeout(() => {
+            setOpenProductList(false)
+          }, [200])
+        }}
         fullWidth
         label='Search Products'
         placeholder='Search Products'
         value={productName}
+        size='small'
       />
 
       {/* {showError && (
