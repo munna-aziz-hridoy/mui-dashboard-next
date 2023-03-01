@@ -1,14 +1,8 @@
-const UserIcon = props => {
+const UserIcon = ({ icon, iconProps, isActive }) => {
   // ** Props
-  const { icon, iconProps, isActive } = props
-  const IconTag = icon
-  let styles
 
-  /* styles = {
-      color: 'red',
-      fontSize: '2rem'
-    } */
-  // @ts-ignore
+  const IconTag = icon
+
   return <IconTag {...iconProps} style={{ color: isActive ? '#fff' : '#100720' }} />
 }
 

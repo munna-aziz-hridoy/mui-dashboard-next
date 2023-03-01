@@ -34,3 +34,17 @@ export const addSupplier = async (supplierData, token) => {
     return { success: true }
   } else return { success: false }
 }
+
+export const getSingleSupplier = async (id, token) => {
+  const url = `${API_URL}/supplier/${id}`
+
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+
+  const data = await res.json()
+
+  return data
+}

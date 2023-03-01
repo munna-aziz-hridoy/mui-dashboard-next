@@ -125,11 +125,19 @@ const AddPurchaseForm = () => {
             } else {
               toast.error('Invoice Not added')
               setLoading(false)
+              setClearForm(true)
+              setTotalTax(0)
+              setInvoiceTotal(0)
+              setInvoiceFile(null)
             }
           })
           .catch(err => {
             toast.error('Invoice Not added')
             setLoading(false)
+            setClearForm(true)
+            setTotalTax(0)
+            setInvoiceTotal(0)
+            setInvoiceFile(null)
           })
       } else {
         toast.error('Failed to upload image')
@@ -137,8 +145,6 @@ const AddPurchaseForm = () => {
       }
     })
   }
-
-  console.log(purchaseData)
 
   return (
     <Card>

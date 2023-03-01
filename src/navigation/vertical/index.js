@@ -1,21 +1,13 @@
 // ** Icon imports
-import Login from 'mdi-material-ui/Login'
-import Table from 'mdi-material-ui/Table'
-import CubeOutline from 'mdi-material-ui/CubeOutline'
-import HomeOutline from 'mdi-material-ui/HomeOutline'
-import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
-import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
-import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
-import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
-import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
-import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
+
+import { HomeOutline, AccountCogOutline } from 'mdi-material-ui'
 
 import { BiPurchaseTag, BiListCheck, BiMoney } from 'react-icons/bi'
-import { AiOutlineDropbox } from 'react-icons/ai'
+import { AiOutlineDropbox, AiOutlineFundView } from 'react-icons/ai'
 import { TiDropbox } from 'react-icons/ti'
 import { GiBoxUnpacking } from 'react-icons/gi'
 import { GrUserManager } from 'react-icons/gr'
-import { RiScales2Fill, RiStockLine } from 'react-icons/ri'
+import { RiStockLine } from 'react-icons/ri'
 
 const navigation = () => {
   return [
@@ -61,6 +53,12 @@ const navigation = () => {
       title: 'Purchase List',
       icon: BiListCheck,
       path: '/purchase/purchase-list'
+    },
+
+    {
+      title: 'Purchase Overview',
+      icon: AiOutlineFundView,
+      path: '/purchase/purchase-overview'
     },
 
     {

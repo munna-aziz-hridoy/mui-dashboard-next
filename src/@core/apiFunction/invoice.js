@@ -11,6 +11,7 @@ export const postInvoice = async (postData, token) => {
     },
     body: JSON.stringify(postData)
   })
+
   const data = await res.json()
 
   if (data?.invoice_date) {
@@ -39,6 +40,23 @@ export const getAllInvoiceList = async (searchText, dateRange, supplier, payment
     return data?.data
   } else {
     return []
+  }
+}
+
+export const getSingleInvoiceDetails = async (id, token) => {
+  const url = `${API_URL}/invoice/${id}/`
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+
+  const data = await res.json()
+
+  if (data?.id) {
+    return data
+  } else {
+    return null
   }
 }
 

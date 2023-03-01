@@ -8,7 +8,7 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import { Divider, Typography } from '@mui/material'
 
-const SalesTable = ({ salesData }) => {
+const SalesTable = ({ sellData }) => {
   return (
     <TableContainer component={Paper} sx={{ maxHeight: 750 }}>
       <Table size='small' stickyHeader>
@@ -18,27 +18,34 @@ const SalesTable = ({ salesData }) => {
             <TableCell>Product Name</TableCell>
             <TableCell>Barcode</TableCell>
             <TableCell>Unit Price</TableCell>
-            <TableCell>Sell Price</TableCell>
             <TableCell>Quantity</TableCell>
+            <TableCell>Sell Price</TableCell>
+            <TableCell>Discounted Price</TableCell>
             <TableCell>Total Customer</TableCell>
-            <TableCell>Profit</TableCell>
+            {/* <TableCell>Profit</TableCell> */}
+            <TableCell>Return Count</TableCell>
             <TableCell>Return amount</TableCell>
             <TableCell>Total Discount</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell>2023-02-17</TableCell>
-            <TableCell>Ashirbad Ata</TableCell>
-            <TableCell>039403034</TableCell>
-            <TableCell>110</TableCell>
-            <TableCell>130</TableCell>
-            <TableCell>200</TableCell>
-            <TableCell>90</TableCell>
-            <TableCell>4000</TableCell>
-            <TableCell>14</TableCell>
-            <TableCell>6000</TableCell>
-          </TableRow>
+          {sellData?.map((item, i) => {
+            return (
+              <TableRow key={i}>
+                <TableCell>{item?.sell_date}</TableCell>
+                <TableCell>{item?.product_name}</TableCell>
+                <TableCell>{item?.barcode}</TableCell>
+                <TableCell>¥{item?.unit_price}</TableCell>
+                <TableCell>{item?.quantity}</TableCell>
+                <TableCell>¥{item?.sell_price}</TableCell>
+                <TableCell>¥{item?.sell_price_after_discount}</TableCell>
+                <TableCell>{item?.num_of_customers}</TableCell>
+                <TableCell>{item?.returned_count || 0}</TableCell>
+                <TableCell>¥{item?.returned_amount || 0}</TableCell>
+                <TableCell>¥{item?.total_discount || 0}</TableCell>
+              </TableRow>
+            )
+          })}
 
           {/* {salesData?.map(item => {
             const { id, product, quantity, unit_cost } = item

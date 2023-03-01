@@ -130,14 +130,18 @@ export const getOnlineProducts = async (page, token) => {
 
 // offline product
 
-export const getOfflineProducts = async (page, token) => {
-  const url = page > 1 ? `${API_URL}/offline_product/?page=${page}` : `${API_URL}/offline_product/`
+export const getOfflineProducts = async (searchQuery = '', page, token) => {
+  const url =
+    page > 1
+      ? `${API_URL}/offline_product/?search=${searchQuery}&page=${page}`
+      : `${API_URL}/offline_product/?search=${searchQuery}`
 
   const res = await fetch(url, {
     headers: {
       authorization: `Bearer ${token}`
     }
   })
+
   if (res.status !== 200) return { success: false, data: [] }
   const data = await res.json()
 
@@ -145,6 +149,26 @@ export const getOfflineProducts = async (page, token) => {
     return { success: true, data: data?.data, total_pages: data?.total_pages }
   } else {
     return { success: false, data: [] }
+  }
+}
+
+// get internal product by id
+
+export const getInternalProductById = async (id, token) => {
+  const url = `${API_URL}/internal_product/${id}/`
+
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+
+  const data = await res.json()
+
+  if (data?.id) {
+    return data
+  } else {
+    return null
   }
 }
 
@@ -220,8 +244,8 @@ export const addOfflineProduct = async (productData, token) => {
   }
 }
 
-export const internalProductDetailsInfo = async (id, token) => {
-  const url = `${API_URL}/internal_product/${id}/purchase_detail/`
+export const internalProductPurchaseDetails = async (id, token, page) => {
+  const url = `${API_URL}/internal_product/${id}/purchase_detail/?page=${page}`
 
   const res = await fetch(url, {
     headers: {
@@ -229,8 +253,21 @@ export const internalProductDetailsInfo = async (id, token) => {
     }
   })
 
-  console.log(res)
-
   const data = await res.json()
-  console.log(data)
+
+  return data
+}
+
+export const internalProductSellDetails = async (id, token, page) => {
+  const url = `${API_URL}/internal_product/${id}/offline_sell_detail/?page=${page}`
+
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+
+  const data = await res.json(data)
+
+  return data
 }

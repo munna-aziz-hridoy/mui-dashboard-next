@@ -111,6 +111,7 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
 
         <Grid item xs={6}>
           <Autocomplete
+            filterSelectedOptions
             onChange={(e, value) => {
               const productId = value.map(item => parseFloat(item.barcode))
               const productName = value.map(item => {
@@ -138,6 +139,7 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
 
         <Grid item xs={6}>
           <Autocomplete
+            filterSelectedOptions
             onChange={(e, value) => {
               const productId = value.map(item => parseFloat(item.product_ID))
               const productName = value.map(item => {

@@ -17,6 +17,8 @@ import formatedDate from 'src/@core/utils/getFormatedDate'
 import { getAllInvoiceList } from 'src/@core/apiFunction/invoice'
 import { getToken } from 'src/@core/utils/manageToken'
 
+import SelectProduct from 'src/@core/components/purchase-list/SelectProduct'
+
 const CustomInput = forwardRef((props, ref) => {
   return <TextField size='small' fullWidth {...props} inputRef={ref} label='Purchase Date' autoComplete='off' />
 })
@@ -31,6 +33,7 @@ const PurchaseList = ({}) => {
   const [invoices, setInvoices] = useState([])
   const [loading, setLoading] = useState(false)
   const [refetch, setRefetch] = useState(false)
+  const [clearForm, setClearForm] = useState(false)
 
   const router = useRouter()
 
@@ -60,6 +63,7 @@ const PurchaseList = ({}) => {
 
   const handleSearch = () => {
     setRefetch(prev => !prev)
+    setClearForm(prev => !prev)
   }
 
   const handleResetFilter = () => {
@@ -69,6 +73,7 @@ const PurchaseList = ({}) => {
     setSupplier('')
     setPaymentStatus('')
     setRefetch(prev => !prev)
+    setClearForm(prev => !prev)
   }
 
   return (
@@ -77,16 +82,9 @@ const PurchaseList = ({}) => {
         <CardHeader style={{ padding: '10px 25px' }} title='Purchase List' titleTypographyProps={{ variant: 'h6' }} />
         <Divider sx={{ margin: 0 }} />
 
-        <Grid container spacing={3} marginTop={1} marginBottom={10}>
+        <Grid container spacing={2} marginTop={1} marginBottom={3}>
           <Grid item xs={3}>
-            <TextField
-              onChange={e => {
-                setProductName(e.target.value)
-              }}
-              fullWidth
-              placeholder='Search by product name'
-              size='small'
-            />
+            <SelectProduct selectedProduct={productName} setSelectedProduct={setProductName} clearForm={clearForm} />
           </Grid>
           <Grid item xs={3}>
             <DatePickerWrapper>

@@ -1,5 +1,8 @@
-import { Button, Card, CardHeader, CircularProgress, Divider, Typography } from '@mui/material'
 import React, { useEffect, useState, Fragment } from 'react'
+import { Box, Button, Card, CardHeader, CircularProgress, TextField, Typography } from '@mui/material'
+
+import { HiMagnifyingGlass } from 'react-icons/hi2'
+
 import toast, { Toaster } from 'react-hot-toast'
 import { uploadInternalProductCsv } from 'src/@core/apiFunction/csvUpload'
 import { getSearchedProduct } from 'src/@core/apiFunction/product'
@@ -19,23 +22,24 @@ const InternalProduct = () => {
   const [page, setPage] = useState(0)
   const [totalPages, setTotalPages] = useState(1)
 
+  const [searchQuery, setSearchQuery] = useState('')
+
   const { access_token } = getToken()
 
   useEffect(() => {
     setLoading(true)
-    getSearchedProduct('', page, access_token).then(data => {
+    getSearchedProduct(searchQuery || '', page, access_token).then(data => {
       setInternalProducts(data.data)
       setTotalPages(data.total_pages)
       setLoading(false)
     })
-  }, [refetch, page])
+  }, [refetch, page, searchQuery])
 
   const handleUploadInternalProductCsv = (csv, setCsv) => {
     if (csv) {
       const internalProductData = new FormData()
       internalProductData.append('internal_product_file', csv)
       uploadInternalProductCsv(internalProductData, access_token).then(data => {
-        console.log(data)
         if (data.success) {
           toast.success(data.message)
         } else {
@@ -74,9 +78,30 @@ const InternalProduct = () => {
       </Card>
 
       <Card style={{ marginTop: '2rem' }}>
-        <Typography variant='body1' fontSize={18} fontWeight={600} marginLeft={4} marginBottom={5} marginTop={5}>
-          Product list
-        </Typography>
+        <Box component='div' display='flex' justifyContent='space-between' alignItems='center'>
+          <Typography variant='body1' fontSize={18} fontWeight={600} marginLeft={4} marginBottom={5} marginTop={5}>
+            Product list
+          </Typography>
+
+          <Box component='div' marginRight={3}>
+            <TextField
+              onChange={e => {
+                setSearchQuery(e.target.value)
+              }}
+              value={searchQuery}
+              size='small'
+              className='search-field'
+              style={{ borderRight: 'none' }}
+              placeholder='Search'
+            />
+            <Button
+              style={{ padding: '8.7px 18px', borderRadius: '0 5px 5px 0', marginTop: '0.5px' }}
+              variant='outlined'
+            >
+              <HiMagnifyingGlass fontSize={20} />
+            </Button>
+          </Box>
+        </Box>
 
         {loading && <CircularProgress color='inherit' style={{ margin: '0 auto', display: 'inherit' }} />}
 

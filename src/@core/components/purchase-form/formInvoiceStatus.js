@@ -32,8 +32,6 @@ const FormInvoiceStatus = ({ setPurchaseData, clearForm }) => {
     setSelectedStatus(invoice)
   }
 
-  console.log(invoiceStatus)
-
   return (
     <Grid item xs={12}>
       <FormControl size='small' fullWidth>

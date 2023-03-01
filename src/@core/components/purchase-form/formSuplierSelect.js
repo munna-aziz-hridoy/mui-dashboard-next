@@ -49,14 +49,12 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
     setPurchaseData(prev => {
       return {
         ...prev,
-        suplier: item?.id
+        supplier: item?.id
       }
     })
     setSuplierName(item?.name)
     setOpenSuplierList(false)
   }
-
-  console.log(suplierName)
 
   return (
     <Grid item xs={12} position='relative'>

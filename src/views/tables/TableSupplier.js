@@ -6,8 +6,13 @@ import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
+import { Button } from '@mui/material'
+import { AiFillEye } from 'react-icons/ai'
+import { useRouter } from 'next/router'
 
 const TableSupplier = ({ supplier }) => {
+  const router = useRouter()
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
@@ -18,6 +23,7 @@ const TableSupplier = ({ supplier }) => {
             <TableCell>Email</TableCell>
             <TableCell>Fax</TableCell>
             <TableCell>Address</TableCell>
+            <TableCell>View</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -29,7 +35,12 @@ const TableSupplier = ({ supplier }) => {
               <TableCell>{row?.phone}</TableCell>
               <TableCell>{row?.email}</TableCell>
               <TableCell>{row?.fax}</TableCell>
-              <TableCell>{row?.address}</TableCell>
+              <TableCell>{row?.address.length > 40 ? `${row?.address.slice(0, 40)}...` : row?.address}</TableCell>
+              <TableCell>
+                <Button onClick={() => router.push(`/others/supplier/${row?.id}`)} variant='outlined' size='small'>
+                  <AiFillEye />
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

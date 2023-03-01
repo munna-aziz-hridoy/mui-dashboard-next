@@ -3,7 +3,7 @@ import React from 'react'
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 
 // ** MUI imports
-import { Box, Modal, Card } from '@mui/material'
+import { Box, Modal, Card, Typography } from '@mui/material'
 
 // ** Icon imports
 
@@ -14,6 +14,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   height: 850,
   maxWidth: 550,
+  minWidth: 500,
   maxHeight: '95vh',
   bgcolor: 'background.paper',
   boxShadow: 24,
@@ -27,14 +28,28 @@ const style = {
 const ViewInvoiceImageModal = ({ open, setOpen, invoiceImage }) => {
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
-      <Box sx={style}>
-        <Card style={{ cursor: 'zoom-in' }}>
-          <TransformWrapper>
-            <TransformComponent>
-              <img src={invoiceImage} style={{ width: '100%' }} />
-            </TransformComponent>
-          </TransformWrapper>
-        </Card>
+      <Box component='div' sx={style}>
+        {invoiceImage ? (
+          <Card style={{ cursor: 'zoom-in' }}>
+            <TransformWrapper>
+              <TransformComponent>
+                <img src={invoiceImage} style={{ width: '100%' }} />
+              </TransformComponent>
+            </TransformWrapper>
+          </Card>
+        ) : (
+          <Box
+            component='div'
+            style={{ width: '100%', height: '100%' }}
+            display='flex'
+            justifyContent='center'
+            alignItems='center'
+          >
+            <Typography variant='body2' fontWeight={500}>
+              No Preview Available
+            </Typography>
+          </Box>
+        )}
       </Box>
     </Modal>
   )

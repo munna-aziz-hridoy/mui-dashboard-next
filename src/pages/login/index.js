@@ -41,7 +41,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import { loginUser } from 'src/@core/apiFunction/authentication'
+import { checkUser, loginUser } from 'src/@core/apiFunction/authentication'
 import { getToken, saveToken } from 'src/@core/utils/manageToken'
 
 import useAuthStore from 'src/store/authStore'
@@ -76,7 +76,7 @@ const LoginPage = () => {
   const theme = useTheme()
   const router = useRouter()
 
-  const { user, addUser } = useAuthStore()
+  const { user, addUser, addToken } = useAuthStore()
 
   useEffect(() => {
     if (user) {
@@ -106,10 +106,11 @@ const LoginPage = () => {
         if (data.success) {
           toast.success('Login successfull')
           saveToken(data.access, data.refresh)
-          const tokenData = jwt.decode(data.access)
-          addUser(tokenData)
-          console.log(tokenData)
-          router.push('/')
+          addToken({ access_token: data.access, refresh_token: data.refresh })
+          checkUser(data?.access).then(data => {
+            addUser(data)
+            router.push('/')
+          })
         }
       })
     }

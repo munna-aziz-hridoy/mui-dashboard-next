@@ -11,6 +11,7 @@ import PrintedInvoiceModal from 'src/@core/components/modal/printedInvoiceModal'
 import ViewPaymentModal from 'src/@core/components/modal/viewPaymentModal'
 import ViewInvoiceImageModal from 'src/@core/components/modal/viewInvoiceImageModal'
 import { AiFillEye } from 'react-icons/ai'
+import { useRouter } from 'next/router'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -96,14 +97,22 @@ const InvoiceTableRow = ({ invoice, refetch, refetchValue }) => {
           </Typography>
         </StyledTableCell>
         <StyledTableCell onClick={e => e.stopPropagation()}>
-          <ActionButton
-            viewInvoiceModal={setOpenInvoiceModal}
-            openPaymentModal={setOpenPaymentModal}
-            viewPaymentModal={setOpenViewPaymentModal}
-            paymentStatus={payment_status}
-          />
+          <Box
+            component='div'
+            display='flex'
+            justifyContent='center'
+            alignItems='center'
+            flexDirection='column-reverse'
+            gap={1}
+          >
+            <ActionButton
+              viewInvoiceModal={setOpenInvoiceModal}
+              openPaymentModal={setOpenPaymentModal}
+              viewPaymentModal={setOpenViewPaymentModal}
+              paymentStatus={payment_status}
+            />
+          </Box>
         </StyledTableCell>
-        {/* <InvoiceModal open={openInvoiceModal} setOpen={setOpenInvoiceModal} /> */}
       </StyledTableRow>
       <PrintedInvoiceModal open={openInvoiceModal} setOpen={setOpenInvoiceModal} invoice={invoice} />
       <AddPaymentModal

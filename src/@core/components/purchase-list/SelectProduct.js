@@ -1,31 +1,24 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { getSearchedProduct } from 'src/@core/apiFunction/product'
-import AddProduct from 'src/@core/components/modal/addProductModal'
 
 // ** MUI import
 
-import { Grid, TextField, Box, List, ListItem, CircularProgress, Typography, Button } from '@mui/material'
+import { Grid, TextField, Box, List, ListItem, CircularProgress, Typography } from '@mui/material'
 import { getToken } from 'src/@core/utils/manageToken'
 
-const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
-  const [productName, setProductName] = useState('')
-  const [searchValue, setSearchValue] = useState('')
-
+const SelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) => {
   const [searchedProduct, setSearchedProduct] = useState([])
 
   const [productLoading, setProductLoading] = useState(false)
-  const [openProductModal, setOpenProductModal] = useState(false)
-  const [openProductList, setOpenProductList] = useState(false)
 
-  const [page, setPage] = useState(1)
-  const [totalPage, setTotalPage] = useState(1)
+  const [openProductList, setOpenProductList] = useState(false)
 
   const bottomBoundaryRef = useRef()
 
   const { access_token } = getToken()
 
   useEffect(() => {
-    setSelectedProduct([])
+    setSelectedProduct('')
   }, [clearForm])
 
   // useEffect(() => {
@@ -72,13 +65,13 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
   const handleSearchProduct = e => {
     const searchText = e.target.value
 
-    setProductName(searchText)
+    setSelectedProduct(searchText)
     if (searchText !== '') {
       setProductLoading(true)
       setOpenProductList(true)
       getSearchedProduct(searchText, 0, access_token).then(data => {
         setSearchedProduct(data.data)
-        setTotalPage(data.total_pages)
+
         setProductLoading(false)
       })
     } else {
@@ -87,32 +80,14 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
   }
 
   const handleSelectProduct = item => {
-    setSelectedProduct(prev => {
-      const selectedItem = {
-        product: item.id,
-        product_unit: item.product_unit,
-        product_name: item.product_name,
-        prev_unit_cost: item.unit_cost,
-        offline_name: item.offlineProduct.map(productItem => productItem?.product_name),
-        online_name: item.onlineProduct.map(productItem => productItem?.product_name)
-      }
-      const exists = prev.find(prevPro => prevPro.product === selectedItem.product)
-
-      if (!exists) {
-        return [...prev, selectedItem]
-      } else {
-        return prev
-      }
-    })
     setOpenProductList(false)
-    setProductName('')
+    setSelectedProduct(item.product_name)
   }
 
   const handleInputClick = () => {
     setOpenProductList(prev => !prev)
     getSearchedProduct('', 0, access_token).then(data => {
       setSearchedProduct(data.data)
-      setTotalPage(data.total_pages)
     })
   }
 
@@ -129,15 +104,9 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
         fullWidth
         label='Search by Products'
         placeholder='Search by Products'
-        value={productName}
+        value={selectedProduct}
         size='small'
       />
-
-      {/* {showError && (
-        <Typography variant='body2' color='error' fontSize={12}>
-          Add product
-        </Typography>
-      )} */}
 
       <Box
         position='absolute'
@@ -156,7 +125,7 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
             <ListItem>
               <CircularProgress color='inherit' style={{ margin: '0 auto' }} />
             </ListItem>
-          ) : searchedProduct?.length !== 0 ? (
+          ) : (
             searchedProduct?.map(item => (
               <Fragment key={item?.id}>
                 <ListItem onClick={() => handleSelectProduct(item)} color='#fff' style={{ cursor: 'pointer' }}>
@@ -167,24 +136,11 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
                 <div ref={bottomBoundaryRef} />
               </Fragment>
             ))
-          ) : (
-            <ListItem>
-              <Button
-                onClick={() => setOpenProductModal(true)}
-                fullWidth
-                variant='outlined'
-                style={{ borderColor: '#fff', color: '#fff' }}
-              >
-                Add This product
-              </Button>
-            </ListItem>
           )}
         </List>
       </Box>
-
-      <AddProduct open={openProductModal} setOpen={setOpenProductModal} />
     </Grid>
   )
 }
 
-export default FormSelectProduct
+export default SelectProduct

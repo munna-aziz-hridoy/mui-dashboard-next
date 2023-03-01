@@ -1,5 +1,5 @@
-import React, { forwardRef } from 'react'
-import { Box, Typography, TextField, Button } from '@mui/material'
+import React, { forwardRef, useEffect, useState } from 'react'
+import { Box, Typography, TextField, Button, CircularProgress } from '@mui/material'
 
 import DatePicker from 'react-datepicker'
 import toast, { Toaster } from 'react-hot-toast'
@@ -11,13 +11,26 @@ import SalesTable from 'src/views/tables/SalesTable'
 import 'react-datepicker/dist/react-datepicker.css'
 import { uploadOnlineSalesCsv } from 'src/@core/apiFunction/csvUpload'
 import { getToken } from 'src/@core/utils/manageToken'
+import { getOnlineSells } from 'src/@core/apiFunction/sell'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField size='small' fullWidth {...props} inputRef={ref} label='Sales Date' autoComplete='off' />
 })
 
 const OnlineSales = () => {
+  const [onlineSellData, setOnlineSellData] = useState([])
+
+  const [loading, setLoading] = useState(false)
+
   const { access_token } = getToken()
+
+  useEffect(() => {
+    setLoading(true)
+    getOnlineSells(access_token).then(data => {
+      setOnlineSellData(data)
+      setLoading(false)
+    })
+  }, [])
 
   const handleUploadOnlineSalesData = (csv, setCsv) => {
     if (csv) {
@@ -72,7 +85,13 @@ const OnlineSales = () => {
         </Box>
       </Box>
 
-      <SalesTable />
+      {loading && (
+        <Box component='div' display='flex' justifyContent='center' alignItems='center' padding={10}>
+          <CircularProgress color='primary' />
+        </Box>
+      )}
+
+      {!loading && <SalesTable sellData={onlineSellData} />}
       <Toaster />
     </div>
   )

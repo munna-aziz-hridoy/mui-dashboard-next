@@ -53,8 +53,6 @@ const EditProduct = ({ open, setOpen, productData, setProducts }) => {
     })
   }
 
-  console.log(productData)
-
   return (
     <Modal id={product} open={open} onClose={() => setOpen(false)}>
       <Box sx={style}>

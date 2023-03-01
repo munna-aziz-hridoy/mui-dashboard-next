@@ -9,6 +9,8 @@ const FormChangeTax = ({ setTotalTax, purchaseData, totalTax, clearForm, invoice
 
   useEffect(()=>{
     setTotalTax(0)
+    purchaseData?.tax = 0
+    purchaseData?.tax_percentage=0
   },[clearForm])
 
   useEffect(()=>{

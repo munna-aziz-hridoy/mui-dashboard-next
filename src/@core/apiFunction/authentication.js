@@ -17,3 +17,21 @@ export const loginUser = async userData => {
     return { success: true, ...data }
   }
 }
+
+export const checkUser = async token => {
+  const url = `${API_URL}/user/`
+
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+
+  const data = await res.json()
+
+  if (data?.id) {
+    return data
+  } else {
+    return null
+  }
+}

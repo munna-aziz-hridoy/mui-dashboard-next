@@ -15,6 +15,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography
 } from '@mui/material'
 import React, { Fragment, useEffect, useState } from 'react'
@@ -29,6 +30,7 @@ import middleCategoryData from 'src/@core/utils/cat-data'
 import { uploadOfflineProductCsv } from 'src/@core/apiFunction/csvUpload'
 import AffectedTable from 'src/views/tables/affectedTable'
 import { getToken } from 'src/@core/utils/manageToken'
+import { HiMagnifyingGlass } from 'react-icons/hi2'
 
 const InternalProduct = () => {
   const [offlineProducts, setOfflineProducts] = useState([])
@@ -42,11 +44,13 @@ const InternalProduct = () => {
 
   const [affectedRows, setAffectedRows] = useState([])
 
+  const [searchQuery, setSearchQuery] = useState('')
+
   const { access_token } = getToken()
 
   useEffect(() => {
     setLoading(true)
-    getOfflineProducts(page, access_token).then(data => {
+    getOfflineProducts('', page, access_token).then(data => {
       if (data.success) {
         setOfflineProducts(data.data)
         setTotalPages(data?.total_pages)
@@ -123,9 +127,30 @@ const InternalProduct = () => {
         <AddOfflineProduct refetch={setRefetch} />
       </Card>
       <Card style={{ marginTop: '2rem' }}>
-        <Typography variant='body1' fontSize={18} fontWeight={600} marginLeft={4} marginBottom={5} marginTop={5}>
-          Product list
-        </Typography>
+        <Box component='div' display='flex' justifyContent='space-between' alignItems='center'>
+          <Typography variant='body1' fontSize={18} fontWeight={600} marginLeft={4} marginBottom={5} marginTop={5}>
+            Product list
+          </Typography>
+
+          <Box component='div' marginRight={3}>
+            <TextField
+              onChange={e => {
+                setSearchQuery(e.target.value)
+              }}
+              value={searchQuery}
+              size='small'
+              className='search-field'
+              style={{ borderRight: 'none' }}
+              placeholder='Search'
+            />
+            <Button
+              style={{ padding: '8.7px 18px', borderRadius: '0 5px 5px 0', marginTop: '0.5px' }}
+              variant='outlined'
+            >
+              <HiMagnifyingGlass fontSize={20} />
+            </Button>
+          </Box>
+        </Box>
 
         {loading && <CircularProgress color='inherit' style={{ margin: '0 auto', display: 'inherit' }} />}
 

@@ -1,5 +1,15 @@
-import React, { forwardRef, useState } from 'react'
-import { Box, Typography, TextField, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
+import React, { forwardRef, useEffect, useState } from 'react'
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  CircularProgress
+} from '@mui/material'
 
 import DatePicker from 'react-datepicker'
 
@@ -13,15 +23,26 @@ import toast, { Toaster } from 'react-hot-toast'
 import 'react-datepicker/dist/react-datepicker.css'
 import { uploadOfflineSalesCsv } from 'src/@core/apiFunction/csvUpload'
 import { getToken } from 'src/@core/utils/manageToken'
+import { getOfflineSells } from 'src/@core/apiFunction/sell'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField size='small' fullWidth {...props} inputRef={ref} label='Sales Date' autoComplete='off' />
 })
 
 const OfflineSales = () => {
-  const [middleCatData, setMiddleCatData] = useState(null)
+  const [offlineSellData, setOfflineSellData] = useState([])
+
+  const [loading, setLoading] = useState(false)
 
   const { access_token } = getToken()
+
+  useEffect(() => {
+    setLoading(true)
+    getOfflineSells(access_token).then(data => {
+      setOfflineSellData(data)
+      setLoading(false)
+    })
+  }, [])
 
   const handleUploadOfflineSalesCsv = (csv, setCsv) => {
     if (csv) {
@@ -74,7 +95,14 @@ const OfflineSales = () => {
         </Box>
       </Box>
 
-      <SalesTable />
+      {loading && (
+        <Box component='div' display='flex' justifyContent='center' alignItems='center' padding={10}>
+          <CircularProgress color='primary' />
+        </Box>
+      )}
+
+      {!loading && <SalesTable sellData={offlineSellData} />}
+
       <Toaster />
     </div>
   )
