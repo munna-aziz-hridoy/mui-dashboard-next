@@ -15,7 +15,7 @@ const SelectPaymentSearch = ({ setPayment }) => {
   }, [])
 
   return (
-    <Grid item xs={3}>
+    <Grid item xs={2.4}>
       <FormControl size='small' fullWidth>
         <InputLabel id='form-layouts-separator-select-label'>Payment Status</InputLabel>
         <Select

@@ -41,8 +41,10 @@ const TableCustomized = ({ invoices, loading, refetch, setRefetch }) => {
         <Table size='small' stickyHeader sx={{ minWidth: 700 }} aria-label='customized table'>
           <TableHead>
             <TableRow>
-              <StyledTableCell width={20}></StyledTableCell>
-              <StyledTableCell>Date</StyledTableCell>
+              <StyledTableCell width={1}></StyledTableCell>
+
+              <StyledTableCell>Created Date</StyledTableCell>
+              <StyledTableCell>Invoice Date</StyledTableCell>
               <StyledTableCell>Invoice</StyledTableCell>
               <StyledTableCell>Suplier</StyledTableCell>
               <StyledTableCell>Purchase Status</StyledTableCell>

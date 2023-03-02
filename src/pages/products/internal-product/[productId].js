@@ -10,16 +10,18 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Grid
+  Grid,
+  Button
 } from '@mui/material'
 
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import {
   getInternalProductById,
   internalProductPurchaseDetails,
   internalProductSellDetails
 } from 'src/@core/apiFunction/product'
+import AddInternalProduct from 'src/@core/components/forms/addInternalProductForm'
 import ProductTable from 'src/@core/components/internal-product/productTable'
 import PurchaseHistoryTable from 'src/@core/components/internal-product/purchaseHistoryTable'
 import SellHistoryTable from 'src/@core/components/internal-product/sellHistoryTable'
@@ -45,6 +47,8 @@ const InternalProductDetails = () => {
   const [sellDataPageCount, setSellDataPageCount] = useState(1)
 
   const [loading, setLoading] = useState(false)
+
+  const [isEditing, setIsEditing] = useState(false)
 
   const {
     query: { productId }
@@ -77,6 +81,12 @@ const InternalProductDetails = () => {
     <Card style={{ padding: '20px' }}>
       <CardHeader title='Product details' />
       <Divider />
+      <Box component='div' display='flex' justifyContent='space-between'>
+        <div></div>
+        <Button onClick={() => setIsEditing(prev => !prev)} variant='outlined' size='small'>
+          {!isEditing ? 'Edit' : 'Close'}
+        </Button>
+      </Box>
 
       {loading && (
         <Box component='div' display='flex' justifyContent='center' alignItems='center' height={400}>
@@ -92,41 +102,47 @@ const InternalProductDetails = () => {
       )}
       {productData && (
         <Box>
-          <Typography variant='h6' fontWeight={400}>
-            Product Name: <BoldSpan>{productData?.product_name}</BoldSpan>
-          </Typography>
-          <Typography variant='body1' fontSize={16} fontWeight={400}>
-            Unit: <BoldSpan>{productData?.product_unit}</BoldSpan>
-          </Typography>
-          <Typography variant='body1' fontSize={16} fontWeight={400}>
-            Unit Cost: <BoldSpan>¥{productData?.unit_cost}</BoldSpan>
-          </Typography>
-          <Typography variant='body1' fontSize={16} fontWeight={400}>
-            Quantity: <BoldSpan>{productData?.total_quantity}</BoldSpan>
-          </Typography>
-          <Typography variant='body1' fontSize={16} fontWeight={400}>
-            Amount: <BoldSpan>¥{productData?.total_amount}</BoldSpan>
-          </Typography>
-
-          <Divider style={{ margin: '30px 0' }} />
-
-          {/* product table */}
-
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <Typography variant='body2'>
-                <BoldSpan>Online Product</BoldSpan>
+          {isEditing ? (
+            <AddInternalProduct previousData={productData} update />
+          ) : (
+            <Fragment>
+              <Typography variant='h6' fontWeight={400}>
+                Product Name: <BoldSpan>{productData?.product_name}</BoldSpan>
+              </Typography>
+              <Typography variant='body1' fontSize={16} fontWeight={400}>
+                Unit: <BoldSpan>{productData?.product_unit}</BoldSpan>
+              </Typography>
+              <Typography variant='body1' fontSize={16} fontWeight={400}>
+                Unit Cost: <BoldSpan>¥{productData?.unit_cost}</BoldSpan>
+              </Typography>
+              <Typography variant='body1' fontSize={16} fontWeight={400}>
+                Quantity: <BoldSpan>{productData?.total_quantity}</BoldSpan>
+              </Typography>
+              <Typography variant='body1' fontSize={16} fontWeight={400}>
+                Amount: <BoldSpan>¥{productData?.total_amount}</BoldSpan>
               </Typography>
 
-              <ProductTable online data={productData?.onlineProduct} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography variant='body2'>
-                <BoldSpan>Offline Product</BoldSpan>
-              </Typography>
-              <ProductTable data={productData?.offlineProduct} />
-            </Grid>
-          </Grid>
+              <Divider style={{ margin: '30px 0' }} />
+
+              {/* product table */}
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant='body2'>
+                    <BoldSpan>Online Product</BoldSpan>
+                  </Typography>
+
+                  <ProductTable online data={productData?.onlineProduct} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant='body2'>
+                    <BoldSpan>Offline Product</BoldSpan>
+                  </Typography>
+                  <ProductTable data={productData?.offlineProduct} />
+                </Grid>
+              </Grid>
+            </Fragment>
+          )}
 
           <Divider style={{ margin: '30px 0' }} />
 

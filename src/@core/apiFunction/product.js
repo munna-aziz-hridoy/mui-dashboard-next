@@ -109,7 +109,7 @@ export const getInvoiceStatusChoices = async token => {
 
 // online product
 
-export const getOnlineProducts = async (page, token) => {
+export const getOnlineProducts = async (searchQuery = '', page, token) => {
   const url = page > 1 ? `${API_URL}/online_product/?page=${page}` : `${API_URL}/online_product/`
 
   const res = await fetch(url, {

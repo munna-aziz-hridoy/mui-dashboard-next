@@ -25,8 +25,8 @@ const TableDense = ({ products, totalPages, pageCount }) => {
                 <TableCell component='th' scope='row'>
                   {row?.product_name}
                 </TableCell>
-                <TableCell>{row?.regular_price}</TableCell>
-                <TableCell>{row?.sell_price}</TableCell>
+                <TableCell>¥{row?.regular_price}</TableCell>
+                <TableCell>¥{row?.sell_price}</TableCell>
                 <TableCell>{pathname.includes('offline') ? row?.cat_name : row.categories}</TableCell>
               </TableRow>
             ))}

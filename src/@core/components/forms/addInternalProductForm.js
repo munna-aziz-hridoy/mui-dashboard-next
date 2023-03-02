@@ -4,15 +4,15 @@ import { addInternalProduct, getOfflineProducts, getOnlineProducts, getUnitChoic
 import { toast } from 'react-hot-toast'
 import { getToken } from 'src/@core/utils/manageToken'
 
-const AddInternalProduct = ({ closeModal, refetch }) => {
+const AddInternalProduct = ({ closeModal, refetch, previousData = null, update = false }) => {
   const [offlineProducts, setOfflineProducts] = useState([])
   const [onlineProducts, setOnlineProducts] = useState([])
 
   const [offlineProductId, setOfflineProductId] = useState([])
   const [onlineProductId, setOnlineProductId] = useState([])
 
-  const [offlineProductName, setOfflineProductName] = useState([])
-  const [onlineProductName, setOnlineProductName] = useState([])
+  const [offlineProductName, setOfflineProductName] = useState(previousData ? previousData?.offlineProduct : [])
+  const [onlineProductName, setOnlineProductName] = useState(previousData ? previousData?.onlineProduct : [])
 
   const [units, setUnits] = useState([])
 
@@ -21,13 +21,13 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
   const { access_token } = getToken()
 
   useEffect(() => {
-    getOfflineProducts('', access_token).then(data => {
+    getOfflineProducts('', 1, access_token).then(data => {
       if (data?.success) {
         setOfflineProducts(data?.data)
       }
     })
 
-    getOnlineProducts('', access_token).then(data => {
+    getOnlineProducts('', 1, access_token).then(data => {
       if (data?.success) {
         setOnlineProducts(data?.data)
       }
@@ -85,6 +85,7 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
             placeholder='Product Name'
             required
             size='small'
+            defaultValue={previousData?.product_name}
           />
         </Grid>
         <Grid item xs={6}>
@@ -97,6 +98,7 @@ const AddInternalProduct = ({ closeModal, refetch }) => {
               labelId='form-layouts-separator-select-label'
               required
               value={unitValue}
+              defaultValue={previousData?.product_unit}
               onChange={e => setUnitValue(e.target.value)}
               size='small'
             >

@@ -49,7 +49,7 @@ const SelectSuplierSearch = ({ setSupplier }) => {
   }
 
   return (
-    <Grid item xs={3} style={{ position: 'relative' }}>
+    <Grid item xs={2.4} style={{ position: 'relative' }}>
       <TextField
         onClick={handleInputClick}
         onChange={handleSearchSuplier}

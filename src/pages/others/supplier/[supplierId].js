@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { Fragment, useState } from 'react'
 import { useRouter } from 'next/router'
-import { Box, Card, CardHeader, CircularProgress, Divider, Typography } from '@mui/material'
+import { Box, Button, Card, CardHeader, CircularProgress, Divider, Typography } from '@mui/material'
 import SupplierPurchaseHistoryTable from 'src/views/tables/supplierPurchaseHistoryTable'
 import useSingleSupplier from 'src/@core/hooks/useSingleSupplier'
 import { getToken } from 'src/@core/utils/manageToken'
+import AddSuplierForm from 'src/@core/components/forms/addSuplierForm'
 
 const StyledTypography = ({ children, label, icon = null }) => {
   return (
@@ -14,6 +15,8 @@ const StyledTypography = ({ children, label, icon = null }) => {
 }
 
 const SupplierDetails = () => {
+  const [isEditing, setIsEditing] = useState(false)
+
   const {
     query: { supplierId }
   } = useRouter()
@@ -26,6 +29,19 @@ const SupplierDetails = () => {
     <Card>
       <CardHeader title='Supplier Details' />
       <Divider />
+      <Box
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        padding={5}
+        paddingTop={0}
+        paddingBottom={0}
+      >
+        <div />
+        <Button onClick={() => setIsEditing(prev => !prev)} size='small' variant='outlined'>
+          {isEditing ? 'Close' : 'Edit'}
+        </Button>
+      </Box>
 
       {loading && (
         <Box component='div' height={400} display='flex' justifyContent='center' alignItems='center'>
@@ -35,11 +51,17 @@ const SupplierDetails = () => {
 
       {!loading && (
         <Box component='div' padding={5}>
-          <StyledTypography label='Supplier Name'>{supplierDetails?.name}</StyledTypography>
-          <StyledTypography label='Phone'>{supplierDetails?.phone}</StyledTypography>
-          <StyledTypography label='Email'>{supplierDetails?.email}</StyledTypography>
-          <StyledTypography label='Fax'>{supplierDetails?.fax}</StyledTypography>
-          <StyledTypography label='Address'>{supplierDetails?.address}</StyledTypography>
+          {isEditing ? (
+            <AddSuplierForm update previousData={supplierDetails} />
+          ) : (
+            <Fragment>
+              <StyledTypography label='Supplier Name'>{supplierDetails?.name}</StyledTypography>
+              <StyledTypography label='Phone'>{supplierDetails?.phone}</StyledTypography>
+              <StyledTypography label='Email'>{supplierDetails?.email}</StyledTypography>
+              <StyledTypography label='Fax'>{supplierDetails?.fax}</StyledTypography>
+              <StyledTypography label='Address'>{supplierDetails?.address}</StyledTypography>
+            </Fragment>
+          )}
 
           <Box component='div' sx={{ margin: '20px 0' }}>
             <StyledTypography label='Purchase Count'>20</StyledTypography>

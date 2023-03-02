@@ -8,7 +8,7 @@ import { addSupplier } from 'src/@core/apiFunction/suplier'
 import { toast } from 'react-hot-toast'
 import { getToken } from 'src/@core/utils/manageToken'
 
-const AddSuplierForm = ({ refetch }) => {
+const AddSuplierForm = ({ refetch, previousData = null, update = false }) => {
   const [emailLength, setEmailLength] = useState(0)
 
   const { access_token } = getToken()
@@ -59,6 +59,7 @@ const AddSuplierForm = ({ refetch }) => {
                 </InputAdornment>
               )
             }}
+            defaultValue={previousData?.name}
           />
         </Grid>
         <Grid item xs={12}>
@@ -78,6 +79,7 @@ const AddSuplierForm = ({ refetch }) => {
                 </InputAdornment>
               )
             }}
+            defaultValue={previousData?.email}
           />
           {/* {emailLength > 20 && (
             <Typography variant='body2' color='error' fontSize={12}>
@@ -100,6 +102,7 @@ const AddSuplierForm = ({ refetch }) => {
                 </InputAdornment>
               )
             }}
+            defaultValue={previousData?.phone}
           />
         </Grid>
         <Grid item xs={6}>
@@ -117,6 +120,7 @@ const AddSuplierForm = ({ refetch }) => {
                 </InputAdornment>
               )
             }}
+            defaultValue={previousData?.fax}
           />
         </Grid>
         <Grid item xs={12}>
@@ -136,11 +140,12 @@ const AddSuplierForm = ({ refetch }) => {
                 </InputAdornment>
               )
             }}
+            defaultValue={previousData?.address}
           />
         </Grid>
         <Grid item xs={12}>
           <Button type='submit' variant='contained' size='small'>
-            Add Supplier
+            {update ? 'Update' : 'Add'} Supplier
           </Button>
         </Grid>
       </Grid>

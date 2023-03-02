@@ -43,6 +43,7 @@ const InvoiceTableRow = ({ invoice, refetch, refetchValue }) => {
   const {
     amount_paid,
     created_at,
+    invoice_date,
     id,
     invoice_total,
     payment_status,
@@ -64,6 +65,7 @@ const InvoiceTableRow = ({ invoice, refetch, refetchValue }) => {
           </Button>
         </StyledTableCell>
         <StyledTableCell align='left'>{created_at?.split(' ')[0]}</StyledTableCell>
+        <StyledTableCell>{invoice_date?.split(' ')[0]}</StyledTableCell>
         <StyledTableCell
           onClick={e => {
             e.stopPropagation()

@@ -55,6 +55,8 @@ const Row = ({ row }) => {
         </TableCell>
         <TableCell>{row?.product_unit}</TableCell>
         <TableCell>{row?.total_quantity}</TableCell>
+        <TableCell>¥{row?.unit_cost}</TableCell>
+        <TableCell>¥{row?.total_amount}</TableCell>
         <TableCell>
           <Link href={`/products/internal-product/${row?.id}`}>
             <AiFillEye cursor='pointer' fontSize={18} color='#100720' />
@@ -118,6 +120,8 @@ const TableCollapsible = ({ products, totalPages, pageCount }) => {
               <TableCell>Name</TableCell>
               <TableCell>Unit</TableCell>
               <TableCell>Quantity</TableCell>
+              <TableCell>Unit Cost</TableCell>
+              <TableCell>Total Amount</TableCell>
               <TableCell>View</TableCell>
               {/* <TableCell>Carbs (g)</TableCell>
             <TableCell>Protein (g)</TableCell> */}

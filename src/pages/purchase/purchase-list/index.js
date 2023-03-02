@@ -20,12 +20,15 @@ import { getToken } from 'src/@core/utils/manageToken'
 import SelectProduct from 'src/@core/components/purchase-list/SelectProduct'
 
 const CustomInput = forwardRef((props, ref) => {
-  return <TextField size='small' fullWidth {...props} inputRef={ref} label='Purchase Date' autoComplete='off' />
+  return <TextField size='small' fullWidth {...props} inputRef={ref} label={props?.label} autoComplete='off' />
 })
 
 const PurchaseList = ({}) => {
-  const [startDate, setStartDate] = useState(new Date())
-  const [endDate, setEndDate] = useState()
+  const [startDatePurchase, setStartDatePurchase] = useState(new Date())
+  const [endDatePurchase, setEndDatePurchase] = useState()
+  const [startDateCreated, setStartDateCreated] = useState(new Date())
+  const [endDateCreated, setEndDateCreated] = useState()
+
   const [supplier, setSupplier] = useState('')
   const [paymentStatus, setPaymentStatus] = useState('')
   const [productName, setProductName] = useState('')
@@ -42,13 +45,17 @@ const PurchaseList = ({}) => {
   useEffect(() => {
     setLoading(true)
 
-    const formatedStartDate = startDate ? formatedDate(startDate) : ''
-    const formatedEndDate = endDate ? formatedDate(endDate) : ''
+    const formatedStartDatePurchase = startDatePurchase ? formatedDate(startDatePurchase) : ''
+    const formatedEndDatePurchase = endDatePurchase ? formatedDate(endDatePurchase) : ''
+
+    const formatedStartDateCreated = startDateCreated ? formatedDate(startDateCreated) : ''
+    const formatedEndDateCreated = endDateCreated ? formatedDate(endDateCreated) : ''
 
     async function fetchData() {
       await getAllInvoiceList(
         productName,
-        [formatedStartDate, formatedEndDate],
+        [formatedStartDatePurchase, formatedEndDatePurchase],
+        [formatedStartDateCreated, formatedEndDateCreated],
         supplier,
         paymentStatus,
         access_token
@@ -68,8 +75,10 @@ const PurchaseList = ({}) => {
 
   const handleResetFilter = () => {
     setProductName('')
-    setEndDate('')
-    setStartDate('')
+    setEndDatePurchase('')
+    setStartDatePurchase('')
+    setEndDateCreated('')
+    setStartDateCreated('')
     setSupplier('')
     setPaymentStatus('')
     setRefetch(prev => !prev)
@@ -82,24 +91,41 @@ const PurchaseList = ({}) => {
         <CardHeader style={{ padding: '10px 25px' }} title='Purchase List' titleTypographyProps={{ variant: 'h6' }} />
         <Divider sx={{ margin: 0 }} />
 
-        <Grid container spacing={2} marginTop={1} marginBottom={3}>
-          <Grid item xs={3}>
+        <Grid container spacing={2.4} marginTop={1} marginBottom={3} justifyContent='center'>
+          <Grid item height={50} xs={2}>
             <SelectProduct selectedProduct={productName} setSelectedProduct={setProductName} clearForm={clearForm} />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2.4}>
             <DatePickerWrapper>
               <DatePicker
                 selectsRange={true}
                 showYearDropdown
                 showMonthDropdown
                 placeholderText='MM-DD-YYYY'
-                customInput={<CustomInput />}
+                customInput={<CustomInput label='Purchase Date' />}
                 onChange={value => {
-                  setStartDate(value[0])
-                  setEndDate(value[1])
+                  setStartDatePurchase(value[0])
+                  setEndDatePurchase(value[1])
                 }}
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDatePurchase}
+                endDate={endDatePurchase}
+              />
+            </DatePickerWrapper>
+          </Grid>
+          <Grid item xs={2.4}>
+            <DatePickerWrapper>
+              <DatePicker
+                selectsRange={true}
+                showYearDropdown
+                showMonthDropdown
+                placeholderText='MM-DD-YYYY'
+                customInput={<CustomInput label='Created Date' />}
+                onChange={value => {
+                  setStartDateCreated(value[0])
+                  setEndDateCreated(value[1])
+                }}
+                startDate={startDateCreated}
+                endDate={endDateCreated}
               />
             </DatePickerWrapper>
           </Grid>

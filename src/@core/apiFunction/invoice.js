@@ -21,13 +21,22 @@ export const postInvoice = async (postData, token) => {
   }
 }
 
-export const getAllInvoiceList = async (searchText, dateRange, supplier, paymentStatus, token) => {
-  const dateRangeFormated =
-    dateRange[0] && dateRange[1] ? `${dateRange[0].split(' ')[0]},${dateRange[1].split(' ')[0]}` : ''
+export const getAllInvoiceList = async (
+  searchText,
+  dateRangePurchase,
+  dateRangeCreated,
+  supplier,
+  paymentStatus,
+  token
+) => {
+  const dateRangeFormatedPurchase =
+    dateRangePurchase[0] && dateRangePurchase[1]
+      ? `${dateRangePurchase[0].split(' ')[0]},${dateRangePurchase[1].split(' ')[0]}`
+      : ''
 
   const url = `${API_URL}/invoice/?search=${
     searchText || supplier || ''
-  }&invoice_date__date__range=${dateRangeFormated}&payment_status=${paymentStatus || ''}`
+  }&invoice_date__date__range=${dateRangeFormatedPurchase}&payment_status=${paymentStatus || ''}`
   const res = await fetch(url, {
     headers: {
       authorization: `Bearer ${token}`

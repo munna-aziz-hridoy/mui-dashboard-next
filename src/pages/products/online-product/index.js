@@ -24,7 +24,7 @@ const OnlineProduct = () => {
 
   useEffect(() => {
     setLoading(true)
-    getOnlineProducts(page, access_token).then(data => {
+    getOnlineProducts('', page, access_token).then(data => {
       if (data.success) {
         setOnlineProducts(data.data)
         setTotalPages(data?.total_pages)
