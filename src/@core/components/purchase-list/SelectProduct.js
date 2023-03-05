@@ -118,6 +118,7 @@ const SelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) => {
         borderRadius={1}
         boxShadow={5}
         maxHeight={400}
+        minWidth={300}
         overflow='auto'
       >
         <List style={{ overflow: 'auto' }}>
@@ -128,8 +129,12 @@ const SelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) => {
           ) : (
             searchedProduct?.map(item => (
               <Fragment key={item?.id}>
-                <ListItem onClick={() => handleSelectProduct(item)} color='#fff' style={{ cursor: 'pointer' }}>
-                  <Typography color='#fff' variant='body1'>
+                <ListItem
+                  onClick={() => handleSelectProduct(item)}
+                  color='#fff'
+                  style={{ cursor: 'pointer', borderBottom: '1px solid #ffffff4a' }}
+                >
+                  <Typography color='#fff' variant='body1' fontSize={12}>
                     {item.product_name}
                   </Typography>
                 </ListItem>

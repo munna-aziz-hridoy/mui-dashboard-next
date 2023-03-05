@@ -1,7 +1,7 @@
 import API_URL from 'src/@core/utils/mainUrl'
 
-export const getOfflineSells = async token => {
-  const url = `${API_URL}/offline-sell/`
+export const getOfflineSells = async (page = 1, token) => {
+  const url = `${API_URL}/offline-sell/?page=${page}`
   const data = await getData(url, token)
   return data
 }
@@ -12,8 +12,8 @@ export const getOfflineSellByBarcode = async (barcode, token) => {
   return data
 }
 
-export const getOnlineSells = async token => {
-  const url = `${API_URL}/online-sell/`
+export const getOnlineSells = async (page, token) => {
+  const url = `${API_URL}/online-sell/?page=${page}`
   const data = await getData(url, token)
   return data
 }

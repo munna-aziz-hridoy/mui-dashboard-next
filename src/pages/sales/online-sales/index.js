@@ -22,15 +22,21 @@ const OnlineSales = () => {
 
   const [loading, setLoading] = useState(false)
 
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+
   const { access_token } = getToken()
 
   useEffect(() => {
     setLoading(true)
-    getOnlineSells(access_token).then(data => {
-      setOnlineSellData(data)
+    getOnlineSells(page, access_token).then(data => {
+      if (data?.data) {
+        setOnlineSellData(data?.data)
+        setTotalPages(data?.total_pages)
+      }
       setLoading(false)
     })
-  }, [])
+  }, [page])
 
   const handleUploadOnlineSalesData = (csv, setCsv) => {
     if (csv) {
@@ -91,7 +97,7 @@ const OnlineSales = () => {
         </Box>
       )}
 
-      {!loading && <SalesTable sellData={onlineSellData} />}
+      <SalesTable sellData={onlineSellData} setPageNumber={setPage} totalPages={totalPages} />
       <Toaster />
     </div>
   )

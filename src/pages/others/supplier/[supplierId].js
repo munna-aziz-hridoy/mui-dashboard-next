@@ -23,7 +23,7 @@ const SupplierDetails = () => {
 
   const { access_token } = getToken()
 
-  const { supplierDetails, loading } = useSingleSupplier(supplierId, access_token)
+  const { supplierDetails, loading, refetch } = useSingleSupplier(supplierId, access_token)
 
   return (
     <Card>
@@ -52,9 +52,10 @@ const SupplierDetails = () => {
       {!loading && (
         <Box component='div' padding={5}>
           {isEditing ? (
-            <AddSuplierForm update previousData={supplierDetails} />
+            <AddSuplierForm update previousData={supplierDetails} refetch={refetch} />
           ) : (
             <Fragment>
+              <StyledTypography label='Supplier Id'>{supplierDetails?.id}</StyledTypography>
               <StyledTypography label='Supplier Name'>{supplierDetails?.name}</StyledTypography>
               <StyledTypography label='Phone'>{supplierDetails?.phone}</StyledTypography>
               <StyledTypography label='Email'>{supplierDetails?.email}</StyledTypography>
@@ -64,10 +65,10 @@ const SupplierDetails = () => {
           )}
 
           <Box component='div' sx={{ margin: '20px 0' }}>
-            <StyledTypography label='Purchase Count'>20</StyledTypography>
-            <StyledTypography label='Total Transaction'>¥175000</StyledTypography>
-            <StyledTypography label='Total Paid'>¥50000</StyledTypography>
-            <StyledTypography label='Total Due'>¥125000</StyledTypography>
+            <StyledTypography label='Purchase Count'>{supplierDetails?.total_invoices}</StyledTypography>
+            <StyledTypography label='Total Transaction'>¥{supplierDetails?.total_purchase_amount}</StyledTypography>
+            <StyledTypography label='Total Paid'>¥{supplierDetails?.total_paid_amount}</StyledTypography>
+            <StyledTypography label='Total Due'>¥{supplierDetails?.total_due_amount}</StyledTypography>
           </Box>
 
           <Box component='div' sx={{ margin: '10px 0' }}>
@@ -76,7 +77,7 @@ const SupplierDetails = () => {
             </Typography>
             <Divider />
 
-            <SupplierPurchaseHistoryTable />
+            <SupplierPurchaseHistoryTable invoices={supplierDetails?.invoices} />
 
             <Divider />
           </Box>

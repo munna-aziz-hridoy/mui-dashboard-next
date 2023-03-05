@@ -18,6 +18,7 @@ const TableSupplier = ({ supplier }) => {
       <Table sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
         <TableHead>
           <TableRow>
+            <TableCell>Id</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Phone</TableCell>
             <TableCell>Email</TableCell>
@@ -29,6 +30,7 @@ const TableSupplier = ({ supplier }) => {
         <TableBody>
           {supplier?.map((row, i) => (
             <TableRow key={i} sx={{ '&:last-of-type  td, &:last-of-type  th': { border: 0 } }}>
+              <TableCell>{row?.id}</TableCell>
               <TableCell component='th' scope='row'>
                 {row?.name}
               </TableCell>

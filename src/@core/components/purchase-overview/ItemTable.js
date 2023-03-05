@@ -1,7 +1,9 @@
 import { Box, Pagination, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import React from 'react'
 
-const ItemTable = ({ data = [] }) => {
+const ItemTable = ({ data }) => {
+  console.log(data)
+
   return (
     <Box component='div'>
       <Typography variant='body1' fontSize={16} fontWeight={500} marginBottom={2}>
@@ -17,16 +19,18 @@ const ItemTable = ({ data = [] }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell>1</TableCell>
-            <TableCell>Product Name</TableCell>
-            <TableCell>56</TableCell>
-            <TableCell>101 (30), 107 (26)</TableCell>
-          </TableRow>
+          {data?.data?.map((item, i) => (
+            <TableRow key={i}>
+              <TableCell>{i + 1}</TableCell>
+              <TableCell>{item?.invoice_items__product__product_name}</TableCell>
+              <TableCell>{item?.quantity}</TableCell>
+              <TableCell>{item?.invoices?.map(item => `${item}, `)}</TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
       <Pagination
-        count={3}
+        count={data?.total_pages}
         shape='rounded'
         style={{ margin: '20px 0' }}
         //   onChange={(e, value) => pageCount(value)}

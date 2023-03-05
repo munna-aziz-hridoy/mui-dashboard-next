@@ -1,15 +1,46 @@
 import React, { useEffect, useState } from 'react'
 import { Grid, TextField, Button, Autocomplete, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
-import { addInternalProduct, getOfflineProducts, getOnlineProducts, getUnitChoice } from 'src/@core/apiFunction/product'
-import { toast } from 'react-hot-toast'
-import { getToken } from 'src/@core/utils/manageToken'
 
-const AddInternalProduct = ({ closeModal, refetch, previousData = null, update = false }) => {
+import {
+  addInternalProduct,
+  getOfflineProducts,
+  getOnlineProducts,
+  getUnitChoice,
+  updateInternalProduct
+} from 'src/@core/apiFunction/product'
+import toast, { Toaster } from 'react-hot-toast'
+import { getToken } from 'src/@core/utils/manageToken'
+import { useRouter } from 'next/router'
+
+const top100Films = [
+  { title: 'The Shawshank Redemption', year: 1994 },
+  { title: 'The Godfather', year: 1972 },
+  { title: 'The Godfather: Part II', year: 1974 },
+  { title: 'The Dark Knight', year: 2008 },
+  { title: '12 Angry Men', year: 1957 },
+  { title: "Schindler's List", year: 1993 },
+  { title: 'Pulp Fiction', year: 1994 },
+  {
+    title: 'The Lord of the Rings: The Return of the King',
+    year: 2003
+  },
+  { title: 'The Good, the Bad and the Ugly', year: 1966 },
+  { title: 'Fight Club', year: 1999 },
+  {
+    title: 'The Lord of the Rings: The Fellowship of the Ring',
+    year: 2001
+  }
+]
+
+const AddInternalProduct = ({
+  closeModal,
+  refetch,
+  previousData = null,
+  setPreviousProduct = null,
+  update = false
+}) => {
   const [offlineProducts, setOfflineProducts] = useState([])
   const [onlineProducts, setOnlineProducts] = useState([])
-
-  const [offlineProductId, setOfflineProductId] = useState([])
-  const [onlineProductId, setOnlineProductId] = useState([])
 
   const [offlineProductName, setOfflineProductName] = useState(previousData ? previousData?.offlineProduct : [])
   const [onlineProductName, setOnlineProductName] = useState(previousData ? previousData?.onlineProduct : [])
@@ -19,6 +50,7 @@ const AddInternalProduct = ({ closeModal, refetch, previousData = null, update =
   const [unitValue, setUnitValue] = useState('')
 
   const { access_token } = getToken()
+  const router = useRouter()
 
   useEffect(() => {
     getOfflineProducts('', 1, access_token).then(data => {
@@ -44,34 +76,57 @@ const AddInternalProduct = ({ closeModal, refetch, previousData = null, update =
     const product_name = e.target.product_name.value
     const product_unit = e.target.product_unit.value || null
 
-    if (offlineProductId.length === 0 || onlineProductId.length === 0) {
+    if (offlineProductName.length === 0 || onlineProductName.length === 0) {
       return toast.error('Select product')
     }
 
     const productData = {
       product_name,
       product_unit,
-      offlineProduct: offlineProductId,
-      onlineProduct: onlineProductId
+      offlineProduct: offlineProductName?.map(item => parseFloat(item?.barcode)),
+      onlineProduct: onlineProductName?.map(item => parseFloat(item?.product_ID))
     }
 
-    addInternalProduct(productData, access_token).then(data => {
-      if (data.success) {
-        toast.success('Internal Product added')
-        e.target.product_name.value = ''
-        e.target.product_unit.value = ''
-        setOfflineProductName([])
-        setOnlineProductName([])
-        if (refetch) {
-          refetch(prev => !prev)
+    if (update) {
+      updateInternalProduct(productData, access_token, previousData?.id).then(data => {
+        if (data.success) {
+          setPreviousProduct(data?.data)
+          toast.success('Internal Product Updated')
+          e.target.product_name.value = ''
+          e.target.product_unit.value = ''
+          setOfflineProductName([])
+          setOnlineProductName([])
+          // router.push('/products/internal-product')
+
+          if (refetch) {
+            refetch(prev => !prev)
+          }
+          if (closeModal) {
+            closeModal(false)
+          }
+        } else {
+          toast.error('Failed to Update product')
         }
-        if (closeModal) {
-          closeModal(false)
+      })
+    } else {
+      addInternalProduct(productData, access_token).then(data => {
+        if (data.success) {
+          toast.success('Internal Product added')
+          e.target.product_name.value = ''
+          e.target.product_unit.value = ''
+          setOfflineProductName([])
+          setOnlineProductName([])
+          if (refetch) {
+            refetch(prev => !prev)
+          }
+          if (closeModal) {
+            closeModal(false)
+          }
+        } else {
+          toast.error('Failed to add product')
         }
-      } else {
-        toast.error('Failed to add product')
-      }
-    })
+      })
+    }
   }
 
   return (
@@ -113,55 +168,40 @@ const AddInternalProduct = ({ closeModal, refetch, previousData = null, update =
 
         <Grid item xs={6}>
           <Autocomplete
-            filterSelectedOptions
+            id='tags-outlined'
             onChange={(e, value) => {
-              const productId = value.map(item => parseFloat(item.barcode))
               const productName = value.map(item => {
                 return { product_name: item.product_name, barcode: item.barcode }
               })
 
               setOfflineProductName(productName)
-              setOfflineProductId(productId)
             }}
-            value={offlineProductName}
+            filterSelectedOptions
+            defaultValue={offlineProductName}
             multiple
             options={offlineProducts}
             getOptionLabel={option => option.product_name}
-            renderInput={params => (
-              <TextField size='small' name='offlineProduct' {...params} label='Offline Products' />
-            )}
+            renderInput={params => <TextField size='small' {...params} label='Offline Products' />}
             size='small'
           />
-          {/* {offlineProductId.length === 0 && (
-            <Typography variant='body2' color='error' fontSize={12}>
-              Select offline product
-            </Typography>
-          )} */}
         </Grid>
 
         <Grid item xs={6}>
           <Autocomplete
             filterSelectedOptions
             onChange={(e, value) => {
-              const productId = value.map(item => parseFloat(item.product_ID))
               const productName = value.map(item => {
                 return { product_name: item.product_name, product_ID: item.product_ID }
               })
               setOnlineProductName(productName)
-              setOnlineProductId(productId)
             }}
             multiple
-            value={onlineProductName}
+            defaultValue={onlineProductName}
             options={onlineProducts}
             getOptionLabel={option => option.product_name}
             renderInput={params => <TextField size='small' name='onlineProduct' {...params} label='Online Products' />}
             size='small'
           />
-          {/* {onlineProductId.length === 0 && (
-            <Typography variant='body2' color='error' fontSize={12}>
-              Select Online product
-            </Typography>
-          )} */}
         </Grid>
 
         <Grid item xs={12}>
@@ -173,10 +213,11 @@ const AddInternalProduct = ({ closeModal, refetch, previousData = null, update =
             variant='contained'
             size='small'
           >
-            Submit
+            {update ? 'Update' : 'Add Internal product'}
           </Button>
         </Grid>
       </Grid>
+      <Toaster />
     </form>
   )
 }

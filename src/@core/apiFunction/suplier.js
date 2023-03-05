@@ -35,6 +35,23 @@ export const addSupplier = async (supplierData, token) => {
   } else return { success: false }
 }
 
+export const updateSupplier = async (supplierData, id, token) => {
+  const url = `${API_URL}/supplier/${id}`
+
+  const res = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(supplierData)
+  })
+  const data = await res.json()
+  if (data?.id) {
+    return { success: true, data }
+  } else return { success: false, data }
+}
+
 export const getSingleSupplier = async (id, token) => {
   const url = `${API_URL}/supplier/${id}`
 

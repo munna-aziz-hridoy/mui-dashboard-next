@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import { Box, Button, Card, CardHeader, Divider, Grid, Tab as MuiTab, TextField, Typography } from '@mui/material'
 
 import { AiFillEye } from 'react-icons/ai'
@@ -9,6 +9,12 @@ import { TabContext, TabList, TabPanel } from '@mui/lab'
 import { styled } from '@mui/material/styles'
 import ItemTable from 'src/@core/components/purchase-overview/ItemTable'
 import SupplierTable from 'src/@core/components/purchase-overview/supplierTable'
+import ViewInvoiceModal from 'src/@core/components/modal/viewInvoiceListModal'
+
+import 'react-datepicker/dist/react-datepicker.css'
+import { purchaseOverview } from 'src/@core/apiFunction/invoice'
+import formatedDate from 'src/@core/utils/getFormatedDate'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField size='small' fullWidth {...props} inputRef={ref} label={props.label} autoComplete='off' />
@@ -40,14 +46,56 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
+function last30Days() {
+  const result = []
+  for (let i = 0; i < 30; i++) {
+    let d = new Date()
+    d.setDate(d.getDate() - i)
+    result.push(d)
+  }
+
+  return result
+}
+
 const PurchaseOverview = () => {
-  const [startDate, setStartDate] = useState(new Date())
-  const [endDate, setEndDate] = useState()
+  const [purchaseOverviewData, setPurchaseOverviewData] = useState(null)
+  const [loading, setLoading] = useState(false)
+
+  const [createdStartDate, setCreatedStartDate] = useState(last30Days()[29])
+  const [createdEndDate, setCreatedEndDate] = useState(new Date())
+
+  const [invoiceStartDate, setInvoiceStartDate] = useState()
+  const [invoiceEndDate, setInvoiceEndDate] = useState()
 
   const [tabValue, setTabValue] = useState('item')
 
+  const [openInvoiceListModal, setOpenInvoiceListModal] = useState(false)
+
+  const [refetch, setRefetch] = useState(false)
+
+  const { access_token } = getToken()
+
+  useEffect(() => {
+    const formatedCreatedDate =
+      createdEndDate && createdStartDate ? [formatedDate(createdStartDate), formatedDate(createdEndDate)] : []
+
+    const formatedInvoiceDate =
+      invoiceStartDate && invoiceEndDate ? [formatedDate(invoiceStartDate), formatedDate(invoiceEndDate)] : []
+
+    setLoading(true)
+    purchaseOverview(formatedCreatedDate, formatedInvoiceDate, access_token).then(data => {
+      if (data?.invoices) {
+        setPurchaseOverviewData(data)
+      }
+    })
+  }, [refetch])
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue)
+  }
+
+  const handleRefetch = () => {
+    setRefetch(prev => !prev)
   }
 
   return (
@@ -62,13 +110,13 @@ const PurchaseOverview = () => {
               showYearDropdown
               showMonthDropdown
               placeholderText='MM-DD-YYYY'
-              customInput={<CustomInput label='Invoice Date' />}
+              customInput={<CustomInput label='Created Date' />}
               onChange={value => {
-                setStartDate(value[0])
-                setEndDate(value[1])
+                setCreatedStartDate(value[0])
+                setCreatedEndDate(value[1])
               }}
-              startDate={startDate}
-              endDate={endDate}
+              startDate={createdStartDate}
+              endDate={createdEndDate}
             />
           </DatePickerWrapper>
         </Grid>
@@ -79,18 +127,19 @@ const PurchaseOverview = () => {
               showYearDropdown
               showMonthDropdown
               placeholderText='MM-DD-YYYY'
-              customInput={<CustomInput label='Created Date' />}
+              customInput={<CustomInput label='Invoice Date' />}
               onChange={value => {
-                setStartDate(value[0])
-                setEndDate(value[1])
+                setInvoiceStartDate(value[0])
+                setInvoiceEndDate(value[1])
               }}
-              startDate={startDate}
-              endDate={endDate}
+              startDate={invoiceStartDate}
+              endDate={invoiceEndDate}
             />
           </DatePickerWrapper>
         </Grid>
+
         <Grid item xs={12} sm={4}>
-          <Button variant='contained' fullWidth>
+          <Button onClick={handleRefetch} variant='contained' fullWidth>
             Get Overview
           </Button>
         </Grid>
@@ -99,17 +148,39 @@ const PurchaseOverview = () => {
       <Divider />
 
       <Box component='div' padding={5}>
-        <StyledTypography label='Total Purchases' icon={<AiFillEye fontSize={20} style={{ marginTop: '-2px' }} />}>
-          10
+        <StyledTypography
+          label='Total Purchases'
+          icon={
+            <AiFillEye
+              fontSize={20}
+              style={{ marginTop: '-2px', cursor: 'pointer' }}
+              onClick={() => setOpenInvoiceListModal(true)}
+            />
+          }
+        >
+          {purchaseOverviewData?.invoices?.invoice_count}
         </StyledTypography>
-        <StyledTypography label='Purchase amount'>¥10000</StyledTypography>
-        <StyledTypography label='Total item'>100</StyledTypography>
+        <StyledTypography label='Purchase amount'>
+          ¥{purchaseOverviewData?.invoices?.total_purchase_amount}
+        </StyledTypography>
+        <StyledTypography label='Grand Total'>
+          ¥{purchaseOverviewData?.invoices?.total_invoice_amount?.toFixed(2)}
+        </StyledTypography>
+        <StyledTypography label='Total item'>{purchaseOverviewData?.items?.data.length}</StyledTypography>
         <Divider style={{ width: '40%' }} />
 
-        <StyledTypography label='Paid amount'>¥6000</StyledTypography>
-        <StyledTypography label='Partial pay amount'>¥1000</StyledTypography>
-        <StyledTypography label='Total Due'>¥5000</StyledTypography>
-        <StyledTypography label='Unpaid'>6</StyledTypography>
+        <StyledTypography label='Paid amount'>
+          ¥${purchaseOverviewData?.invoices?.total_paid_amount?.toFixed(2)}
+        </StyledTypography>
+        <StyledTypography label='Partial pay amount'>
+          ¥{purchaseOverviewData?.invoices?.total_partial_paid_amount}
+        </StyledTypography>
+        <StyledTypography label='Total Due'>
+          ¥{purchaseOverviewData?.invoices?.total_unpaid_amount?.toFixed(2)}
+        </StyledTypography>
+        <StyledTypography label='Unpaid'>{purchaseOverviewData?.invoices?.total_unpaid_count}</StyledTypography>
+
+        <ViewInvoiceModal open={openInvoiceListModal} setOpen={setOpenInvoiceListModal} />
       </Box>
 
       <Box component='div'>
@@ -120,10 +191,10 @@ const PurchaseOverview = () => {
           </TabList>
 
           <TabPanel value='item'>
-            <ItemTable />
+            <ItemTable data={purchaseOverviewData?.items} />
           </TabPanel>
           <TabPanel value='supplier'>
-            <SupplierTable />
+            <SupplierTable data={purchaseOverviewData?.suppliers} />
           </TabPanel>
         </TabContext>
       </Box>

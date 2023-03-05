@@ -48,6 +48,8 @@ const InternalProductDetails = () => {
 
   const [loading, setLoading] = useState(false)
 
+  const [refetch, setRefetch] = useState(false)
+
   const [isEditing, setIsEditing] = useState(false)
 
   const {
@@ -63,7 +65,7 @@ const InternalProductDetails = () => {
       }
       setLoading(false)
     })
-  }, [productId])
+  }, [productId, refetch])
 
   const { purchaseHistory, purchaseHistoryLoading, purchaseHistoryTotalPage } = usePurchaseDetails(
     productId,
@@ -103,7 +105,12 @@ const InternalProductDetails = () => {
       {productData && (
         <Box>
           {isEditing ? (
-            <AddInternalProduct previousData={productData} update />
+            <AddInternalProduct
+              previousData={productData}
+              setPreviousProduct={setProductData}
+              update
+              refetch={setRefetch}
+            />
           ) : (
             <Fragment>
               <Typography variant='h6' fontWeight={400}>

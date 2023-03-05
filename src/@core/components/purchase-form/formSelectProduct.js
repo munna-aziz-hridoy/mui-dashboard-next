@@ -159,7 +159,11 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
           ) : searchedProduct?.length !== 0 ? (
             searchedProduct?.map(item => (
               <Fragment key={item?.id}>
-                <ListItem onClick={() => handleSelectProduct(item)} color='#fff' style={{ cursor: 'pointer' }}>
+                <ListItem
+                  onClick={() => handleSelectProduct(item)}
+                  color='#fff'
+                  style={{ cursor: 'pointer', borderBottom: '1px solid #ffffff4a' }}
+                >
                   <Typography color='#fff' variant='body1'>
                     {item.product_name}
                   </Typography>

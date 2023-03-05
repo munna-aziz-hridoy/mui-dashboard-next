@@ -34,9 +34,15 @@ export const getAllInvoiceList = async (
       ? `${dateRangePurchase[0].split(' ')[0]},${dateRangePurchase[1].split(' ')[0]}`
       : ''
 
-  const url = `${API_URL}/invoice/?search=${
-    searchText || supplier || ''
-  }&invoice_date__date__range=${dateRangeFormatedPurchase}&payment_status=${paymentStatus || ''}`
+  const dateRangeFormatedCreated =
+    dateRangeCreated[0] && dateRangeCreated[1]
+      ? `${dateRangeCreated[0].split(' ')[0]},${dateRangeCreated[1].split(' ')[0]}`
+      : ''
+
+  const url = `${API_URL}/invoice/?search=${searchText || supplier || ''}${
+    dateRangeFormatedPurchase && `&invoice_date__date__range=${dateRangeFormatedPurchase}`
+  }&payment_status=${paymentStatus || ''}`
+
   const res = await fetch(url, {
     headers: {
       authorization: `Bearer ${token}`
@@ -137,4 +143,29 @@ export const uploadInvoiceImage = async (formData, token) => {
   } else {
     return { success: false, image_url: '' }
   }
+}
+
+export const purchaseOverview = async (createdDateRange, invoiceDateRange, token) => {
+  const formatedCreatedDate =
+    createdDateRange[0] && createdDateRange[1]
+      ? `${createdDateRange[0].split(' ')[0]},${createdDateRange[1].split(' ')[0]}`
+      : ''
+
+  const formatedInvoiceDate =
+    invoiceDateRange[0] && invoiceDateRange[1]
+      ? `${invoiceDateRange[0].split(' ')[0]},${invoiceDateRange[1].split(' ')[0]}`
+      : ''
+
+  const url = `${API_URL}/purchase-overview/?${formatedCreatedDate && `created_date_range=${formatedCreatedDate}`}${
+    formatedInvoiceDate && `&invoice_date_range=${formatedInvoiceDate}`
+  }`
+
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+
+  const data = await res.json()
+  return data
 }

@@ -2,7 +2,7 @@ import API_URL from 'src/@core/utils/mainUrl'
 
 // get searched product item
 export const getSearchedProduct = async (searchValue, page, token) => {
-  const url = `${API_URL}/internal_product/?search=${searchValue}&page=${page + 1}`
+  const url = `${API_URL}/internal-product/?search=${searchValue}&page=${page + 1}`
 
   const res = await fetch(url, {
     headers: { authorization: `Bearer ${token}` }
@@ -110,7 +110,7 @@ export const getInvoiceStatusChoices = async token => {
 // online product
 
 export const getOnlineProducts = async (searchQuery = '', page, token) => {
-  const url = page > 1 ? `${API_URL}/online_product/?page=${page}` : `${API_URL}/online_product/`
+  const url = page > 1 ? `${API_URL}/online-product/?page=${page}` : `${API_URL}/online-product/`
 
   const res = await fetch(url, {
     headers: {
@@ -133,8 +133,8 @@ export const getOnlineProducts = async (searchQuery = '', page, token) => {
 export const getOfflineProducts = async (searchQuery = '', page, token) => {
   const url =
     page > 1
-      ? `${API_URL}/offline_product/?search=${searchQuery}&page=${page}`
-      : `${API_URL}/offline_product/?search=${searchQuery}`
+      ? `${API_URL}/offline-product/?search=${searchQuery}&page=${page}`
+      : `${API_URL}/offline-product/?search=${searchQuery}`
 
   const res = await fetch(url, {
     headers: {
@@ -155,7 +155,7 @@ export const getOfflineProducts = async (searchQuery = '', page, token) => {
 // get internal product by id
 
 export const getInternalProductById = async (id, token) => {
-  const url = `${API_URL}/internal_product/${id}/`
+  const url = `${API_URL}/internal-product/${id}/`
 
   const res = await fetch(url, {
     headers: {
@@ -175,7 +175,7 @@ export const getInternalProductById = async (id, token) => {
 // add internal product
 
 export const addInternalProduct = async (productData, token) => {
-  const url = `${API_URL}/internal_product/`
+  const url = `${API_URL}/internal-product/`
 
   const res = await fetch(url, {
     method: 'POST',
@@ -196,10 +196,34 @@ export const addInternalProduct = async (productData, token) => {
   }
 }
 
+// update internal product
+
+export const updateInternalProduct = async (productData, token, id) => {
+  const url = `${API_URL}/internal-product/${id}`
+
+  const res = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(productData)
+  })
+  const data = await res.json()
+
+  if (data?.product_name) {
+    return { success: true, data }
+  } else {
+    return {
+      success: false
+    }
+  }
+}
+
 // add online product
 
 export const addOnlineProduct = async (productData, token) => {
-  const url = `${API_URL}/online_product/`
+  const url = `${API_URL}/online-product/`
 
   const res = await fetch(url, {
     method: 'POST',
@@ -223,7 +247,7 @@ export const addOnlineProduct = async (productData, token) => {
 // add offline product
 
 export const addOfflineProduct = async (productData, token) => {
-  const url = `${API_URL}/offline_product/`
+  const url = `${API_URL}/offline-product/`
 
   const res = await fetch(url, {
     method: 'POST',
@@ -245,7 +269,7 @@ export const addOfflineProduct = async (productData, token) => {
 }
 
 export const internalProductPurchaseDetails = async (id, token, page) => {
-  const url = `${API_URL}/internal_product/${id}/purchase_detail/?page=${page}`
+  const url = `${API_URL}/internal-product/${id}/purchase_detail/?page=${page}`
 
   const res = await fetch(url, {
     headers: {
@@ -259,7 +283,7 @@ export const internalProductPurchaseDetails = async (id, token, page) => {
 }
 
 export const internalProductSellDetails = async (id, token, page) => {
-  const url = `${API_URL}/internal_product/${id}/offline_sell_detail/?page=${page}`
+  const url = `${API_URL}/internal-product/${id}/offline_sell_detail/?page=${page}`
 
   const res = await fetch(url, {
     headers: {

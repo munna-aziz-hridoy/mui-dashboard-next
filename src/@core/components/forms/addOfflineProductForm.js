@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Grid, TextField, Button, Typography } from '@mui/material'
+import { Grid, TextField, Button } from '@mui/material'
 import { addOfflineProduct } from 'src/@core/apiFunction/product'
 import { toast } from 'react-hot-toast'
 import { getToken } from 'src/@core/utils/manageToken'

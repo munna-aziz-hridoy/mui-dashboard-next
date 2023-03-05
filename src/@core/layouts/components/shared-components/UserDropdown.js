@@ -40,7 +40,7 @@ const UserDropdown = () => {
 
   // ** Hooks
   const router = useRouter()
-  const { removeUser } = useAuthStore()
+  const { removeUser, user } = useAuthStore()
 
   const handleDropdownOpen = event => {
     setAnchorEl(event.currentTarget)
@@ -55,20 +55,6 @@ const UserDropdown = () => {
       }
     }
     setAnchorEl(null)
-  }
-
-  const styles = {
-    py: 2,
-    px: 4,
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    color: 'text.primary',
-    textDecoration: 'none',
-    '& svg': {
-      fontSize: '1.375rem',
-      color: 'text.secondary'
-    }
   }
 
   return (
@@ -105,7 +91,7 @@ const UserDropdown = () => {
               <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{user?.first_name + ' ' + user?.last_name}</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
                 Admin
               </Typography>

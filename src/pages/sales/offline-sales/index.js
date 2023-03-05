@@ -34,15 +34,22 @@ const OfflineSales = () => {
 
   const [loading, setLoading] = useState(false)
 
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+
   const { access_token } = getToken()
 
   useEffect(() => {
     setLoading(true)
-    getOfflineSells(access_token).then(data => {
-      setOfflineSellData(data)
+    getOfflineSells(page, access_token).then(data => {
+      if (data?.data) {
+        setOfflineSellData(data?.data)
+        setTotalPages(data?.total_pages)
+      }
+
       setLoading(false)
     })
-  }, [])
+  }, [page])
 
   const handleUploadOfflineSalesCsv = (csv, setCsv) => {
     if (csv) {
@@ -101,7 +108,7 @@ const OfflineSales = () => {
         </Box>
       )}
 
-      {!loading && <SalesTable sellData={offlineSellData} />}
+      <SalesTable sellData={offlineSellData} totalPages={totalPages} setPageNumber={setPage} />
 
       <Toaster />
     </div>

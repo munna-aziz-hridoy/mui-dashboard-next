@@ -19,9 +19,9 @@ const styleTr = {
 const PrintedInvoice = ({ invoice }) => {
   const {
     amount_paid,
-    created_at,
+
     discount,
-    id,
+
     invoice_date,
     invoice_items,
     invoice_total,

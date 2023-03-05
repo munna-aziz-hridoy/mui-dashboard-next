@@ -4,8 +4,8 @@ import { Grid, TextField, InputAdornment, Button, Typography } from '@mui/materi
 
 import { Phone, AccountOutline, EmailOutline } from 'mdi-material-ui'
 import { FaAddressCard, FaFax } from 'react-icons/fa'
-import { addSupplier } from 'src/@core/apiFunction/suplier'
-import { toast } from 'react-hot-toast'
+import { addSupplier, updateSupplier } from 'src/@core/apiFunction/suplier'
+import toast, { Toaster } from 'react-hot-toast'
 import { getToken } from 'src/@core/utils/manageToken'
 
 const AddSuplierForm = ({ refetch, previousData = null, update = false }) => {
@@ -16,29 +16,47 @@ const AddSuplierForm = ({ refetch, previousData = null, update = false }) => {
   const handleAddSuplier = e => {
     e.preventDefault()
 
-    const name = e.target.name.value
-    const email = e.target.email.value || ''
-    const phone = e.target.phone.value || ''
-    const fax = e.target.fax.value || ''
-    const address = e.target.address.value || ''
+    const name = e.target.name.value || previousData?.name
+    const email = e.target.email.value || previousData?.email || ''
+    const phone = e.target.phone.value || previousData?.phone || ''
+    const fax = e.target.fax.value || previousData?.fax || ''
+    const address = e.target.address.value || previousData?.address || ''
 
     const supplierData = { name, email, phone, fax, address }
 
-    addSupplier(supplierData, access_token).then(data => {
-      if (data.success) {
-        toast.success('Supplier is added')
-        e.target.name.value = ''
-        e.target.email.value = ''
-        e.target.phone.value = ''
-        e.target.fax.value = ''
-        e.target.address.value = ''
-        if (refetch) {
-          refetch(prev => !prev)
+    if (update) {
+      updateSupplier(supplierData, previousData?.id, access_token).then(data => {
+        if (data.success) {
+          toast.success('Supplier is Updated')
+          e.target.name.value = ''
+          e.target.email.value = ''
+          e.target.phone.value = ''
+          e.target.fax.value = ''
+          e.target.address.value = ''
+          if (refetch) {
+            refetch(prev => !prev)
+          }
+        } else {
+          toast.error('Failed to Update supplier')
         }
-      } else {
-        toast.error('Failed to create supplier')
-      }
-    })
+      })
+    } else {
+      addSupplier(supplierData, access_token).then(data => {
+        if (data.success) {
+          toast.success('Supplier is added')
+          e.target.name.value = ''
+          e.target.email.value = ''
+          e.target.phone.value = ''
+          e.target.fax.value = ''
+          e.target.address.value = ''
+          if (refetch) {
+            refetch(prev => !prev)
+          }
+        } else {
+          toast.error('Failed to create supplier')
+        }
+      })
+    }
   }
 
   return (
@@ -149,6 +167,7 @@ const AddSuplierForm = ({ refetch, previousData = null, update = false }) => {
           </Button>
         </Grid>
       </Grid>
+      <Toaster />
     </form>
   )
 }

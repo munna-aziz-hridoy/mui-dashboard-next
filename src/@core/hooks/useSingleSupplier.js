@@ -5,6 +5,8 @@ const useSingleSupplier = (id, token) => {
   const [supplierDetails, setSupplierDetails] = useState(null)
   const [loading, setLoading] = useState(false)
 
+  const [refetch, setRefetch] = useState(false)
+
   useEffect(() => {
     setLoading(true)
     getSingleSupplier(id, token).then(data => {
@@ -13,9 +15,9 @@ const useSingleSupplier = (id, token) => {
       }
       setLoading(false)
     })
-  }, [id])
+  }, [id, refetch])
 
-  return { supplierDetails, loading }
+  return { supplierDetails, loading, refetch: setRefetch }
 }
 
 export default useSingleSupplier
