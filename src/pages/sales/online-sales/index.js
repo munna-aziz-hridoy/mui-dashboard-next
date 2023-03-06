@@ -53,6 +53,8 @@ const OnlineSales = () => {
     }
   }
 
+  console.log('online sales page')
+
   return (
     <div>
       <Button

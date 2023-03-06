@@ -53,6 +53,8 @@ const InternalProduct = () => {
     }
   }
 
+  console.log('internal product list page')
+
   return (
     <Fragment>
       <Button

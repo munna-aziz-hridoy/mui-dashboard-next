@@ -6,7 +6,7 @@ import useAuthStore from 'src/store/authStore'
 const CheckUserRoute = ({ children }) => {
   const { removeUser, addUser, auth_token } = useAuthStore()
 
-  console.log(auth_token)
+  console.log()
 
   if (!auth_token) {
     removeUser()

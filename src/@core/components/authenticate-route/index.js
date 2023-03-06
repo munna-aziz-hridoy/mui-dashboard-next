@@ -9,6 +9,8 @@ function Authenticate({ children }) {
 
   const { user } = useAuthStore()
 
+  console.log('authenticate route')
+
   useEffect(() => {
     if (!user) {
       router.push('/login')

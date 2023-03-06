@@ -101,6 +101,8 @@ const PurchaseOverview = () => {
     setRefetch(prev => !prev)
   }
 
+  console.log('purchase overview page')
+
   return (
     <Card>
       <CardHeader title='Purchase Overview' />

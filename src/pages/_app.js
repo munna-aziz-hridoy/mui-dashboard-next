@@ -71,13 +71,11 @@ const App = props => {
             return (
               <ThemeComponent settings={settings}>
                 {getLayout(
-                  <ErrorBoundary>
-                    <CheckUserRoute>
-                      <Authenticate>
-                        <Component {...pageProps} />
-                      </Authenticate>
-                    </CheckUserRoute>
-                  </ErrorBoundary>
+                  // <CheckUserRoute>
+                  <Authenticate>
+                    <Component {...pageProps} />
+                  </Authenticate>
+                  // </CheckUserRoute>
                 )}
               </ThemeComponent>
             )

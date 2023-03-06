@@ -51,6 +51,8 @@ const OnlineProduct = () => {
     }
   }
 
+  console.log('online product page')
+
   return (
     <Fragment>
       <Button

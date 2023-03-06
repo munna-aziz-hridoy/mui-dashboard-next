@@ -96,7 +96,7 @@ const AddInternalProduct = ({
           e.target.product_unit.value = ''
           setOfflineProductName([])
           setOnlineProductName([])
-          // router.push('/products/internal-product')
+          router.push('/products/internal-product')
 
           if (refetch) {
             refetch(prev => !prev)

@@ -20,6 +20,8 @@ const Supplier = () => {
     })
   }, [refetch])
 
+  console.log('supplier list page')
+
   return (
     <Fragment>
       <Card style={{ padding: '20px' }}>

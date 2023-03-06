@@ -85,6 +85,8 @@ const PurchaseList = ({}) => {
     setClearForm(prev => !prev)
   }
 
+  console.log('purchase list page')
+
   return (
     <>
       <Card style={{ padding: '1px 20px', overflow: 'visible', marginBottom: '30px' }}>
