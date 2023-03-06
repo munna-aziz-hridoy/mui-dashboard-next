@@ -41,7 +41,7 @@ const OnlineSales = () => {
   const handleUploadOnlineSalesData = (csv, setCsv) => {
     if (csv) {
       const onlineSalesData = new FormData()
-      onlineSalesData.append('online_sell_file', onlineSalesData)
+      onlineSalesData.append('online_sell_file', csv)
       uploadOnlineSalesCsv(onlineSalesData, access_token).then(data => {
         if (data.success) {
           toast.success('Successfully uploaded sales data')

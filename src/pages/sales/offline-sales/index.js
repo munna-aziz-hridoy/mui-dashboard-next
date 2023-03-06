@@ -54,7 +54,7 @@ const OfflineSales = () => {
   const handleUploadOfflineSalesCsv = (csv, setCsv) => {
     if (csv) {
       const offlineSalesData = new FormData()
-      offlineSalesData.append('offline_sell_file', offlineSalesData)
+      offlineSalesData.append('offline_sell_file', csv)
 
       uploadOfflineSalesCsv(offlineSalesData, access_token).then(data => {
         toast.success('Successfully uploaded Sales Data')
