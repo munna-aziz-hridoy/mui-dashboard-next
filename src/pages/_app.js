@@ -71,11 +71,9 @@ const App = props => {
             return (
               <ThemeComponent settings={settings}>
                 {getLayout(
-                  // <CheckUserRoute>
                   <Authenticate>
                     <Component {...pageProps} />
                   </Authenticate>
-                  // </CheckUserRoute>
                 )}
               </ThemeComponent>
             )
