@@ -29,6 +29,7 @@ import '../../styles/globals.css'
 import '../../styles/invoice.css'
 import Authenticate from 'src/@core/components/authenticate-route'
 import CheckUserRoute from 'src/@core/components/authenticate-route/checkUser'
+import ErrorBoundary from 'src/@core/components/error-boundery'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -70,11 +71,13 @@ const App = props => {
             return (
               <ThemeComponent settings={settings}>
                 {getLayout(
-                  <CheckUserRoute>
-                    <Authenticate>
-                      <Component {...pageProps} />
-                    </Authenticate>
-                  </CheckUserRoute>
+                  <ErrorBoundary>
+                    <CheckUserRoute>
+                      <Authenticate>
+                        <Component {...pageProps} />
+                      </Authenticate>
+                    </CheckUserRoute>
+                  </ErrorBoundary>
                 )}
               </ThemeComponent>
             )
