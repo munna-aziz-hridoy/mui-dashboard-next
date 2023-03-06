@@ -80,8 +80,6 @@ const InternalProduct = () => {
     } else toast.error('Please select middle category')
   }
 
-  console.log('offline product page')
-
   return (
     <Fragment>
       <Box component='div' display='flex' justifyContent='space-between' alignItems='center' marginBottom={5}>

@@ -57,8 +57,6 @@ const InternalProductDetails = () => {
     sellDataPageCount
   )
 
-  console.log('internal product details page')
-
   return (
     <Card style={{ padding: '20px' }}>
       <CardHeader title='Product details' />

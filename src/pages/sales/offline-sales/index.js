@@ -63,8 +63,6 @@ const OfflineSales = () => {
     }
   }
 
-  console.log('offline sales page')
-
   return (
     <div>
       <Button

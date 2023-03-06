@@ -113,8 +113,6 @@ const LoginPage = () => {
     }
   }
 
-  console.log('login page')
-
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>

@@ -9,8 +9,6 @@ const PaymentList = () => {
 
   const { access_token } = getToken()
 
-  console.log('payment list page')
-
   useEffect(() => {
     getAllPayment(access_token).then(data => {
       setPaymentList(data)

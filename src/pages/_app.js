@@ -28,8 +28,6 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import '../../styles/globals.css'
 import '../../styles/invoice.css'
 import Authenticate from 'src/@core/components/authenticate-route'
-import CheckUserRoute from 'src/@core/components/authenticate-route/checkUser'
-import ErrorBoundary from 'src/@core/components/error-boundery'
 
 const clientSideEmotionCache = createEmotionCache()
 
