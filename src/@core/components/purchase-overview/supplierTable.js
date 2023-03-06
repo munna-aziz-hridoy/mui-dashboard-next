@@ -2,7 +2,6 @@ import { Box, Pagination, Table, TableBody, TableCell, TableHead, TableRow, Typo
 import React from 'react'
 
 const SupplierTable = ({ data }) => {
-  console.log(data)
   return (
     <Box component='div'>
       <Typography variant='body1' fontSize={16} fontWeight={500} marginBottom={2}>

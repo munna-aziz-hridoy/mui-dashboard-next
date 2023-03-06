@@ -4,6 +4,8 @@ import React, { Fragment } from 'react'
 import { Paper, Table, TableRow, TableHead, TableBody, TableCell, TableContainer, Pagination, Box } from '@mui/material'
 import { useRouter } from 'next/router'
 
+import { BsCheck, BsX } from 'react-icons/bs'
+
 const TableDense = ({ products, totalPages, pageCount }) => {
   const { pathname } = useRouter()
 
@@ -14,9 +16,11 @@ const TableDense = ({ products, totalPages, pageCount }) => {
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
+              <TableCell>{pathname.includes('offline') ? 'Barcode' : 'Product ID'}</TableCell>
               <TableCell>Regular Price</TableCell>
               <TableCell>Sale Price</TableCell>
               <TableCell>Category</TableCell>
+              <TableCell>Mapped</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -25,9 +29,14 @@ const TableDense = ({ products, totalPages, pageCount }) => {
                 <TableCell component='th' scope='row'>
                   {row?.product_name}
                 </TableCell>
-                <TableCell>¥{row?.regular_price}</TableCell>
+                <TableCell>{pathname.includes('offline') ? row?.barcode : row?.product_ID}</TableCell>
+                <TableCell>¥{pathname.includes('offline') ? row?.std_retail_price : row?.regular_price}</TableCell>
                 <TableCell>¥{row?.sell_price}</TableCell>
                 <TableCell>{pathname.includes('offline') ? row?.cat_name : row.categories}</TableCell>
+
+                <TableCell align='center'>
+                  {row?.is_mapped ? <BsCheck fontSize={22} color='green' /> : <BsX fontSize={22} color='red' />}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

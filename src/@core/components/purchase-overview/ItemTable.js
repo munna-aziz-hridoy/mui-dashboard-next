@@ -2,8 +2,6 @@ import { Box, Pagination, Table, TableBody, TableCell, TableHead, TableRow, Typo
 import React from 'react'
 
 const ItemTable = ({ data }) => {
-  console.log(data)
-
   return (
     <Box component='div'>
       <Typography variant='body1' fontSize={16} fontWeight={500} marginBottom={2}>
@@ -24,7 +22,18 @@ const ItemTable = ({ data }) => {
               <TableCell>{i + 1}</TableCell>
               <TableCell>{item?.invoice_items__product__product_name}</TableCell>
               <TableCell>{item?.quantity}</TableCell>
-              <TableCell>{item?.invoices?.map(item => `${item}, `)}</TableCell>
+              <TableCell style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {item?.invoices?.map(item => {
+                  const invoice = item.split('(')[0]
+                  const quantity = item.split('(')[1].split(')')[0]
+                  return (
+                    <Typography variant='body2' fontSize={12}>
+                      Invc: <span style={{ fontSize: '13px', fontWeight: '600' }}>{invoice}</span> (Qyt:{' '}
+                      <span style={{ fontSize: '13px', fontWeight: '600' }}>{quantity}</span>),{' '}
+                    </Typography>
+                  )
+                })}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

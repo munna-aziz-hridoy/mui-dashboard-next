@@ -166,7 +166,7 @@ const PurchaseOverview = () => {
         <StyledTypography label='Grand Total'>
           ¥{purchaseOverviewData?.invoices?.total_invoice_amount?.toFixed(2)}
         </StyledTypography>
-        <StyledTypography label='Total item'>{purchaseOverviewData?.items?.data.length}</StyledTypography>
+        <StyledTypography label='Total item'>{purchaseOverviewData?.items?.total_records}</StyledTypography>
         <Divider style={{ width: '40%' }} />
 
         <StyledTypography label='Paid amount'>
