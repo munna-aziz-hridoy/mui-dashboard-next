@@ -145,7 +145,7 @@ export const uploadInvoiceImage = async (formData, token) => {
   }
 }
 
-export const purchaseOverview = async (createdDateRange, invoiceDateRange, token) => {
+export const purchaseOverview = async (createdDateRange, invoiceDateRange, token, pageProduct, pageSup) => {
   const formatedCreatedDate =
     createdDateRange[0] && createdDateRange[1]
       ? `${createdDateRange[0].split(' ')[0]},${createdDateRange[1].split(' ')[0]}`
@@ -158,7 +158,7 @@ export const purchaseOverview = async (createdDateRange, invoiceDateRange, token
 
   const url = `${API_URL}/purchase-overview/?${formatedCreatedDate && `created_date_range=${formatedCreatedDate}`}${
     formatedInvoiceDate && `&invoice_date_range=${formatedInvoiceDate}`
-  }`
+  }&page_product=${pageProduct}&page_sup=${pageSup}`
 
   const res = await fetch(url, {
     headers: {

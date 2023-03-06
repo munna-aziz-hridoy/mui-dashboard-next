@@ -73,6 +73,9 @@ const PurchaseOverview = () => {
 
   const [refetch, setRefetch] = useState(false)
 
+  const [pageProduct, setPageProduct] = useState(1)
+  const [pageSup, setPageSup] = useState(1)
+
   const { access_token } = getToken()
 
   useEffect(() => {
@@ -83,12 +86,12 @@ const PurchaseOverview = () => {
       invoiceStartDate && invoiceEndDate ? [formatedDate(invoiceStartDate), formatedDate(invoiceEndDate)] : []
 
     setLoading(true)
-    purchaseOverview(formatedCreatedDate, formatedInvoiceDate, access_token).then(data => {
+    purchaseOverview(formatedCreatedDate, formatedInvoiceDate, access_token, pageProduct, pageSup).then(data => {
       if (data?.invoices) {
         setPurchaseOverviewData(data)
       }
     })
-  }, [refetch])
+  }, [refetch, pageProduct, pageSup])
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue)
@@ -191,10 +194,10 @@ const PurchaseOverview = () => {
           </TabList>
 
           <TabPanel value='item'>
-            <ItemTable data={purchaseOverviewData?.items} />
+            <ItemTable data={purchaseOverviewData?.items} pageCount={setPageProduct} />
           </TabPanel>
           <TabPanel value='supplier'>
-            <SupplierTable data={purchaseOverviewData?.suppliers} />
+            <SupplierTable data={purchaseOverviewData?.suppliers} pageCount={setPageSup} />
           </TabPanel>
         </TabContext>
       </Box>

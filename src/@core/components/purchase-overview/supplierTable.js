@@ -1,7 +1,7 @@
 import { Box, Pagination, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import React from 'react'
 
-const SupplierTable = ({ data }) => {
+const SupplierTable = ({ data, pageCount }) => {
   return (
     <Box component='div'>
       <Typography variant='body1' fontSize={16} fontWeight={500} marginBottom={2}>
@@ -32,7 +32,7 @@ const SupplierTable = ({ data }) => {
       <Pagination
         count={data?.total_pages}
         shape='rounded'
-        //   onChange={(e, value) => pageCount(value)}
+        onChange={(e, value) => pageCount(value)}
         style={{ margin: '20px 0' }}
       />
     </Box>
