@@ -15,7 +15,7 @@ const useSingleSupplier = (id, historyPage, token) => {
       }
       setLoading(false)
     })
-  }, [id, refetch])
+  }, [id, refetch, historyPage])
 
   return { supplierDetails, loading, refetch: setRefetch }
 }
