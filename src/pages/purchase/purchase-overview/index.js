@@ -1,15 +1,12 @@
 import React, { forwardRef, useEffect, useState } from 'react'
 import { Box, Button, Card, CardHeader, Divider, Grid, Tab as MuiTab, TextField, Typography } from '@mui/material'
 
-import { AiFillEye } from 'react-icons/ai'
-
 import DatePicker from 'react-datepicker'
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
 import { styled } from '@mui/material/styles'
 import ItemTable from 'src/@core/components/purchase-overview/ItemTable'
 import SupplierTable from 'src/@core/components/purchase-overview/supplierTable'
-import ViewInvoiceModal from 'src/@core/components/modal/viewInvoiceListModal'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import { purchaseOverview } from 'src/@core/apiFunction/invoice'
@@ -68,8 +65,6 @@ const PurchaseOverview = () => {
   const [invoiceEndDate, setInvoiceEndDate] = useState()
 
   const [tabValue, setTabValue] = useState('item')
-
-  const [openInvoiceListModal, setOpenInvoiceListModal] = useState(false)
 
   const [refetch, setRefetch] = useState(false)
 
@@ -151,18 +146,7 @@ const PurchaseOverview = () => {
       <Divider />
 
       <Box component='div' padding={5}>
-        <StyledTypography
-          label='Total Purchases'
-          icon={
-            <AiFillEye
-              fontSize={20}
-              style={{ marginTop: '-2px', cursor: 'pointer' }}
-              onClick={() => setOpenInvoiceListModal(true)}
-            />
-          }
-        >
-          {purchaseOverviewData?.invoices?.invoice_count}
-        </StyledTypography>
+        <StyledTypography label='Total Purchases'>{purchaseOverviewData?.invoices?.invoice_count}</StyledTypography>
         <StyledTypography label='Purchase amount'>
           ¥{purchaseOverviewData?.invoices?.total_purchase_amount}
         </StyledTypography>
@@ -182,8 +166,6 @@ const PurchaseOverview = () => {
           ¥{purchaseOverviewData?.invoices?.total_unpaid_amount?.toFixed(2)}
         </StyledTypography>
         <StyledTypography label='Unpaid'>{purchaseOverviewData?.invoices?.total_unpaid_count}</StyledTypography>
-
-        <ViewInvoiceModal open={openInvoiceListModal} setOpen={setOpenInvoiceListModal} />
       </Box>
 
       <Box component='div'>

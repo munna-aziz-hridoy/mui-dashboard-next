@@ -25,6 +25,8 @@ const SupplierDetails = () => {
 
   const { supplierDetails, loading, refetch } = useSingleSupplier(supplierId, access_token)
 
+  console.log(supplierDetails)
+
   return (
     <Card>
       <CardHeader title='Supplier Details' />

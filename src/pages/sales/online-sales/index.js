@@ -25,18 +25,20 @@ const OnlineSales = () => {
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
 
+  const [searchQuery, setSearchQuery] = useState('')
+
   const { access_token } = getToken()
 
   useEffect(() => {
     setLoading(true)
-    getOnlineSells(page, access_token).then(data => {
+    getOnlineSells(searchQuery, page, access_token).then(data => {
       if (data?.data) {
-        setOnlineSellData(data?.data)
+        setOnlineSellData(data?.data?.results)
         setTotalPages(data?.total_pages)
       }
       setLoading(false)
     })
-  }, [page])
+  }, [page, searchQuery])
 
   const handleUploadOnlineSalesData = (csv, setCsv) => {
     if (csv) {
@@ -84,7 +86,13 @@ const OnlineSales = () => {
           </DatePickerWrapper>
         </Box>
         <Box display='flex' alignItems='center'>
-          <TextField className='search-field' style={{ borderRight: 'none' }} placeholder='Search' size='small' />
+          <TextField
+            onChange={e => setSearchQuery(e.target.value)}
+            className='search-field'
+            style={{ borderRight: 'none' }}
+            placeholder='Search'
+            size='small'
+          />
           <Button style={{ padding: '8px 18px', borderRadius: '0 5px 5px 0' }} variant='outlined' size='small'>
             Search
           </Button>

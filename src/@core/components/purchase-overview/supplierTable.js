@@ -1,7 +1,11 @@
-import { Box, Pagination, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
+import { Box, Button, Pagination, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
 import React from 'react'
+import { AiFillEye } from 'react-icons/ai'
 
 const SupplierTable = ({ data, pageCount }) => {
+  const router = useRouter()
+
   return (
     <Box component='div'>
       <Typography variant='body1' fontSize={16} fontWeight={500} marginBottom={2}>
@@ -15,6 +19,7 @@ const SupplierTable = ({ data, pageCount }) => {
             <TableCell style={{ background: '#10072060' }}>Total Purchases</TableCell>
             <TableCell style={{ background: '#10072060' }}>Total Amount</TableCell>
             <TableCell style={{ background: '#10072060' }}>Due</TableCell>
+            <TableCell style={{ background: '#10072060' }}>View</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -25,6 +30,11 @@ const SupplierTable = ({ data, pageCount }) => {
               <TableCell>{item?.total_purchases || 0}</TableCell>
               <TableCell>¥{item?.total_amount || 0}</TableCell>
               <TableCell>¥{item?.total_due || 0}</TableCell>
+              <TableCell>
+                <Button onClick={() => router.push(`/others/supplier/${item?.id}`)} variant='outlined' size='small'>
+                  <AiFillEye />
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

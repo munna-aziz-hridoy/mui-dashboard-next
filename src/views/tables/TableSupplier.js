@@ -17,7 +17,7 @@ const TableSupplier = ({ supplier }) => {
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
         <TableHead>
-          <TableRow>
+          <TableRow style={{ borderTop: '1px solid #e0e0e0' }}>
             <TableCell>Id</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Phone</TableCell>

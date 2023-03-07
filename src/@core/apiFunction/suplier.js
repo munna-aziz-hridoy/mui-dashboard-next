@@ -1,6 +1,6 @@
 import API_URL from 'src/@core/utils/mainUrl'
 
-export const getSearchedSuplier = async (searchValue, token) => {
+export const getSearchedSuplier = async (searchValue = '', token) => {
   const url = `${API_URL}/supplier/?search=${searchValue}`
 
   const res = await fetch(url, {

@@ -109,8 +109,11 @@ export const getInvoiceStatusChoices = async token => {
 
 // online product
 
-export const getOnlineProducts = async (searchQuery = '', page, token) => {
-  const url = page > 1 ? `${API_URL}/online-product/?page=${page}` : `${API_URL}/online-product/`
+export const getOnlineProducts = async (searchQuery = '', page = 1, isMapped, token) => {
+  const url =
+    page >= 1
+      ? `${API_URL}/online-product/?search=${searchQuery}&page=${page}&is_mapped=${isMapped}`
+      : `${API_URL}/online-product/?search=${searchQuery}&is_mapped=${isMapped}`
 
   const res = await fetch(url, {
     headers: {
@@ -130,11 +133,11 @@ export const getOnlineProducts = async (searchQuery = '', page, token) => {
 
 // offline product
 
-export const getOfflineProducts = async (searchQuery = '', page, token) => {
+export const getOfflineProducts = async (searchQuery = '', page, isMapped, token) => {
   const url =
     page > 1
-      ? `${API_URL}/offline-product/?search=${searchQuery}&page=${page}`
-      : `${API_URL}/offline-product/?search=${searchQuery}`
+      ? `${API_URL}/offline-product/?search=${searchQuery}&page=${page}&is_mapped=${isMapped}`
+      : `${API_URL}/offline-product/?search=${searchQuery}&is_mapped=${isMapped}`
 
   const res = await fetch(url, {
     headers: {
