@@ -1,7 +1,7 @@
 const { useState, useEffect } = require('react')
 const { getSingleSupplier } = require('../apiFunction/suplier')
 
-const useSingleSupplier = (id, token) => {
+const useSingleSupplier = (id, historyPage, token) => {
   const [supplierDetails, setSupplierDetails] = useState(null)
   const [loading, setLoading] = useState(false)
 
@@ -9,7 +9,7 @@ const useSingleSupplier = (id, token) => {
 
   useEffect(() => {
     setLoading(true)
-    getSingleSupplier(id, token).then(data => {
+    getSingleSupplier(id, historyPage, token).then(data => {
       if (data?.id) {
         setSupplierDetails(data)
       }

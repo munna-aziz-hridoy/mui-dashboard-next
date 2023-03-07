@@ -52,7 +52,7 @@ export const updateSupplier = async (supplierData, id, token) => {
   } else return { success: false, data }
 }
 
-export const getSingleSupplier = async (id, token) => {
+export const getSingleSupplier = async (id, historyPage, token) => {
   const url = `${API_URL}/supplier/${id}`
 
   const res = await fetch(url, {

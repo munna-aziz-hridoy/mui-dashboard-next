@@ -16,6 +16,7 @@ const StyledTypography = ({ children, label, icon = null }) => {
 
 const SupplierDetails = () => {
   const [isEditing, setIsEditing] = useState(false)
+  const [purchaseHistoryPage, setPurchaseHistoryPage] = useState(1)
 
   const {
     query: { supplierId }
@@ -23,9 +24,7 @@ const SupplierDetails = () => {
 
   const { access_token } = getToken()
 
-  const { supplierDetails, loading, refetch } = useSingleSupplier(supplierId, access_token)
-
-  console.log(supplierDetails)
+  const { supplierDetails, loading, refetch } = useSingleSupplier(supplierId, purchaseHistoryPage, access_token)
 
   return (
     <Card>
@@ -79,7 +78,7 @@ const SupplierDetails = () => {
             </Typography>
             <Divider />
 
-            <SupplierPurchaseHistoryTable invoices={supplierDetails?.invoices} />
+            <SupplierPurchaseHistoryTable invoices={supplierDetails?.invoices} pageCount={setPurchaseHistoryPage} />
 
             <Divider />
           </Box>

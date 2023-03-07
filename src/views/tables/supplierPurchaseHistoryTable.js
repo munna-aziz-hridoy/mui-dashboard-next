@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import {
+  Box,
   Button,
   CircularProgress,
+  Pagination,
   Table,
   TableBody,
   TableCell,
@@ -58,7 +60,7 @@ const Row = ({ data, index }) => {
   )
 }
 
-const SupplierPurchaseHistoryTable = ({ invoices }) => {
+const SupplierPurchaseHistoryTable = ({ invoices, pageCount }) => {
   return (
     <TableContainer sx={{ maxHeight: 440 }}>
       <Table stickyHeader size='small'>
@@ -75,11 +77,15 @@ const SupplierPurchaseHistoryTable = ({ invoices }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {invoices?.map((item, i) => (
+          {invoices?.data?.map((item, i) => (
             <Row key={i} data={item} index={i} />
           ))}
         </TableBody>
       </Table>
+      <Box display='flex' justifyContent='space-between' alignItems='center' marginTop={3}>
+        <div />
+        <Pagination count={invoices?.total_pages} shape='rounded' onChange={(e, value) => pageCount(value)} />
+      </Box>
     </TableContainer>
   )
 }
