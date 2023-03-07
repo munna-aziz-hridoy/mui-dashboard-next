@@ -109,11 +109,16 @@ export const getInvoiceStatusChoices = async token => {
 
 // online product
 
-export const getOnlineProducts = async (searchQuery = '', page = 1, isMapped, token) => {
-  const url =
-    page >= 1
-      ? `${API_URL}/online-product/?search=${searchQuery}&page=${page}&is_mapped=${isMapped}`
-      : `${API_URL}/online-product/?search=${searchQuery}&is_mapped=${isMapped}`
+export const getOnlineProducts = async (
+  token,
+  searchQuery = '',
+  page = 1,
+  isMapped = '',
+  isPublished = '',
+  isInStock = '',
+  isVisible = ''
+) => {
+  const url = `${API_URL}/online-product/?search=${searchQuery}&page=${page}&is_mapped=${isMapped}&is_published=${isPublished}&is_in_stock=${isInStock}&is_visible=${isVisible}`
 
   const res = await fetch(url, {
     headers: {
@@ -124,20 +129,17 @@ export const getOnlineProducts = async (searchQuery = '', page = 1, isMapped, to
   if (res.status !== 200) return { success: false, data: [] }
   const data = await res.json()
 
-  if (data?.data) {
-    return { success: true, data: data?.data?.results, total_pages: data?.total_pages }
+  if (data?.total_records >= 0) {
+    return { success: true, data }
   } else {
-    return { success: false, data: [] }
+    return { success: false, data: null }
   }
 }
 
 // offline product
 
-export const getOfflineProducts = async (searchQuery = '', page, isMapped = null, token) => {
-  const url =
-    page > 1
-      ? `${API_URL}/offline-product/?search=${searchQuery}&page=${page}&is_mapped=${isMapped}`
-      : `${API_URL}/offline-product/?search=${searchQuery}&is_mapped=${isMapped}`
+export const getOfflineProducts = async (token, searchQuery = '', page = 1, isMapped = '', isSpecialProduct = '') => {
+  const url = `${API_URL}/offline-product/?search=${searchQuery}&page=${page}&is_mapped=${isMapped}&is_special_product=${isSpecialProduct}`
 
   const res = await fetch(url, {
     headers: {
@@ -150,10 +152,10 @@ export const getOfflineProducts = async (searchQuery = '', page, isMapped = null
 
   console.log(data)
 
-  if (data?.data) {
-    return { success: true, data: data?.data?.results, total_pages: data?.total_pages }
+  if (data?.total_records >= 0) {
+    return { success: true, data }
   } else {
-    return { success: false, data: [] }
+    return { success: false, data: null }
   }
 }
 

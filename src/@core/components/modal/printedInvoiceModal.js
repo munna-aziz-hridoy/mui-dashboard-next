@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 
 // ** MUI imports
-import { Box, Modal, Card, CardContent, Grid, TextField, CardHeader, Button, Typography } from '@mui/material'
+import { Box, Modal, Button, Typography, CircularProgress } from '@mui/material'
 import { FaPrint } from 'react-icons/fa'
 import PrintedInvoice from '../printed-invoice'
+import { getToken } from 'src/@core/utils/manageToken'
+import useInvoiceDetails from 'src/@core/hooks/useInvoiceDetails'
 
 // ** Icon imports
 
@@ -23,7 +25,11 @@ const style = {
   overflowY: 'scroll'
 }
 
-const PrintedInvoiceModal = ({ open, setOpen, invoice }) => {
+const PrintedInvoiceModal = ({ open, setOpen, invoiceId }) => {
+  const { access_token } = getToken()
+
+  const { loading, invoiceData } = useInvoiceDetails(invoiceId, access_token)
+
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
       <Box sx={style}>
@@ -36,10 +42,22 @@ const PrintedInvoiceModal = ({ open, setOpen, invoice }) => {
           >
             <FaPrint fontSize={18} />
             <Typography variant='body1' fontSize={14} marginLeft={2} textTransform='capitalize' fontWeight={500}>
-              Print
+              Print {invoiceId}
             </Typography>
           </Button>
-          <PrintedInvoice invoice={invoice} />
+          {loading ? (
+            <Box
+              component='div'
+              style={{ width: '100%', height: '100%' }}
+              display='flex'
+              justifyContent='center'
+              alignItems='center'
+            >
+              <CircularProgress color='primary' />
+            </Box>
+          ) : (
+            <PrintedInvoice invoice={invoiceData} />
+          )}
         </div>
       </Box>
       {/* <Toaster /> */}

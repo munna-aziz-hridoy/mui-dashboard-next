@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Grid, TextField, Button, Autocomplete, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 
-import {
-  addInternalProduct,
-  getOfflineProducts,
-  getOnlineProducts,
-  getUnitChoice,
-  updateInternalProduct
-} from 'src/@core/apiFunction/product'
+import { addInternalProduct, getUnitChoice, updateInternalProduct } from 'src/@core/apiFunction/product'
 import toast, { Toaster } from 'react-hot-toast'
 import { getToken } from 'src/@core/utils/manageToken'
 import { useRouter } from 'next/router'
+import useOnlineProducts from 'src/@core/hooks/useOnlineProducts'
+import useOfflineProducts from 'src/@core/hooks/useOfflineProducts'
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -39,9 +35,6 @@ const AddInternalProduct = ({
   setPreviousProduct = null,
   update = false
 }) => {
-  const [offlineProducts, setOfflineProducts] = useState([])
-  const [onlineProducts, setOnlineProducts] = useState([])
-
   const [offlineProductName, setOfflineProductName] = useState(previousData ? previousData?.offlineProduct : [])
   const [onlineProductName, setOnlineProductName] = useState(previousData ? previousData?.onlineProduct : [])
 
@@ -52,19 +45,11 @@ const AddInternalProduct = ({
   const { access_token } = getToken()
   const router = useRouter()
 
+  const { products: onlineProducts } = useOnlineProducts(access_token, '', 1)
+
+  const { products: offlineProducts } = useOfflineProducts(access_token, '', 1)
+
   useEffect(() => {
-    getOfflineProducts('', 1, null, access_token).then(data => {
-      if (data?.success) {
-        setOfflineProducts(data?.data)
-      }
-    })
-
-    getOnlineProducts('', 1, null, access_token).then(data => {
-      if (data?.success) {
-        setOnlineProducts(data?.data)
-      }
-    })
-
     getUnitChoice(access_token).then(data => {
       setUnits(data)
     })

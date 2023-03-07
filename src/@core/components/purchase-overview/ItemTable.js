@@ -13,29 +13,14 @@ import {
   Typography
 } from '@mui/material'
 import PrintedInvoiceModal from '../modal/printedInvoiceModal'
-import { getSingleInvoiceDetails } from 'src/@core/apiFunction/invoice'
-import { getToken } from 'src/@core/utils/manageToken'
+
 import { AiOutlineEye } from 'react-icons/ai'
 
 const PerInvoice = ({ item, length, index }) => {
   const [isOpenModal, setIsOpenModal] = useState(false)
-  const [invoiceData, setInvoiceData] = useState(null)
-  const [loading, setLoading] = useState(false)
 
   const invoice = item.split('(')[0]
   const quantity = item.split('(')[1].split(')')[0]
-
-  const { access_token } = getToken()
-
-  useEffect(() => {
-    setLoading(true)
-    getSingleInvoiceDetails(invoice, access_token).then(data => {
-      if (data?.created_at) {
-        setInvoiceData(data)
-      }
-      setLoading(false)
-    })
-  }, [])
 
   return (
     <Fragment>
@@ -57,30 +42,26 @@ const PerInvoice = ({ item, length, index }) => {
         >
           {invoice}
 
-          {loading ? (
-            ''
-          ) : (
-            <Tooltip title='View' placement='top'>
-              <Button
-                onClick={() => setIsOpenModal(prev => !prev)}
-                style={{
-                  margin: '0',
-                  padding: '0',
-                  maxWidth: '25px',
-                  minWidth: '25px',
-                  borderBottom: '1px solid #000',
-                  borderRadius: '0px',
-                  marginLeft: '4px'
-                }}
-              >
-                <AiOutlineEye fontSize={16} style={{ marginTop: '0px', cursor: 'pointer' }} />
-              </Button>
-            </Tooltip>
-          )}
+          <Tooltip title='View' placement='top'>
+            <Button
+              onClick={() => setIsOpenModal(prev => !prev)}
+              style={{
+                margin: '0',
+                padding: '0',
+                maxWidth: '25px',
+                minWidth: '25px',
+                borderBottom: '1px solid #000',
+                borderRadius: '0px',
+                marginLeft: '4px'
+              }}
+            >
+              <AiOutlineEye fontSize={16} style={{ marginTop: '0px', cursor: 'pointer' }} />
+            </Button>
+          </Tooltip>
         </span>{' '}
         (Qyt: <span style={{ fontSize: '13px', fontWeight: '600' }}>{quantity}</span>){length - 1 === index ? '' : ','}
       </Typography>
-      <PrintedInvoiceModal open={isOpenModal} setOpen={setIsOpenModal} invoice={invoiceData} />
+      <PrintedInvoiceModal open={isOpenModal} setOpen={setIsOpenModal} invoiceId={invoice} />
     </Fragment>
   )
 }

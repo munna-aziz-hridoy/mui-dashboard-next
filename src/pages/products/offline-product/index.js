@@ -31,20 +31,14 @@ import { uploadOfflineProductCsv } from 'src/@core/apiFunction/csvUpload'
 import AffectedTable from 'src/views/tables/affectedTable'
 import { getToken } from 'src/@core/utils/manageToken'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
+import useOfflineProducts from 'src/@core/hooks/useOfflineProducts'
+import FilterButton from 'src/@core/components/filterButton'
+import useFilterOptions from 'src/@core/hooks/useFilterOptions'
 
 const InternalProduct = () => {
-  const [offlineProducts, setOfflineProducts] = useState([])
   const [middleCatData, setMiddleCatData] = useState(null)
 
-  const [page, setPage] = useState(0)
-  const [totalPages, setTotalPages] = useState(1)
-  const [totalProduct, setTotalProduct] = useState(0)
-  const [mapped, setMapped] = useState(0)
-  const [unMapped, setUnMapped] = useState(0)
-
-  const [refetch, setRefetch] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [isMapped, setIsMapped] = useState(null)
+  const [page, setPage] = useState(1)
 
   const [affectedRows, setAffectedRows] = useState([])
 
@@ -52,19 +46,19 @@ const InternalProduct = () => {
 
   const { access_token } = getToken()
 
+  const { isMapped, setIsMapped, isSpecialProduct, setIsSpecialProduct } = useFilterOptions()
+
+  const { products, productCount, totalPages, mappedCount, unMappedCount, refetch, loading } = useOfflineProducts(
+    access_token,
+    searchQuery,
+    page,
+    isMapped,
+    isSpecialProduct
+  )
+
   useEffect(() => {
-    setLoading(true)
-    getOfflineProducts(searchQuery, page, isMapped, access_token).then(data => {
-      if (data.success) {
-        setOfflineProducts(data.data)
-        setTotalPages(data?.total_pages)
-        setMapped(data?.data?.total_mapped_count)
-        setTotalProduct(data?.data?.total_products)
-        setUnMapped(data?.data?.total_unmapped_count)
-      }
-      setLoading(false)
-    })
-  }, [refetch, page, searchQuery, isMapped])
+    setSearchQuery('')
+  }, [products?.length])
 
   const handleUploadOfflineProductCsv = (csv, setCsv) => {
     if (csv && middleCatData?.middle_cat_code) {
@@ -82,9 +76,13 @@ const InternalProduct = () => {
         }
         setCsv([])
         setMiddleCatData(null)
-        setRefetch(prev => !prev)
+        refetch(prev => !prev)
       })
     } else toast.error('Please select middle category')
+  }
+
+  const handleSearch = () => {
+    refetch(prev => !prev)
   }
 
   return (
@@ -131,45 +129,42 @@ const InternalProduct = () => {
           titleTypographyProps={{ variant: 'h6' }}
         />
 
-        <AddOfflineProduct refetch={setRefetch} />
+        <AddOfflineProduct refetch={refetch} />
       </Card>
 
       <Box component='div' marginTop={4}>
         <Typography variant='body1' fontWeight={500}>
-          Total Products: {totalProduct}
+          Total Products: {productCount}
         </Typography>
         <Typography variant='body1' fontWeight={500}>
-          Mapped: {mapped}
+          Mapped: {mappedCount}
         </Typography>
         <Typography variant='body1' fontWeight={500}>
-          Un Mapped: {unMapped}
+          Un Mapped: {unMappedCount}
         </Typography>
       </Box>
 
-      <Card style={{ marginTop: '2rem' }}>
+      <Card style={{ marginTop: '2rem', minHeight: '380px' }}>
         <Box component='div' display='flex' justifyContent='space-between' alignItems='center'>
           <Typography variant='body1' fontSize={18} fontWeight={600} marginLeft={4} marginBottom={5} marginTop={5}>
             Product list
           </Typography>
 
           <Box component='div' display='flex' alignItems='center' gap={2}>
-            <FormControl size='small'>
-              <InputLabel id='form-layouts-separator-select-label'>Map Filter</InputLabel>
-              <Select
-                onChange={e => {
-                  const value = e.target.value === 'all' ? null : e.target.value === 'mapped' ? true : false
-                  setIsMapped(value)
-                }}
-                size='small'
-                label='Map Filter'
-              >
-                <MenuItem value='all'>All</MenuItem>
-                <MenuItem value='mapped'>Mapped</MenuItem>
-                <MenuItem value='notmapped'>Not Mapped</MenuItem>
-              </Select>
-            </FormControl>
+            <FilterButton
+              isMapped={isMapped}
+              setIsMapped={setIsMapped}
+              isSpecialProduct={isSpecialProduct}
+              setIsSpecialProduct={setIsSpecialProduct}
+              refetch={refetch}
+            />
             <Box component='div' marginRight={3}>
               <TextField
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    handleSearch()
+                  }
+                }}
                 onChange={e => {
                   setSearchQuery(e.target.value)
                 }}
@@ -180,6 +175,14 @@ const InternalProduct = () => {
                 placeholder='Search'
               />
               <Button
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    handleSearch()
+                  }
+                }}
+                onClick={() => {
+                  handleSearch()
+                }}
                 style={{ padding: '8.7px 18px', borderRadius: '0 5px 5px 0', marginTop: '0.5px' }}
                 variant='outlined'
               >
@@ -191,7 +194,7 @@ const InternalProduct = () => {
 
         {loading && <CircularProgress color='inherit' style={{ margin: '0 auto', display: 'inherit' }} />}
 
-        <TableDense products={offlineProducts} pageCount={setPage} totalPages={totalPages} />
+        <TableDense products={products} pageCount={setPage} totalPages={totalPages} />
       </Card>
       <Toaster />
     </Fragment>

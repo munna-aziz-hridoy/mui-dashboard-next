@@ -16,7 +16,6 @@ import {
 
 import toast, { Toaster } from 'react-hot-toast'
 
-import { getOnlineProducts } from 'src/@core/apiFunction/product'
 import { uploadOnlineProductCsv } from 'src/@core/apiFunction/csvUpload'
 import CsvUpload from 'src/@core/components/file-upload/csvUpload'
 import AddOnlineProduct from 'src/@core/components/forms/addOnlineProductForm'
@@ -24,38 +23,35 @@ import TableDense from 'src/views/tables/TableDense'
 import AffectedTable from 'src/views/tables/affectedTable'
 import { getToken } from 'src/@core/utils/manageToken'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
+import useOnlineProducts from 'src/@core/hooks/useOnlineProducts'
+import FilterButton from 'src/@core/components/filterButton'
+import useFilterOptions from 'src/@core/hooks/useFilterOptions'
 
 const OnlineProduct = () => {
-  const [onlineProducts, setOnlineProducts] = useState([])
   const [affectedRows, setAffectedRows] = useState([])
 
-  const [page, setPage] = useState(0)
-  const [totalPages, setTotalPages] = useState(1)
-  const [totalProduct, setTotalProduct] = useState(0)
-  const [mapped, setMapped] = useState(0)
-  const [unMapped, setUnMapped] = useState(0)
-
-  const [refetch, setRefetch] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [isMapped, setIsMapped] = useState(null)
+  const [page, setPage] = useState(1)
 
   const [searchQuery, setSearchQuery] = useState('')
 
   const { access_token } = getToken()
 
+  const { isMapped, setIsMapped, isInStock, setIsInStock, isPublished, setIsPublished, isVisible, setIsVisible } =
+    useFilterOptions()
+
+  const { products, productCount, totalPages, mappedCount, unMappedCount, refetch, loading } = useOnlineProducts(
+    access_token,
+    searchQuery,
+    page,
+    isMapped,
+    isPublished,
+    isInStock,
+    isVisible
+  )
+
   useEffect(() => {
-    setLoading(true)
-    getOnlineProducts(searchQuery, page, isMapped, access_token).then(data => {
-      if (data.success) {
-        setOnlineProducts(data.data)
-        setTotalPages(data?.total_pages)
-        setMapped(data?.data?.total_mapped_count)
-        setTotalProduct(data?.data?.total_products)
-        setUnMapped(data?.data?.total_unmapped_count)
-      }
-      setLoading(false)
-    })
-  }, [refetch, page, searchQuery, isMapped])
+    setSearchQuery('')
+  }, [products?.length])
 
   const handleUploadOnlineProductCsv = (csv, setCsv) => {
     if (csv) {
@@ -70,7 +66,7 @@ const OnlineProduct = () => {
         }
         setCsv([])
 
-        setRefetch(prev => !prev)
+        refetch(prev => !prev)
       })
     }
   }
@@ -93,45 +89,46 @@ const OnlineProduct = () => {
       <Card>
         <CardHeader title='Add online product' titleTypographyProps={{ variant: 'h6' }} />
 
-        <AddOnlineProduct refetch={setRefetch} />
+        <AddOnlineProduct refetch={refetch} />
       </Card>
 
       <Box component='div' marginTop={4}>
         <Typography variant='body1' fontWeight={500}>
-          Total Products: {totalProduct}
+          Total Products: {productCount}
         </Typography>
         <Typography variant='body1' fontWeight={500}>
-          Mapped: {mapped}
+          Mapped: {mappedCount}
         </Typography>
         <Typography variant='body1' fontWeight={500}>
-          Un Mapped: {unMapped}
+          Un Mapped: {unMappedCount}
         </Typography>
       </Box>
 
-      <Card style={{ marginTop: '2rem' }}>
+      <Card style={{ marginTop: '2rem', minHeight: '380px' }}>
         <Box component='div' display='flex' justifyContent='space-between' alignItems='center'>
           <Typography variant='body1' fontSize={18} fontWeight={600} marginLeft={4} marginBottom={5} marginTop={5}>
             Product list
           </Typography>
 
           <Box component='div' display='flex' alignItems='center' gap={2}>
-            <FormControl size='small'>
-              <InputLabel id='form-layouts-separator-select-label'>Map Filter</InputLabel>
-              <Select
-                onChange={e => {
-                  const value = e.target.value === 'all' ? null : e.target.value === 'mapped' ? true : false
-                  setIsMapped(value)
-                }}
-                size='small'
-                label='Map Filter'
-              >
-                <MenuItem value='all'>All</MenuItem>
-                <MenuItem value='mapped'>Mapped</MenuItem>
-                <MenuItem value='notmapped'>Not Mapped</MenuItem>
-              </Select>
-            </FormControl>
+            <FilterButton
+              isInStock={isInStock}
+              isMapped={isMapped}
+              isPublished={isPublished}
+              isVisible={isVisible}
+              setInStock={setIsInStock}
+              setIsMapped={setIsMapped}
+              setIsVisible={setIsVisible}
+              setPublished={setIsPublished}
+              refetch={refetch}
+            />
             <Box component='div' marginRight={3}>
               <TextField
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    refetch(prev => !prev)
+                  }
+                }}
                 onChange={e => {
                   setSearchQuery(e.target.value)
                 }}
@@ -142,6 +139,7 @@ const OnlineProduct = () => {
                 placeholder='Search'
               />
               <Button
+                onClick={() => refetch(prev => !prev)}
                 style={{ padding: '8.7px 18px', borderRadius: '0 5px 5px 0', marginTop: '0.5px' }}
                 variant='outlined'
               >
@@ -153,7 +151,7 @@ const OnlineProduct = () => {
 
         {loading && <CircularProgress color='inherit' style={{ margin: '0 auto', display: 'inherit' }} />}
 
-        <TableDense products={onlineProducts} totalPages={totalPages} pageCount={setPage} />
+        <TableDense products={products} totalPages={totalPages} pageCount={setPage} />
       </Card>
       <Toaster />
     </Fragment>

@@ -116,7 +116,7 @@ const InvoiceTableRow = ({ invoice, refetch, refetchValue }) => {
           </Box>
         </StyledTableCell>
       </StyledTableRow>
-      <PrintedInvoiceModal open={openInvoiceModal} setOpen={setOpenInvoiceModal} invoice={invoice} />
+      <PrintedInvoiceModal open={openInvoiceModal} setOpen={setOpenInvoiceModal} invoiceId={id} />
       <AddPaymentModal
         open={openPaymentModal}
         setOpen={setOpenPaymentModal}

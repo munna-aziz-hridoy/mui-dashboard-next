@@ -12,8 +12,6 @@ import {
   TableRow
 } from '@mui/material'
 import PrintedInvoiceModal from 'src/@core/components/modal/printedInvoiceModal'
-import useInvoiceDetails from 'src/@core/hooks/useInvoiceDetails'
-import { getToken } from 'src/@core/utils/manageToken'
 
 const StyledTableCell = ({ children }) => {
   return <TableCell style={{ background: '#100720', color: '#fff' }}>{children}</TableCell>
@@ -21,10 +19,6 @@ const StyledTableCell = ({ children }) => {
 
 const Row = ({ data, index }) => {
   const [openInvoiceDetails, setOpenInvoiceDetails] = useState(false)
-
-  const { access_token } = getToken()
-
-  const { invoiceData, loading } = useInvoiceDetails(data?.id, access_token)
 
   const totalProducts = data?.invoice_items?.map(item => item.quantity).reduce((a, b) => a + b)
 
@@ -41,21 +35,17 @@ const Row = ({ data, index }) => {
         <TableCell>¥{data?.amount_paid}</TableCell>
         <TableCell>¥{totalAmount - data?.amount_paid}</TableCell>
         <TableCell>
-          {!loading ? (
-            <Button
-              onClick={() => setOpenInvoiceDetails(true)}
-              variant='outlined'
-              size='small'
-              style={{ fontSize: '10px' }}
-            >
-              Details
-            </Button>
-          ) : (
-            <CircularProgress color='primary' />
-          )}
+          <Button
+            onClick={() => setOpenInvoiceDetails(true)}
+            variant='outlined'
+            size='small'
+            style={{ fontSize: '10px' }}
+          >
+            Details
+          </Button>
         </TableCell>
       </TableRow>
-      <PrintedInvoiceModal invoice={invoiceData} open={openInvoiceDetails} setOpen={setOpenInvoiceDetails} />
+      <PrintedInvoiceModal invoiceId={data?.id} open={openInvoiceDetails} setOpen={setOpenInvoiceDetails} />
     </>
   )
 }
