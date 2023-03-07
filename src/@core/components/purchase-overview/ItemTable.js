@@ -30,7 +30,6 @@ const PerInvoice = ({ item, length, index }) => {
   useEffect(() => {
     setLoading(true)
     getSingleInvoiceDetails(invoice, access_token).then(data => {
-      console.log(data)
       if (data?.created_at) {
         setInvoiceData(data)
       }

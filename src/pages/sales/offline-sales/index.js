@@ -44,8 +44,6 @@ const OfflineSales = () => {
   useEffect(() => {
     setLoading(true)
     getOfflineSells(searchQuery, page, access_token).then(data => {
-      console.log(data)
-
       if (data?.data) {
         setOfflineSellData(data?.data?.results)
         setTotalPages(data?.total_pages)

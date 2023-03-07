@@ -46,7 +46,6 @@ const OnlineProduct = () => {
   useEffect(() => {
     setLoading(true)
     getOnlineProducts(searchQuery, page, isMapped, access_token).then(data => {
-      console.log(data)
       if (data.success) {
         setOnlineProducts(data.data?.results)
         setTotalPages(data?.total_pages)
@@ -57,8 +56,6 @@ const OnlineProduct = () => {
       setLoading(false)
     })
   }, [refetch, page, searchQuery, isMapped])
-
-  console.log(isMapped)
 
   const handleUploadOnlineProductCsv = (csv, setCsv) => {
     if (csv) {
