@@ -17,6 +17,7 @@ import EditProduct from 'src/@core/components/modal/editProductPropertiesModal'
 import ProductTableRow from './ProductTableRow'
 
 const columns = [
+  { id: 'sl', label: 'SL', minWidth: 30 },
   { id: 'name', label: 'Name', minWidth: 200 },
   // { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
   {
@@ -117,20 +118,18 @@ const TableStickyHeader = ({ products, setProducts, invoiceTotal, setInvoiceTota
             </TableRow>
           </TableHead>
           <TableBody>
-            {products
-              ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .reverse()
-              .map(row => {
-                return (
-                  <ProductTableRow
-                    key={row.product}
-                    productData={row}
-                    setProducts={setProducts}
-                    setInvoiceTotal={setInvoiceTotal}
-                    setTotalTax={setTotalTax}
-                  />
-                )
-              })}
+            {products?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => {
+              return (
+                <ProductTableRow
+                  key={row.product}
+                  productData={row}
+                  setProducts={setProducts}
+                  setInvoiceTotal={setInvoiceTotal}
+                  setTotalTax={setTotalTax}
+                  index={i}
+                />
+              )
+            })}
           </TableBody>
         </Table>
       </TableContainer>

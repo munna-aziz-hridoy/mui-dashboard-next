@@ -56,7 +56,7 @@ const InternalProduct = () => {
     setLoading(true)
     getOfflineProducts(searchQuery, page, isMapped, access_token).then(data => {
       if (data.success) {
-        setOfflineProducts(data.data?.results)
+        setOfflineProducts(data.data)
         setTotalPages(data?.total_pages)
         setMapped(data?.data?.total_mapped_count)
         setTotalProduct(data?.data?.total_products)

@@ -125,7 +125,7 @@ export const getOnlineProducts = async (searchQuery = '', page = 1, isMapped, to
   const data = await res.json()
 
   if (data?.data) {
-    return { success: true, data: data?.data, total_pages: data?.total_pages }
+    return { success: true, data: data?.data?.results, total_pages: data?.total_pages }
   } else {
     return { success: false, data: [] }
   }
@@ -133,7 +133,7 @@ export const getOnlineProducts = async (searchQuery = '', page = 1, isMapped, to
 
 // offline product
 
-export const getOfflineProducts = async (searchQuery = '', page, isMapped, token) => {
+export const getOfflineProducts = async (searchQuery = '', page, isMapped = null, token) => {
   const url =
     page > 1
       ? `${API_URL}/offline-product/?search=${searchQuery}&page=${page}&is_mapped=${isMapped}`
@@ -148,8 +148,10 @@ export const getOfflineProducts = async (searchQuery = '', page, isMapped, token
   if (res.status !== 200) return { success: false, data: [] }
   const data = await res.json()
 
+  console.log(data)
+
   if (data?.data) {
-    return { success: true, data: data?.data, total_pages: data?.total_pages }
+    return { success: true, data: data?.data?.results, total_pages: data?.total_pages }
   } else {
     return { success: false, data: [] }
   }

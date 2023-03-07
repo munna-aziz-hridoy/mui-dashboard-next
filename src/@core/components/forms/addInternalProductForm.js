@@ -53,13 +53,13 @@ const AddInternalProduct = ({
   const router = useRouter()
 
   useEffect(() => {
-    getOfflineProducts('', 1, access_token).then(data => {
+    getOfflineProducts('', 1, null, access_token).then(data => {
       if (data?.success) {
         setOfflineProducts(data?.data)
       }
     })
 
-    getOnlineProducts('', 1, access_token).then(data => {
+    getOnlineProducts('', 1, null, access_token).then(data => {
       if (data?.success) {
         setOnlineProducts(data?.data)
       }

@@ -47,7 +47,7 @@ const OnlineProduct = () => {
     setLoading(true)
     getOnlineProducts(searchQuery, page, isMapped, access_token).then(data => {
       if (data.success) {
-        setOnlineProducts(data.data?.results)
+        setOnlineProducts(data.data)
         setTotalPages(data?.total_pages)
         setMapped(data?.data?.total_mapped_count)
         setTotalProduct(data?.data?.total_products)

@@ -41,6 +41,7 @@ import FormStockStatus from './formStockStatus'
 import formatedDate from 'src/@core/utils/getFormatedDate'
 import { getToken } from 'src/@core/utils/manageToken'
 import FormInvoiceStatus from './formInvoiceStatus'
+import FormInvoiceNumber from './formInvoiceNumber'
 
 const AddPurchaseForm = () => {
   const invoice_date = formatedDate(new Date())
@@ -55,7 +56,8 @@ const AddPurchaseForm = () => {
     note: '',
     payment_status: '',
     amount_paid: null,
-    invoice_date
+    invoice_date,
+    invoice_no: null
   })
 
   const [selectedProduct, setSelectedProduct] = useState([])
@@ -163,6 +165,8 @@ const AddPurchaseForm = () => {
                   <FormInvoiceStatus setPurchaseData={setPurchaseData} clearForm={clearForm} />
 
                   <FormDatePicker purchaseData={purchaseData} setPurchaseData={setPurchaseData} />
+
+                  <FormInvoiceNumber setPurchaseData={setPurchaseData} />
 
                   <FormSuplierSelect setPurchaseData={setPurchaseData} clearForm={clearForm} />
 

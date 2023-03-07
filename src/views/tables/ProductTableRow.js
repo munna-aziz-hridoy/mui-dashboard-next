@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { BsPencilSquare, BsTrashFill } from 'react-icons/bs'
 import EditProduct from 'src/@core/components/modal/editProductPropertiesModal'
 
-const ProductTableRow = ({ productData, setProducts, setInvoiceTotal, setTotalTax }) => {
+const ProductTableRow = ({ productData, setProducts, setInvoiceTotal, setTotalTax, index }) => {
   const [openEditProductModal, setOpenEditProductModal] = useState(false)
   const { product, product_name, prev_unit_cost, product_unit } = productData
 
@@ -23,6 +23,7 @@ const ProductTableRow = ({ productData, setProducts, setInvoiceTotal, setTotalTa
 
   return (
     <TableRow hover role='checkbox' tabIndex={-1} style={{ padding: '30px' }}>
+      <TableCell>{index + 1}</TableCell>
       <TableCell>
         <Box style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Typography variant='body1'>{product_name}</Typography>
