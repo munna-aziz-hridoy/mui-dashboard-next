@@ -157,7 +157,7 @@ const PurchaseOverview = () => {
         <Divider style={{ width: '40%' }} />
 
         <StyledTypography label='Paid amount'>
-          ¥${purchaseOverviewData?.invoices?.total_paid_amount?.toFixed(2)}
+          ¥{purchaseOverviewData?.invoices?.total_paid_amount?.toFixed(2)}
         </StyledTypography>
         <StyledTypography label='Partial pay amount'>
           ¥{purchaseOverviewData?.invoices?.total_partial_paid_amount}

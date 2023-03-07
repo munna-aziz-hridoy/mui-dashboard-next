@@ -12,12 +12,13 @@ const FormInvoiceNumber = ({ setPurchaseData }) => {
         required
         size='small'
         onChange={e =>
-          setPurchaseData(prev => {
-            return {
-              ...prev,
-              invoice_no: e.target.value
-            }
-          })
+          //   setPurchaseData(prev => {
+          //     return {
+          //       ...prev,
+          //       invoice_no: e.target.value
+          //     }
+          //   })
+          console.log('')
         }
       />
     </Grid>

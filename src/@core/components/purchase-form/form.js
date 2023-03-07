@@ -56,8 +56,8 @@ const AddPurchaseForm = () => {
     note: '',
     payment_status: '',
     amount_paid: null,
-    invoice_date,
-    invoice_no: null
+    invoice_date
+    // invoice_no: null
   })
 
   const [selectedProduct, setSelectedProduct] = useState([])
