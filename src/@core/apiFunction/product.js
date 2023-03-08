@@ -1,21 +1,5 @@
 import API_URL from 'src/@core/utils/mainUrl'
 
-// get searched product item
-export const getSearchedProduct = async (searchValue, page, token) => {
-  const url = `${API_URL}/internal-product/?search=${searchValue}&page=${page + 1}`
-
-  const res = await fetch(url, {
-    headers: { authorization: `Bearer ${token}` }
-  })
-  const data = await res.json()
-
-  if (data?.data) {
-    return { data: data.data, total_pages: data?.total_pages }
-  } else {
-    return { data: [], total_pages: 1 }
-  }
-}
-
 // get all unit choices
 
 export const getUnitChoice = async token => {
@@ -104,6 +88,25 @@ export const getInvoiceStatusChoices = async token => {
     return data
   } else {
     return []
+  }
+}
+
+// get internal product item
+export const getInternalProducts = async (token, searchValue = '', page = 1) => {
+  const url = `${API_URL}/internal-product/?search=${searchValue}&page=${page}`
+
+  const res = await fetch(url, {
+    headers: { authorization: `Bearer ${token}` }
+  })
+
+  const data = await res.json()
+
+  console.log(data)
+
+  if (data?.data) {
+    return { data: data, success: true }
+  } else {
+    return { data: [], total_pages: 1 }
   }
 }
 

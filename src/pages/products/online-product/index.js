@@ -151,7 +151,7 @@ const OnlineProduct = () => {
 
         {loading && <CircularProgress color='inherit' style={{ margin: '0 auto', display: 'inherit' }} />}
 
-        <TableDense products={products} totalPages={totalPages} pageCount={setPage} />
+        <TableDense products={products} totalPages={totalPages} pageCount={setPage} refetch={refetch} />
       </Card>
       <Toaster />
     </Fragment>

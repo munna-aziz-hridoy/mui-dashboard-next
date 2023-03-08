@@ -194,7 +194,7 @@ const InternalProduct = () => {
 
         {loading && <CircularProgress color='inherit' style={{ margin: '0 auto', display: 'inherit' }} />}
 
-        <TableDense products={products} pageCount={setPage} totalPages={totalPages} />
+        <TableDense products={products} pageCount={setPage} totalPages={totalPages} refetch={refetch} />
       </Card>
       <Toaster />
     </Fragment>

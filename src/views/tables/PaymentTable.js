@@ -13,10 +13,12 @@ const PaymentTable = ({ payment }) => {
           <TableRow>
             <StyledTableCell>Invoice Id</StyledTableCell>
             <StyledTableCell>Payment date</StyledTableCell>
-            <StyledTableCell>Payment Amount</StyledTableCell>
+            {!payment[0]?.invoice && <StyledTableCell>Payment Amount</StyledTableCell>}
+
             {payment[0]?.invoice && (
               <Fragment>
                 <StyledTableCell>Invoice Total</StyledTableCell>
+                <StyledTableCell>Payment Amount</StyledTableCell>
                 <StyledTableCell>Payment Status</StyledTableCell>
                 <StyledTableCell>Supplier</StyledTableCell>
               </Fragment>

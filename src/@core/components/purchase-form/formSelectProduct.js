@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react'
-import { getSearchedProduct } from 'src/@core/apiFunction/product'
+import { getInternalProducts } from 'src/@core/apiFunction/product'
 import AddProduct from 'src/@core/components/modal/addProductModal'
 
 // ** MUI import
@@ -76,7 +76,7 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
     if (searchText !== '') {
       setProductLoading(true)
       setOpenProductList(true)
-      getSearchedProduct(searchText, 0, access_token).then(data => {
+      getInternalProducts(searchText, 0, access_token).then(data => {
         setSearchedProduct(data.data)
         setTotalPage(data.total_pages)
         setProductLoading(false)
@@ -110,7 +110,7 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
 
   const handleInputClick = () => {
     setOpenProductList(prev => !prev)
-    getSearchedProduct('', 0, access_token).then(data => {
+    getInternalProducts('', 0, access_token).then(data => {
       setSearchedProduct(data.data)
       setTotalPage(data.total_pages)
     })

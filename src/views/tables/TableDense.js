@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 
 import { BsCheck, BsX } from 'react-icons/bs'
 
-const TableDense = ({ products, totalPages, pageCount }) => {
+const TableDense = ({ products, totalPages, pageCount, refetch }) => {
   const { pathname } = useRouter()
 
   return (
@@ -56,7 +56,14 @@ const TableDense = ({ products, totalPages, pageCount }) => {
       >
         <div></div>
 
-        <Pagination count={totalPages} shape='rounded' onChange={(e, value) => pageCount(value)} />
+        <Pagination
+          count={totalPages}
+          shape='rounded'
+          onChange={(e, value) => {
+            pageCount(value)
+            refetch(prev => !prev)
+          }}
+        />
       </Box>
     </Fragment>
   )

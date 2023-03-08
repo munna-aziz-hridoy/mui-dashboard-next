@@ -24,6 +24,8 @@ const Row = ({ data, index }) => {
 
   const totalAmount = data?.invoice_items?.map(item => item.quantity * item.unit_cost).reduce((a, b) => a + b)
 
+  const grandTotalCost = totalAmount + data?.tax + data?.shipping_charge - data?.discount
+
   return (
     <>
       <TableRow>
@@ -31,9 +33,9 @@ const Row = ({ data, index }) => {
         <TableCell>{data?.invoice_date?.split(' ')[0]}</TableCell>
         <TableCell>{data?.id}</TableCell>
         <TableCell>{totalProducts} unit</TableCell>
-        <TableCell>¥{totalAmount}</TableCell>
+        <TableCell>¥{grandTotalCost}</TableCell>
         <TableCell>¥{data?.amount_paid}</TableCell>
-        <TableCell>¥{totalAmount - data?.amount_paid}</TableCell>
+        <TableCell>¥{grandTotalCost - data?.amount_paid}</TableCell>
         <TableCell>
           <Button
             onClick={() => setOpenInvoiceDetails(true)}
@@ -45,7 +47,9 @@ const Row = ({ data, index }) => {
           </Button>
         </TableCell>
       </TableRow>
-      <PrintedInvoiceModal invoiceId={data?.id} open={openInvoiceDetails} setOpen={setOpenInvoiceDetails} />
+      {openInvoiceDetails && (
+        <PrintedInvoiceModal invoiceId={data?.id} open={openInvoiceDetails} setOpen={setOpenInvoiceDetails} />
+      )}
     </>
   )
 }

@@ -1,32 +1,34 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Grid, TextField, Button, Autocomplete, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 
-import { addInternalProduct, getUnitChoice, updateInternalProduct } from 'src/@core/apiFunction/product'
+import {
+  addInternalProduct,
+  getOfflineProducts,
+  getUnitChoice,
+  updateInternalProduct
+} from 'src/@core/apiFunction/product'
 import toast, { Toaster } from 'react-hot-toast'
 import { getToken } from 'src/@core/utils/manageToken'
 import { useRouter } from 'next/router'
 import useOnlineProducts from 'src/@core/hooks/useOnlineProducts'
 import useOfflineProducts from 'src/@core/hooks/useOfflineProducts'
 
-const top100Films = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'The Dark Knight', year: 2008 },
-  { title: '12 Angry Men', year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: 'Pulp Fiction', year: 1994 },
-  {
-    title: 'The Lord of the Rings: The Return of the King',
-    year: 2003
-  },
-  { title: 'The Good, the Bad and the Ugly', year: 1966 },
-  { title: 'Fight Club', year: 1999 },
-  {
-    title: 'The Lord of the Rings: The Fellowship of the Ring',
-    year: 2001
+function CustomOption(props) {
+  console.log(props)
+  if (props?.['data-option-index'] === props.length) {
+    return (
+      <li ref={props.refFn} style={{ fontSize: '14px', padding: '5px 10px' }}>
+        <span>{props.option.product_name}</span>
+        im last
+      </li>
+    )
   }
-]
+  return (
+    <li style={{ fontSize: '14px', padding: '5px 10px' }}>
+      <span>{props.option.product_name}</span>
+    </li>
+  )
+}
 
 const AddInternalProduct = ({
   closeModal,
@@ -42,18 +44,41 @@ const AddInternalProduct = ({
 
   const [unitValue, setUnitValue] = useState('')
 
+  const [offlineSearchQuery, setOfflineSearchQuery] = useState('')
+  const [onlineSearchQuery, setOnlineSearchQuery] = useState('')
+
   const { access_token } = getToken()
   const router = useRouter()
 
-  const { products: onlineProducts } = useOnlineProducts(access_token, '', 1)
+  const {
+    products: onlineProducts,
+    refetch: refetchOnline,
+    loading: onlineLoading
+  } = useOnlineProducts(access_token, onlineSearchQuery, 1)
 
-  const { products: offlineProducts } = useOfflineProducts(access_token, '', 1)
+  const {
+    products: offlineProducts,
+    refetch: refetchOffline,
+    loading: offlineLoading
+  } = useOfflineProducts(access_token, offlineSearchQuery, 1)
+
+  useEffect(() => {
+    refetchOffline(prev => !prev)
+  }, [offlineSearchQuery])
+
+  useEffect(() => {
+    refetchOnline(prev => !prev)
+  }, [onlineSearchQuery])
 
   useEffect(() => {
     getUnitChoice(access_token).then(data => {
       setUnits(data)
     })
   }, [])
+
+  const handleLoadOfflineProduct = () => {
+    getOfflineProducts(access_token, '')
+  }
 
   const handleAddInternalProduct = e => {
     e.stopPropagation()
@@ -153,7 +178,7 @@ const AddInternalProduct = ({
 
         <Grid item xs={6}>
           <Autocomplete
-            id='tags-outlined'
+            loading={offlineLoading}
             onChange={(e, value) => {
               const productName = value.map(item => {
                 return { product_name: item.product_name, barcode: item.barcode }
@@ -166,7 +191,15 @@ const AddInternalProduct = ({
             multiple
             options={offlineProducts}
             getOptionLabel={option => option.product_name}
-            renderInput={params => <TextField size='small' {...params} label='Offline Products' />}
+            renderInput={params => (
+              <TextField
+                onChange={e => setOfflineSearchQuery(e.target.value)}
+                onClick={handleLoadOfflineProduct}
+                size='small'
+                {...params}
+                label='Offline Products'
+              />
+            )}
             size='small'
           />
         </Grid>
@@ -174,6 +207,7 @@ const AddInternalProduct = ({
         <Grid item xs={6}>
           <Autocomplete
             filterSelectedOptions
+            loading={onlineLoading}
             onChange={(e, value) => {
               const productName = value.map(item => {
                 return { product_name: item.product_name, product_ID: item.product_ID }
@@ -184,7 +218,17 @@ const AddInternalProduct = ({
             defaultValue={onlineProductName}
             options={onlineProducts}
             getOptionLabel={option => option.product_name}
-            renderInput={params => <TextField size='small' name='onlineProduct' {...params} label='Online Products' />}
+            renderInput={params => (
+              <TextField
+                onChange={e => {
+                  setOnlineSearchQuery(e.target.value)
+                }}
+                size='small'
+                name='onlineProduct'
+                {...params}
+                label='Online Products'
+              />
+            )}
             size='small'
           />
         </Grid>

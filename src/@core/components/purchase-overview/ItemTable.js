@@ -61,7 +61,7 @@ const PerInvoice = ({ item, length, index }) => {
         </span>{' '}
         (Qyt: <span style={{ fontSize: '13px', fontWeight: '600' }}>{quantity}</span>){length - 1 === index ? '' : ','}
       </Typography>
-      <PrintedInvoiceModal open={isOpenModal} setOpen={setIsOpenModal} invoiceId={invoice} />
+      {isOpenModal && <PrintedInvoiceModal open={isOpenModal} setOpen={setIsOpenModal} invoiceId={invoice} />}
     </Fragment>
   )
 }

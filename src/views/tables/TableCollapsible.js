@@ -19,34 +19,68 @@ import TableContainer from '@mui/material/TableContainer'
 // ** Icons Imports
 import ChevronUp from 'mdi-material-ui/ChevronUp'
 import ChevronDown from 'mdi-material-ui/ChevronDown'
-import { Grid, Pagination } from '@mui/material'
+import { CircularProgress, Grid, Pagination } from '@mui/material'
 
 import { getToken } from 'src/@core/utils/manageToken'
 
 import { AiFillEye } from 'react-icons/ai'
 import ProductTable from 'src/@core/components/internal-product/productTable'
-import usePurchaseDetails from 'src/@core/hooks/usePurchaseDetails'
-import useSellDetails from 'src/@core/hooks/useSellDetails'
+
 import PurchaseHistoryTable from 'src/@core/components/internal-product/purchaseHistoryTable'
 import SellHistoryTable from 'src/@core/components/internal-product/sellHistoryTable'
+
+import { handleSetPurchaseHistory, handleSetSellHistory } from 'src/@core/helper'
 
 const Row = ({ row }) => {
   // ** State
   const [open, setOpen] = useState(false)
-  const { access_token } = getToken()
+  const [purchaseHistoryTest, setPurchaseHistoryTest] = useState(null)
+  const [sellHistoryTest, setSellHistoryTest] = useState(null)
+  const [loadingPur, setLoadingPur] = useState(false)
+  const [loadingSell, setLoadingSell] = useState(false)
 
   const [purchasePageCount, setpurchasePageCount] = useState(1)
   const [sellDataPageCount, setSellDataPageCount] = useState(1)
 
-  const { purchaseHistory, purchaseHistoryTotalPage } = usePurchaseDetails(row?.id, access_token, purchasePageCount)
+  const [purchaseHistoryTotalPage, setPurchaseHistoryTotalPage] = useState(1)
+  const [sellHistoryTotalPage, setSellHistoryTotalPage] = useState(1)
 
-  const { sellHistory, sellHistoryTotalPage } = useSellDetails(row?.id, access_token, sellDataPageCount)
+  const { access_token } = getToken()
+
+  const handleCollapseClick = () => {
+    setOpen(prev => {
+      if (prev === false) {
+        if (!purchaseHistoryTest) {
+          handleSetPurchaseHistory(
+            row?.id,
+            purchasePageCount,
+            access_token,
+            setPurchaseHistoryTest,
+            setPurchaseHistoryTotalPage,
+            setLoadingPur
+          )
+        }
+        if (!sellHistoryTest) {
+          handleSetSellHistory(
+            row?.id,
+            sellDataPageCount,
+            access_token,
+            setSellHistoryTest,
+            setSellHistoryTotalPage,
+            setLoadingSell
+          )
+        }
+      }
+
+      return !prev
+    })
+  }
 
   return (
     <Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
         <TableCell>
-          <IconButton aria-label='expand row' size='small' onClick={() => setOpen(!open)}>
+          <IconButton onClick={handleCollapseClick} aria-label='expand row' size='small'>
             {open ? <ChevronUp /> : <ChevronDown />}
           </IconButton>
         </TableCell>
@@ -80,24 +114,60 @@ const Row = ({ row }) => {
                 </Box>
               </Grid>
               <Grid item xs={12}>
-                <Box bgcolor='#f7f7f7' sx={{ m: 2, p: 2, borderRadius: 1 }}>
-                  <Typography variant='body1'>Purchase History</Typography>
-                  <PurchaseHistoryTable
-                    data={purchaseHistory}
-                    totalPages={purchaseHistoryTotalPage}
-                    pageCount={setpurchasePageCount}
-                  />
-                </Box>
+                {loadingPur ? (
+                  <Box
+                    component='div'
+                    bgcolor='#f7f7f7'
+                    sx={{ m: 2, p: 2, borderRadius: 1 }}
+                    display='flex'
+                    justifyContent='center'
+                    alignItems='center'
+                  >
+                    <CircularProgress />
+                  </Box>
+                ) : (
+                  purchaseHistoryTest && (
+                    <Box bgcolor='#f7f7f7' sx={{ m: 2, p: 2, borderRadius: 1 }}>
+                      <Typography variant='body1'>Purchase History</Typography>
+                      <PurchaseHistoryTable
+                        data={purchaseHistoryTest}
+                        totalPages={purchaseHistoryTotalPage}
+                        pageCount={setpurchasePageCount}
+                        setPurchaseHistory={setPurchaseHistoryTest}
+                        setTotalPurchasePage={setPurchaseHistoryTotalPage}
+                        productId={row?.id}
+                      />
+                    </Box>
+                  )
+                )}
               </Grid>
               <Grid item xs={12}>
-                <Box bgcolor='#f7f7f7' sx={{ m: 2, p: 2, borderRadius: 1 }}>
-                  <Typography variant='body1'>Sell History</Typography>
-                  <SellHistoryTable
-                    data={sellHistory}
-                    totalPages={sellHistoryTotalPage}
-                    pageCount={setSellDataPageCount}
-                  />
-                </Box>
+                {loadingSell ? (
+                  <Box
+                    component='div'
+                    bgcolor='#f7f7f7'
+                    sx={{ m: 2, p: 2, borderRadius: 1 }}
+                    display='flex'
+                    justifyContent='center'
+                    alignItems='center'
+                  >
+                    <CircularProgress />
+                  </Box>
+                ) : (
+                  sellHistoryTest && (
+                    <Box bgcolor='#f7f7f7' sx={{ m: 2, p: 2, borderRadius: 1 }}>
+                      <Typography variant='body1'>Sell History</Typography>
+                      <SellHistoryTable
+                        data={sellHistoryTest}
+                        totalPages={sellHistoryTotalPage}
+                        pageCount={setSellDataPageCount}
+                        setSellHistory={setSellHistoryTest}
+                        setTotalSellPage={setSellHistoryTotalPage}
+                        productId={row?.id}
+                      />
+                    </Box>
+                  )
+                )}
               </Grid>
             </Grid>
           </Collapse>
@@ -108,7 +178,7 @@ const Row = ({ row }) => {
 }
 
 const TableCollapsible = ({ products, totalPages, pageCount }) => {
-  // const classes = useStyles()
+  console.log(products)
 
   return (
     <Fragment>
@@ -128,7 +198,7 @@ const TableCollapsible = ({ products, totalPages, pageCount }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.map(row => (
+            {products?.map(row => (
               <Row key={row.id} row={row} />
             ))}
           </TableBody>

@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react'
-import { getSearchedProduct } from 'src/@core/apiFunction/product'
+import { getInternalProducts } from 'src/@core/apiFunction/product'
 
 // ** MUI import
 
@@ -69,7 +69,7 @@ const SelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) => {
     if (searchText !== '') {
       setProductLoading(true)
       setOpenProductList(true)
-      getSearchedProduct(searchText, 0, access_token).then(data => {
+      getInternalProducts(searchText, 0, access_token).then(data => {
         setSearchedProduct(data.data)
 
         setProductLoading(false)
@@ -86,7 +86,7 @@ const SelectProduct = ({ selectedProduct, setSelectedProduct, clearForm }) => {
 
   const handleInputClick = () => {
     setOpenProductList(prev => !prev)
-    getSearchedProduct('', 0, access_token).then(data => {
+    getInternalProducts('', 0, access_token).then(data => {
       setSearchedProduct(data.data)
     })
   }
