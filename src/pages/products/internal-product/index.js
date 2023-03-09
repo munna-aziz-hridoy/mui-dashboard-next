@@ -20,14 +20,18 @@ const InternalProduct = () => {
 
   const [searchQuery, setSearchQuery] = useState('')
 
+  const [uploadLoading, setUploadLoading] = useState(false)
+
   const { access_token } = getToken()
 
   const { productCount, products, totalPages, loading, refetch } = useInternalProducts(access_token, searchQuery, page)
 
   const handleUploadInternalProductCsv = (csv, setCsv) => {
     if (csv) {
+      setUploadLoading(true)
       const internalProductData = new FormData()
       internalProductData.append('internal_product_file', csv)
+
       uploadInternalProductCsv(internalProductData, access_token).then(data => {
         if (data.success) {
           toast.success(data.message)
@@ -38,6 +42,7 @@ const InternalProduct = () => {
         setCsv([])
 
         refetch(prev => !prev)
+        setUploadLoading(false)
       })
     }
   }
@@ -52,7 +57,13 @@ const InternalProduct = () => {
       >
         Download Sample CSV
       </Button>
-      <CsvUpload handleUploadCsv={handleUploadInternalProductCsv} />
+      {uploadLoading ? (
+        <Box height={180} component='div' display='flex' justifyContent='center' alignItems='center'>
+          <CircularProgress color='primary' />
+        </Box>
+      ) : (
+        <CsvUpload handleUploadCsv={handleUploadInternalProductCsv} />
+      )}
 
       {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />}
 

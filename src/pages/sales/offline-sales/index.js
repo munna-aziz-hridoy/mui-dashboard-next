@@ -24,6 +24,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { uploadOfflineSalesCsv } from 'src/@core/apiFunction/csvUpload'
 import { getToken } from 'src/@core/utils/manageToken'
 import { getOfflineSells } from 'src/@core/apiFunction/sell'
+import AffectedTable from 'src/views/tables/affectedTable'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField size='small' fullWidth {...props} inputRef={ref} label='Sales Date' autoComplete='off' />
@@ -31,8 +32,11 @@ const CustomInput = forwardRef((props, ref) => {
 
 const OfflineSales = () => {
   const [offlineSellData, setOfflineSellData] = useState([])
+  const [affectedRows, setAffectedRows] = useState([])
 
   const [loading, setLoading] = useState(false)
+  const [uploadLoading, setUploadLoading] = useState(false)
+  const [refetch, setRefetch] = useState(false)
 
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
@@ -51,16 +55,25 @@ const OfflineSales = () => {
 
       setLoading(false)
     })
-  }, [page, searchQuery])
+  }, [page, searchQuery, refetch])
 
   const handleUploadOfflineSalesCsv = (csv, setCsv) => {
     if (csv) {
+      setUploadLoading(true)
       const offlineSalesData = new FormData()
       offlineSalesData.append('offline_sell_file', csv)
 
       uploadOfflineSalesCsv(offlineSalesData, access_token).then(data => {
-        toast.success('Successfully uploaded Sales Data')
+        if (data.success) {
+          toast.success(data.message)
+        } else {
+          toast.error(data.message)
+          setAffectedRows(data.affected_rows)
+        }
         setCsv([])
+
+        setRefetch(prev => !prev)
+        setUploadLoading(false)
       })
     }
   }
@@ -77,7 +90,15 @@ const OfflineSales = () => {
         Download Sample CSV
       </Button>
 
-      <CsvUpload handleUploadCsv={handleUploadOfflineSalesCsv} />
+      {uploadLoading ? (
+        <Box height={180} component='div' display='flex' justifyContent='center' alignItems='center'>
+          <CircularProgress color='primary' />
+        </Box>
+      ) : (
+        <CsvUpload handleUploadCsv={handleUploadOfflineSalesCsv} />
+      )}
+
+      {/* {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />} */}
 
       <Box component='div' display='flex' justifyContent='space-between' alignItems='center' marginBottom={5}>
         <Box component='div' display='flex' alignItems='center' gap={2}>

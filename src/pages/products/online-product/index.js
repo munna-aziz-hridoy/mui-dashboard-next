@@ -34,6 +34,8 @@ const OnlineProduct = () => {
 
   const [searchQuery, setSearchQuery] = useState('')
 
+  const [uploadLoading, setUploadLoading] = useState(false)
+
   const { access_token } = getToken()
 
   const { isMapped, setIsMapped, isInStock, setIsInStock, isPublished, setIsPublished, isVisible, setIsVisible } =
@@ -55,6 +57,7 @@ const OnlineProduct = () => {
 
   const handleUploadOnlineProductCsv = (csv, setCsv) => {
     if (csv) {
+      setUploadLoading(true)
       const onlineProductData = new FormData()
       onlineProductData.append('online_product_file', csv)
       uploadOnlineProductCsv(onlineProductData, access_token).then(data => {
@@ -67,6 +70,7 @@ const OnlineProduct = () => {
         setCsv([])
 
         refetch(prev => !prev)
+        setUploadLoading(false)
       })
     }
   }
@@ -82,7 +86,14 @@ const OnlineProduct = () => {
       >
         Download Sample CSV
       </Button>
-      <CsvUpload handleUploadCsv={handleUploadOnlineProductCsv} />
+
+      {uploadLoading ? (
+        <Box height={180} component='div' display='flex' justifyContent='center' alignItems='center'>
+          <CircularProgress color='primary' />
+        </Box>
+      ) : (
+        <CsvUpload handleUploadCsv={handleUploadOnlineProductCsv} />
+      )}
 
       {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />}
 

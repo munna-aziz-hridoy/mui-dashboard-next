@@ -44,6 +44,8 @@ const InternalProduct = () => {
 
   const [searchQuery, setSearchQuery] = useState('')
 
+  const [uploadLoading, setUploadLoading] = useState(false)
+
   const { access_token } = getToken()
 
   const { isMapped, setIsMapped, isSpecialProduct, setIsSpecialProduct } = useFilterOptions()
@@ -62,6 +64,7 @@ const InternalProduct = () => {
 
   const handleUploadOfflineProductCsv = (csv, setCsv) => {
     if (csv && middleCatData?.middle_cat_code) {
+      setUploadLoading(true)
       const offlineProductData = new FormData()
       offlineProductData.append('offline_product_file', csv)
       offlineProductData.append('middle_cat_code', middleCatData.middle_cat_code)
@@ -77,6 +80,7 @@ const InternalProduct = () => {
         setCsv([])
         setMiddleCatData(null)
         refetch(prev => !prev)
+        setUploadLoading(false)
       })
     } else toast.error('Please select middle category')
   }
@@ -118,7 +122,13 @@ const InternalProduct = () => {
         </Button>
       </Box>
 
-      <CsvUpload handleUploadCsv={handleUploadOfflineProductCsv} />
+      {uploadLoading ? (
+        <Box height={180} component='div' display='flex' justifyContent='center' alignItems='center'>
+          <CircularProgress color='primary' />
+        </Box>
+      ) : (
+        <CsvUpload handleUploadCsv={handleUploadOfflineProductCsv} />
+      )}
 
       {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />}
 

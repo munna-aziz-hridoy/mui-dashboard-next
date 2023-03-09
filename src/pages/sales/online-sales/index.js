@@ -19,8 +19,10 @@ const CustomInput = forwardRef((props, ref) => {
 
 const OnlineSales = () => {
   const [onlineSellData, setOnlineSellData] = useState([])
+  const [affectedRows, setAffectedRows] = useState([])
 
   const [loading, setLoading] = useState(false)
+  const [refetch, setRefetch] = useState(false)
 
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
@@ -38,7 +40,7 @@ const OnlineSales = () => {
       }
       setLoading(false)
     })
-  }, [page, searchQuery])
+  }, [page, searchQuery, refetch])
 
   const handleUploadOnlineSalesData = (csv, setCsv) => {
     if (csv) {
@@ -46,11 +48,15 @@ const OnlineSales = () => {
       onlineSalesData.append('online_sell_file', csv)
       uploadOnlineSalesCsv(onlineSalesData, access_token).then(data => {
         if (data.success) {
-          toast.success('Successfully uploaded sales data')
-          setCsv([])
+          toast.success(data.message)
         } else {
           toast.error(data.message)
+          setAffectedRows(data.affected_rows)
         }
+        setCsv([])
+
+        setRefetch(prev => !prev)
+        setUploadLoading(false)
       })
     }
   }
