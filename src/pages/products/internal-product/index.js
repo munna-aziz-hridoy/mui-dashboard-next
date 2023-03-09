@@ -104,7 +104,7 @@ const InternalProduct = () => {
 
         {loading && <CircularProgress color='inherit' style={{ margin: '0 auto', display: 'inherit' }} />}
 
-        <TableCollapsible products={products} pageCount={setPage} totalPages={totalPages} />
+        <TableCollapsible products={products} pageCount={setPage} totalPages={totalPages} refetch={refetch} />
       </Card>
       <Toaster />
     </Fragment>

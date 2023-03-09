@@ -25,20 +25,12 @@ const style = {
 
 const AddPaymentModal = ({ open, setOpen, invoiceDue, invoiceId, refetch }) => {
   const [errorText, setErrorText] = useState('')
+  const [payingAmount, setPayingAmount] = useState(0)
 
   const { access_token } = getToken()
 
-  const handleAddPayment = e => {
-    e.preventDefault()
-
-    const amount = parseFloat(e.target.payingAmount.value)
-
-    if (amount > invoiceDue || amount < 0) {
-      return setErrorText('Amount should be positive and not more than Due ')
-    }
-    if (amount === NaN) {
-      return setErrorText('Input number for amount')
-    }
+  const handleAddPayment = isFullPayment => {
+    const amount = isFullPayment ? invoiceDue : payingAmount
 
     postPayment({ amount, invoice: invoiceId }, access_token)
       .then(data => {
@@ -62,27 +54,33 @@ const AddPaymentModal = ({ open, setOpen, invoiceDue, invoiceId, refetch }) => {
         <Card>
           <CardHeader title='Add Payment' titleTypographyProps={{ variant: 'h6' }} />
           <CardContent>
-            <form onSubmit={handleAddPayment}>
+            <form>
               <Grid container spacing={3}>
                 <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    type='number'
-                    label='Invoice Amount'
-                    placeholder='Paying Amount'
-                    disabled
-                    value={invoiceDue}
-                  />
+                  <Typography variant='body1' fontSize={18} fontWeight={600}>
+                    Total Due: {invoiceDue}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
                     fullWidth
-                    // type='number'
                     label='Paying Amount'
                     placeholder='Paying Amount'
                     name='payingAmount'
                     inputProps={{ inputMode: 'numeric', step: 'any' }}
-                    onChange={() => setErrorText('')}
+                    onChange={e => {
+                      const amount = parseFloat(e.target.value)
+
+                      if (amount > invoiceDue || amount < 0) {
+                        return setErrorText('Amount should be positive and not more than Due ')
+                      }
+                      if (amount === NaN) {
+                        return setErrorText('Input number for amount')
+                      }
+                      setPayingAmount(amount)
+
+                      setErrorText('')
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -93,8 +91,11 @@ const AddPaymentModal = ({ open, setOpen, invoiceDue, invoiceId, refetch }) => {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  <Button type='submit' variant='contained' size='large'>
+                  <Button onClick={() => handleAddPayment(false)} type='submit' variant='contained' size='small'>
                     Pay
+                  </Button>
+                  <Button onClick={() => handleAddPayment(true)} variant='contained' size='small'>
+                    Pay Full amount
                   </Button>
                 </Grid>
               </Grid>

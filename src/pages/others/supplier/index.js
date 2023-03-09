@@ -21,7 +21,7 @@ const Supplier = () => {
       setSupplier(data)
       setLoading(false)
     })
-  }, [refetch, searchQuery])
+  }, [refetch])
 
   return (
     <Fragment>
@@ -40,6 +40,11 @@ const Supplier = () => {
 
           <Box component='div' marginRight={3}>
             <TextField
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  setRefetch(prev => !prev)
+                }
+              }}
               onChange={e => {
                 setSearchQuery(e.target.value)
               }}
@@ -50,6 +55,7 @@ const Supplier = () => {
               placeholder='Search'
             />
             <Button
+              onClick={() => setRefetch(prev => !prev)}
               style={{ padding: '8.7px 18px', borderRadius: '0 5px 5px 0', marginTop: '0.5px' }}
               variant='outlined'
             >

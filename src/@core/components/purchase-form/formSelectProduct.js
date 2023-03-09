@@ -76,9 +76,9 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
     if (searchText !== '') {
       setProductLoading(true)
       setOpenProductList(true)
-      getInternalProducts(searchText, 0, access_token).then(data => {
-        setSearchedProduct(data.data)
-        setTotalPage(data.total_pages)
+      getInternalProducts(access_token, searchText, 1).then(data => {
+        setSearchedProduct(data?.data?.data)
+        setTotalPage(data?.data?.total_pages)
         setProductLoading(false)
       })
     } else {
@@ -110,9 +110,9 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
 
   const handleInputClick = () => {
     setOpenProductList(prev => !prev)
-    getInternalProducts('', 0, access_token).then(data => {
-      setSearchedProduct(data.data)
-      setTotalPage(data.total_pages)
+    getInternalProducts(access_token, '', 1).then(data => {
+      setSearchedProduct(data?.data?.data)
+      setTotalPage(data?.data?.total_pages)
     })
   }
 
@@ -186,7 +186,7 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
         </List>
       </Box>
 
-      <AddProduct open={openProductModal} setOpen={setOpenProductModal} />
+      {openProductModal && <AddProduct open={openProductModal} setOpen={setOpenProductModal} />}
     </Grid>
   )
 }

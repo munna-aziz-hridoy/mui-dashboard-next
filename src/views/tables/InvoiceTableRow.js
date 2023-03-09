@@ -117,19 +117,23 @@ const InvoiceTableRow = ({ invoice, refetch, refetchValue }) => {
         </StyledTableCell>
       </StyledTableRow>
       {openInvoiceModal && <PrintedInvoiceModal open={openInvoiceModal} setOpen={setOpenInvoiceModal} invoiceId={id} />}
-      <AddPaymentModal
-        open={openPaymentModal}
-        setOpen={setOpenPaymentModal}
-        invoiceId={id}
-        invoiceDue={invoice_total - amount_paid}
-        refetch={refetch}
-      />
-      <ViewPaymentModal
-        open={openViewPaymentModal}
-        setOpen={setOpenViewPaymentModal}
-        invoiceId={id}
-        refetchValue={refetchValue}
-      />
+      {openPaymentModal && (
+        <AddPaymentModal
+          open={openPaymentModal}
+          setOpen={setOpenPaymentModal}
+          invoiceId={id}
+          invoiceDue={invoice_total - amount_paid}
+          refetch={refetch}
+        />
+      )}
+      {openViewPaymentModal && (
+        <ViewPaymentModal
+          open={openViewPaymentModal}
+          setOpen={setOpenViewPaymentModal}
+          invoiceId={id}
+          refetchValue={refetchValue}
+        />
+      )}
       <ViewInvoiceImageModal
         open={openInvoiceImageModal}
         setOpen={setOpenInvoiceImageModal}

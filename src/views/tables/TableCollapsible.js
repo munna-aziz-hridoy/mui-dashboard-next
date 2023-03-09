@@ -177,7 +177,7 @@ const Row = ({ row }) => {
   )
 }
 
-const TableCollapsible = ({ products, totalPages, pageCount }) => {
+const TableCollapsible = ({ products, totalPages, pageCount, refetch }) => {
   console.log(products)
 
   return (
@@ -218,7 +218,14 @@ const TableCollapsible = ({ products, totalPages, pageCount }) => {
       >
         <div></div>
 
-        <Pagination count={totalPages} shape='rounded' onChange={(e, value) => pageCount(value)} />
+        <Pagination
+          count={totalPages}
+          shape='rounded'
+          onChange={(e, value) => {
+            pageCount(value)
+            refetch(prev => !prev)
+          }}
+        />
       </Box>
     </Fragment>
   )
