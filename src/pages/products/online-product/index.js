@@ -105,7 +105,7 @@ const OnlineProduct = () => {
 
       <Box component='div' marginTop={4}>
         <Typography variant='body1' fontWeight={500}>
-          Total Products: {productCount}
+          Products found: {productCount}
         </Typography>
         <Typography variant='body1' fontWeight={500}>
           Mapped: {mappedCount}

@@ -78,7 +78,7 @@ const InternalProduct = () => {
       </Card>
 
       <Typography variant='body1' fontSize={14} fontWeight={600} marginBottom={5} marginTop={5}>
-        Total Products: {productCount}
+        Products found: {productCount}
       </Typography>
 
       <Card style={{ marginTop: '2rem' }}>

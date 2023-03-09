@@ -234,56 +234,6 @@ const AddPurchaseForm = () => {
               <Grid item xs={12}>
                 <Divider sx={{ marginBottom: 0 }} />
               </Grid>
-
-              {/* 
-            <FormSelectProduct
-              setSelectedProduct={setSelectedProduct}
-              selectedProduct={selectedProduct}
-              clearForm={clearForm}
-              showError={showError}
-            />
-
-            
-
-            <TableStickyHeader
-              products={selectedProduct}
-              setProducts={setSelectedProduct}
-              invoiceTotal={invoiceTotal}
-              setInvoiceTotal={setInvoiceTotal}
-              setTotalTax={setTotalTax}
-            /> */}
-
-              {/* {selectedProduct?.length !== 0 && (
-              <>
-                <FormDiscount setPurchaseData={setPurchaseData} clearForm={clearForm} />
-
-                <FormShippingCost setPurchaseData={setPurchaseData} clearForm={clearForm} />
-                <FormChangeTax
-                  setTotalTax={setTotalTax}
-                  purchaseData={purchaseData}
-                  totalTax={totalTax}
-                  clearForm={clearForm}
-                  invoiceTotal={invoiceTotal}
-                />
-                <FormSelectTax
-                  setPurchaseData={setPurchaseData}
-                  setTotalTax={setTotalTax}
-                  invoiceTotal={invoiceTotal}
-                  clearForm={clearForm}
-                />
-              </>
-            )} */}
-
-              {/* <Grid item xs={12}>
-              <FormInvoiceNote setPurchaseData={setPurchaseData} clearForm={clearForm} />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Typography fontWeight={600} variant='h6'>
-                Invoice Total:{' '}
-                {invoiceTotal + totalTax - (purchaseData?.discount || 0) + (purchaseData?.shipping_cost || 0)}
-              </Typography>
-            </Grid> */}
             </Grid>
           </CardContent>
           <Divider sx={{ margin: 0 }} />

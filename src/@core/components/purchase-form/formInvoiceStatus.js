@@ -4,6 +4,7 @@ import { getInvoiceStatusChoices } from 'src/@core/apiFunction/product'
 // ** MUI import
 import { Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import { getToken } from 'src/@core/utils/manageToken'
+import { useRouter } from 'next/router'
 
 const FormInvoiceStatus = ({ setPurchaseData, clearForm }) => {
   const [invoiceStatus, setInvoiceStatus] = useState([])
@@ -12,6 +13,8 @@ const FormInvoiceStatus = ({ setPurchaseData, clearForm }) => {
 
   const { access_token } = getToken()
 
+  const { pathname } = useRouter()
+
   useEffect(() => {
     getInvoiceStatusChoices(access_token).then(data => setInvoiceStatus(data))
   }, [])
@@ -19,6 +22,14 @@ const FormInvoiceStatus = ({ setPurchaseData, clearForm }) => {
   useEffect(() => {
     setSelectedStatus('')
   }, [clearForm])
+
+  useEffect(() => {
+    if (pathname.includes('add-purchase')) {
+      setSelectedStatus('Regular Order')
+    }
+  }, [])
+
+  console.log(invoiceStatus)
 
   const handleChangeInvoiceStatus = e => {
     const invoice = e.target.value

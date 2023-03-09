@@ -98,7 +98,7 @@ const OfflineSales = () => {
         <CsvUpload handleUploadCsv={handleUploadOfflineSalesCsv} />
       )}
 
-      {/* {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />} */}
+      {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />}
 
       <Box component='div' display='flex' justifyContent='space-between' alignItems='center' marginBottom={5}>
         <Box component='div' display='flex' alignItems='center' gap={2}>

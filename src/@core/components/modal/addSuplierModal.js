@@ -10,7 +10,7 @@ import AddSuplierForm from '../forms/addSuplierForm'
 const style = {
   position: 'absolute',
   top: '50%',
-  left: '50%',
+  left: '30%',
   transform: 'translate(-50%, -50%)',
   width: 600,
   bgcolor: 'background.paper',
@@ -34,93 +34,7 @@ const AddSuplier = ({ open, setOpen }) => {
         <Card>
           <CardHeader title='Add Suplier' titleTypographyProps={{ variant: 'h6' }} />
           <CardContent>
-            {/* <form onSubmit={e => e.preventDefault()}>
-              <Grid container spacing={5}>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label='Full Name'
-                    placeholder='Suplier Name'
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <AccountOutline />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    type='email'
-                    label='Email'
-                    placeholder='Suplier Email'
-                    helperText='You can use letters, numbers & periods'
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <EmailOutline />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    type='number'
-                    label='Phone No.'
-                    placeholder='Suplier Phone'
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <Phone />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    type='number'
-                    label='Fax.'
-                    placeholder='Fax'
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <FaFax />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    multiline
-                    minRows={3}
-                    label='Address'
-                    placeholder='Address'
-                    sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <FaAddressCard />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button type='submit' variant='contained' size='large'>
-                    Submit
-                  </Button>
-                </Grid>
-              </Grid>
-            </form> */}
-            <AddSuplierForm />
+            <AddSuplierForm refetch={setOpen} />
           </CardContent>
         </Card>
       </Box>

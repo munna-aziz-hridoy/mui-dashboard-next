@@ -147,10 +147,10 @@ const PurchaseOverview = () => {
 
       <Box component='div' padding={5}>
         <StyledTypography label='Total Purchases'>{purchaseOverviewData?.invoices?.invoice_count}</StyledTypography>
-        <StyledTypography label='Purchase amount'>
+        <StyledTypography label='Total Item amount'>
           ¥{purchaseOverviewData?.invoices?.total_purchase_amount}
         </StyledTypography>
-        <StyledTypography label='Grand Total'>
+        <StyledTypography label='Total Invoice amount'>
           ¥{purchaseOverviewData?.invoices?.total_invoice_amount?.toFixed(2)}
         </StyledTypography>
         <StyledTypography label='Total item'>{purchaseOverviewData?.items?.total_records}</StyledTypography>

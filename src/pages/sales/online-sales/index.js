@@ -12,6 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { uploadOnlineSalesCsv } from 'src/@core/apiFunction/csvUpload'
 import { getToken } from 'src/@core/utils/manageToken'
 import { getOnlineSells } from 'src/@core/apiFunction/sell'
+import AffectedTable from 'src/views/tables/affectedTable'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField size='small' fullWidth {...props} inputRef={ref} label='Sales Date' autoComplete='off' />
@@ -23,6 +24,7 @@ const OnlineSales = () => {
 
   const [loading, setLoading] = useState(false)
   const [refetch, setRefetch] = useState(false)
+  const [uploadLoading, setUploadLoading] = useState(false)
 
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
@@ -44,6 +46,7 @@ const OnlineSales = () => {
 
   const handleUploadOnlineSalesData = (csv, setCsv) => {
     if (csv) {
+      setUploadLoading(true)
       const onlineSalesData = new FormData()
       onlineSalesData.append('online_sell_file', csv)
       uploadOnlineSalesCsv(onlineSalesData, access_token).then(data => {
@@ -72,7 +75,16 @@ const OnlineSales = () => {
       >
         Download Sample CSV
       </Button>
-      <CsvUpload handleUploadCsv={handleUploadOnlineSalesData} />
+
+      {uploadLoading ? (
+        <Box height={180} component='div' display='flex' justifyContent='center' alignItems='center'>
+          <CircularProgress color='primary' />
+        </Box>
+      ) : (
+        <CsvUpload handleUploadCsv={handleUploadOnlineSalesData} />
+      )}
+
+      {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />}
 
       <Box component='div' display='flex' justifyContent='space-between' alignItems='center' marginBottom={5}>
         <Box component='div' display='flex' alignItems='center' gap={2}>

@@ -52,15 +52,6 @@ const columns = [
   },
 
   {
-    id: 'prev-unit-cost',
-    label: 'Previous Unit Cost',
-    minWidth: 100,
-    align: 'left'
-
-    // format: value => value.toFixed(2)
-  },
-
-  {
     id: 'net-unit-cost',
     label: 'Unit Cost',
     minWidth: 130,
@@ -84,6 +75,14 @@ const columns = [
     label: 'Sub Total',
     minWidth: 110,
     align: 'left'
+  },
+  {
+    id: 'prev-unit-cost',
+    label: 'Average price',
+    minWidth: 100,
+    align: 'left'
+
+    // format: value => value.toFixed(2)
   }
 ]
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { getSearchedSuplier } from 'src/@core/apiFunction/suplier'
 import AddSuplier from 'src/@core/components/modal/addSuplierModal'
 
@@ -96,30 +96,32 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
             <ListItem>
               <CircularProgress color='inherit' style={{ margin: '0 auto' }} />
             </ListItem>
-          ) : searchedSuplier?.length !== 0 ? (
-            searchedSuplier?.map(item => (
-              <ListItem
-                key={item?.id}
-                onClick={e => handleSetPurchaseData(item)}
-                color='#fff'
-                style={{ cursor: 'pointer' }}
-              >
-                <Typography color='#fff' variant='body1'>
-                  {item.name}
-                </Typography>
-              </ListItem>
-            ))
           ) : (
-            <ListItem>
-              <Button
-                onClick={() => setOpenSuplierModal(true)}
-                fullWidth
-                variant='outlined'
-                style={{ borderColor: '#fff', color: '#fff' }}
-              >
-                Add Suplier
-              </Button>
-            </ListItem>
+            searchedSuplier?.length !== 0 &&
+            searchedSuplier?.map(item => (
+              <Fragment>
+                <ListItem
+                  key={item?.id}
+                  onClick={e => handleSetPurchaseData(item)}
+                  color='#fff'
+                  style={{ cursor: 'pointer' }}
+                >
+                  <Typography color='#fff' variant='body1'>
+                    {item.name}
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Button
+                    onClick={() => setOpenSuplierModal(true)}
+                    fullWidth
+                    variant='outlined'
+                    style={{ borderColor: '#fff', color: '#fff' }}
+                  >
+                    Add Suplier
+                  </Button>
+                </ListItem>
+              </Fragment>
+            ))
           )}
         </List>
       </Box>

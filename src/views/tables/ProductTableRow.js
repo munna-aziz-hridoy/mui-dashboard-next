@@ -41,8 +41,18 @@ const ProductTableRow = ({ productData, setProducts, setInvoiceTotal, setTotalTa
       <TableCell style={{ position: 'relative' }}>
         <TextField
           className='table_input'
-          onChange={e => handleSetProductProperty('quantity', e)}
+          onChange={e => {
+            e.preventDefault()
+            if (parseFloat(e.target.value) < 0) return
+            handleSetProductProperty('quantity', e)
+          }}
           type='number'
+          onWheel={e => e.preventDefault()}
+          onKeyDown={e => {
+            if (e.which === 38 || e.which === 40) {
+              e.preventDefault()
+            }
+          }}
           value={productData?.quantity}
           required
         />
@@ -53,12 +63,21 @@ const ProductTableRow = ({ productData, setProducts, setInvoiceTotal, setTotalTa
         )} */}
       </TableCell>
       <TableCell>{product_unit}</TableCell>
-      <TableCell height={85}>{prev_unit_cost}</TableCell>
+
       <TableCell style={{ position: 'relative' }}>
         <TextField
           className='table_input'
-          onChange={e => handleSetProductProperty('unit_cost', e)}
+          onChange={e => {
+            if (parseFloat(e.target.value) < 0) return
+            handleSetProductProperty('unit_cost', e)
+          }}
           type='number'
+          onWheel={e => e.preventDefault()}
+          onKeyDown={e => {
+            if (e.which === 38 || e.which === 40) {
+              e.preventDefault()
+            }
+          }}
           value={productData?.unit_cost}
           required
         />
@@ -79,6 +98,7 @@ const ProductTableRow = ({ productData, setProducts, setInvoiceTotal, setTotalTa
       <TableCell>
         {productData?.unitCost && productData?.discount ? productData?.unitCost - productData?.discount : '0.00'}{' '}
       </TableCell> */}
+      <TableCell height={85}>{prev_unit_cost}</TableCell>
       <TableCell>
         <Button
           onClick={() => {
