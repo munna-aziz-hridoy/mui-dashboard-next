@@ -145,6 +145,21 @@ export const uploadInvoiceImage = async (formData, token) => {
   }
 }
 
+export const removeInvoiceImage = async (id, token) => {
+  const url = `${API_URL}/upload-image/${id}/`
+
+  const res = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+
+  const data = await res.json()
+
+  return data
+}
+
 export const purchaseOverview = async (createdDateRange, invoiceDateRange, token, pageProduct, pageSup) => {
   const formatedCreatedDate =
     createdDateRange[0] && createdDateRange[1]

@@ -36,12 +36,14 @@ import FormDiscount from './formDiscount'
 import FormShippingCost from './formShippingCost'
 import FormInvoiceNote from './formInvoiceNote'
 import toast, { Toaster } from 'react-hot-toast'
-import { postInvoice, uploadInvoiceImage } from 'src/@core/apiFunction/invoice'
+import { postInvoice, removeInvoiceImage, uploadInvoiceImage } from 'src/@core/apiFunction/invoice'
 import FormStockStatus from './formStockStatus'
 import formatedDate from 'src/@core/utils/getFormatedDate'
 import { getToken } from 'src/@core/utils/manageToken'
 import FormInvoiceStatus from './formInvoiceStatus'
 import FormInvoiceNumber from './formInvoiceNumber'
+import { useRouter } from 'next/router'
+import ConfirmModal from '../modal/confirmModal'
 
 const AddPurchaseForm = () => {
   const invoice_date = formatedDate(new Date())
@@ -69,9 +71,15 @@ const AddPurchaseForm = () => {
   const [clearForm, setClearForm] = useState(false)
   const [showError, setShowError] = useState(false)
 
+  const [confirmModal, setConfirmModal] = useState(false)
+
+  const [confirmSubmit, setConfirmSubmit] = useState(false)
+
   const [loading, setLoading] = useState(false)
 
   const { access_token } = getToken()
+
+  const router = useRouter()
 
   useEffect(() => {
     if (selectedProduct.length !== 0) {
@@ -98,6 +106,11 @@ const AddPurchaseForm = () => {
       setShowError(true)
       return
     }
+
+    setConfirmModal(true)
+
+    if (!confirmSubmit) return
+
     setLoading(true)
     const invoice_items = selectedProduct.map(item => {
       const { product, product_unit, unit_cost, quantity } = item
@@ -110,47 +123,54 @@ const AddPurchaseForm = () => {
       }
     })
 
-    uploadInvoiceImage(invoiceFile, access_token).then(imageData => {
-      if (imageData.success) {
-        const supplier_document = imageData?.id
-        const data = { ...purchaseData, supplier_document, invoice_items }
+    const supplier_document = invoiceFile
+    const data = { ...purchaseData, supplier_document, invoice_items }
 
-        postInvoice(data, access_token)
-          .then(data => {
-            if (data.success) {
-              setClearForm(true)
-              setTotalTax(0)
-              setInvoiceTotal(0)
-              setInvoiceFile(null)
-              toast.success('Added to purchase list')
-              setLoading(false)
-            } else {
-              toast.error('Invoice Not added')
-              setLoading(false)
-              setClearForm(true)
-              setTotalTax(0)
-              setInvoiceTotal(0)
-              setInvoiceFile(null)
-            }
-          })
-          .catch(err => {
-            toast.error('Invoice Not added')
-            setLoading(false)
-            setClearForm(true)
-            setTotalTax(0)
-            setInvoiceTotal(0)
-            setInvoiceFile(null)
-          })
-      } else {
-        toast.error('Failed to upload image')
-        setLoading(false)
-      }
-    })
+    // postInvoice(data, access_token)
+    //   .then(data => {
+    //     if (data.success) {
+    //       setClearForm(true)
+    //       setTotalTax(0)
+    //       setInvoiceTotal(0)
+    //       setInvoiceFile(null)
+    //       toast.success('Added to purchase list')
+    //       setLoading(false)
+    //     } else {
+    //       toast.error('Invoice Not added')
+    //       setLoading(false)
+    //       setClearForm(true)
+    //       setTotalTax(0)
+    //       setInvoiceTotal(0)
+    //       setInvoiceFile(null)
+    //     }
+    //   })
+    //   .catch(err => {
+    //     toast.error('Invoice Not added')
+    //     setLoading(false)
+    //     setClearForm(true)
+    //     setTotalTax(0)
+    //     setInvoiceTotal(0)
+    //     setInvoiceFile(null)
+    //   })
+  }
+
+  const handleRemoveImage = () => {
+    if (invoiceFile) {
+      removeInvoiceImage(invoiceFile, access_token).then(data => {
+        console.log(data)
+      })
+    }
   }
 
   return (
     <Card>
       <CardHeader title='Add New Purchase' titleTypographyProps={{ variant: 'h6' }} />
+      <ConfirmModal
+        open={confirmModal}
+        setOpen={setConfirmModal}
+        setConfirm={setConfirmSubmit}
+        cancel={handleRemoveImage}
+      />
       <Divider sx={{ margin: 0 }} />
       {loading ? (
         <LinearProgress color='primary' />
@@ -241,7 +261,15 @@ const AddPurchaseForm = () => {
             <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
               Submit
             </Button>
-            <Button size='large' color='secondary' variant='outlined'>
+            <Button
+              onClick={() => {
+                handleRemoveImage()
+                router.push('/purchase/purchase-list')
+              }}
+              size='large'
+              color='secondary'
+              variant='outlined'
+            >
               Cancel
             </Button>
           </CardActions>

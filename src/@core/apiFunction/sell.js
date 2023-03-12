@@ -1,7 +1,11 @@
 import API_URL from 'src/@core/utils/mainUrl'
 
-export const getOfflineSells = async (searchQuery = '', page = 1, token) => {
-  const url = `${API_URL}/offline-sell/?search=${searchQuery}&page=${page}`
+export const getOfflineSells = async (searchQuery = '', page = 1, token, dateArray) => {
+  console.log(dateArray)
+  const url = `${API_URL}/offline-sell/?search=${searchQuery}&page=${page}${
+    dateArray[1] && `&created_at__date__range=${dateArray[0].split(' ')[0]},${dateArray[1].split(' ')[0]}`
+  }`
+  console.log(url)
   const data = await getData(url, token)
   return data
 }
@@ -12,8 +16,10 @@ export const getOfflineSellByBarcode = async (barcode, token) => {
   return data
 }
 
-export const getOnlineSells = async (searchQuery = '', page, token) => {
-  const url = `${API_URL}/online-sell/?search=${searchQuery}&page=${page}`
+export const getOnlineSells = async (searchQuery = '', page, token, dateArray) => {
+  const url = `${API_URL}/online-sell/?search=${searchQuery}&page=${page}${
+    dateArray[1] && `&created_at__date__range=${dateArray[0].split(' ')[0]},${dateArray[1].split(' ')[0]}`
+  }`
   const data = await getData(url, token)
   return data
 }

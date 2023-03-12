@@ -197,13 +197,7 @@ export const addInternalProduct = async (productData, token) => {
   })
   const data = await res.json()
 
-  if (data?.product_name) {
-    return { success: true }
-  } else {
-    return {
-      success: false
-    }
-  }
+  return { data, response: res }
 }
 
 // update internal product
@@ -245,13 +239,7 @@ export const addOnlineProduct = async (productData, token) => {
   })
   const data = await res.json()
 
-  if (data?.product_name) {
-    return { success: true }
-  } else {
-    return {
-      success: false
-    }
-  }
+  return { responseData: data, response: res }
 }
 
 // add offline product
@@ -269,13 +257,7 @@ export const addOfflineProduct = async (productData, token) => {
   })
   const data = await res.json()
 
-  if (data?.product_name) {
-    return { success: true }
-  } else {
-    return {
-      success: false
-    }
-  }
+  return { responseData: data, response: res }
 }
 
 export const internalProductPurchaseDetails = async (id, token, page) => {

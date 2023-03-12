@@ -25,12 +25,16 @@ import { uploadOfflineSalesCsv } from 'src/@core/apiFunction/csvUpload'
 import { getToken } from 'src/@core/utils/manageToken'
 import { getOfflineSells } from 'src/@core/apiFunction/sell'
 import AffectedTable from 'src/views/tables/affectedTable'
+import formatedDate from 'src/@core/utils/getFormatedDate'
 
 const CustomInput = forwardRef((props, ref) => {
-  return <TextField size='small' fullWidth {...props} inputRef={ref} label='Sales Date' autoComplete='off' />
+  return <TextField size='small' fullWidth {...props} inputRef={ref} label={props.label} autoComplete='off' />
 })
 
 const OfflineSales = () => {
+  const [startDate, setStartDate] = useState(new Date())
+  const [endDate, setEndDate] = useState('')
+
   const [offlineSellData, setOfflineSellData] = useState([])
   const [affectedRows, setAffectedRows] = useState([])
 
@@ -47,7 +51,11 @@ const OfflineSales = () => {
 
   useEffect(() => {
     setLoading(true)
-    getOfflineSells(searchQuery, page, access_token).then(data => {
+
+    const formatedStartDate = startDate ? formatedDate(startDate) : ''
+    const formatedEndDate = endDate ? formatedDate(endDate) : ''
+
+    getOfflineSells(searchQuery, page, access_token, [formatedStartDate, formatedEndDate]).then(data => {
       if (data?.data) {
         setOfflineSellData(data?.data?.results)
         setTotalPages(data?.total_pages)
@@ -57,6 +65,12 @@ const OfflineSales = () => {
     })
   }, [page, searchQuery, refetch])
 
+  useEffect(() => {
+    if (startDate && endDate) {
+      setRefetch(prev => !prev)
+    }
+  }, [endDate, startDate])
+
   const handleUploadOfflineSalesCsv = (csv, setCsv) => {
     if (csv) {
       setUploadLoading(true)
@@ -64,16 +78,26 @@ const OfflineSales = () => {
       offlineSalesData.append('offline_sell_file', csv)
 
       uploadOfflineSalesCsv(offlineSalesData, access_token).then(data => {
-        if (data.success) {
-          toast.success(data.message)
-        } else {
-          toast.error(data.message)
-          setAffectedRows(data.affected_rows)
-        }
-        setCsv([])
-
-        setRefetch(prev => !prev)
+        const { response, responseData } = data
         setUploadLoading(false)
+        if (responseData?.affected_rows) {
+          setAffectedRows(responseData?.affected_rows)
+        }
+
+        if (response.status === 200) {
+          toast.success(responseData?.detail)
+        } else if (response.status === 500) {
+          toast.error('Internal Server error')
+        } else if (response.status !== 200 && response.status !== 500) {
+          Object.keys(responseData).forEach(key => {
+            if (key !== 'affected_rows') {
+              toast.error(responseData[key])
+            }
+          })
+        }
+
+        setCsv([])
+        setRefetch(prev => !prev)
       })
     }
   }
@@ -108,12 +132,17 @@ const OfflineSales = () => {
 
           <DatePickerWrapper>
             <DatePicker
-              required
+              selectsRange={true}
               showYearDropdown
               showMonthDropdown
               placeholderText='MM-DD-YYYY'
-              customInput={<CustomInput />}
-              id='form-layouts-separator-date'
+              customInput={<CustomInput label='Sales Date range' />}
+              onChange={value => {
+                setStartDate(value[0])
+                setEndDate(value[1])
+              }}
+              startDate={startDate}
+              endDate={endDate}
             />
           </DatePickerWrapper>
         </Box>

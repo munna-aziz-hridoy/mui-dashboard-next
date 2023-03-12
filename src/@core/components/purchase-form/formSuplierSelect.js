@@ -110,19 +110,19 @@ const FormSuplierSelect = ({ setPurchaseData, clearForm }) => {
                     {item.name}
                   </Typography>
                 </ListItem>
-                <ListItem>
-                  <Button
-                    onClick={() => setOpenSuplierModal(true)}
-                    fullWidth
-                    variant='outlined'
-                    style={{ borderColor: '#fff', color: '#fff' }}
-                  >
-                    Add Suplier
-                  </Button>
-                </ListItem>
               </Fragment>
             ))
           )}
+          <ListItem>
+            <Button
+              onClick={() => setOpenSuplierModal(true)}
+              fullWidth
+              variant='outlined'
+              style={{ borderColor: '#fff', color: '#fff' }}
+            >
+              Add Suplier
+            </Button>
+          </ListItem>
         </List>
       </Box>
       <AddSuplier open={openSuplierModal} setOpen={setOpenSuplierModal} />

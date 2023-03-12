@@ -71,11 +71,22 @@ const InternalProduct = () => {
       offlineProductData.append('middle_cat_name', middleCatData.middle_cat_name)
 
       uploadOfflineProductCsv(offlineProductData, access_token).then(data => {
-        if (data.success) {
-          toast.success(data.message)
-        } else {
-          toast.error(data.message)
-          setAffectedRows(data.affected_rows)
+        const { response, responseData } = data
+        setUploadLoading(false)
+        if (responseData?.affected_rows) {
+          setAffectedRows(responseData?.affected_rows)
+        }
+
+        if (response.status === 200) {
+          toast.success(responseData?.detail)
+        } else if (response.status === 500) {
+          toast.error('Internal Server error')
+        } else if (response.status !== 200 && response.status !== 500) {
+          Object.keys(responseData).forEach(key => {
+            if (key !== 'affected_rows') {
+              toast.error(responseData[key])
+            }
+          })
         }
         setCsv([])
         setMiddleCatData(null)

@@ -46,7 +46,5 @@ const uploadCsv = async (url, formData, token) => {
 
   const data = await res.json()
 
-  if (data?.affected_rows) return { success: false, message: data.detail, affected_rows: data?.affected_rows }
-  else if (data?.detail.includes('not allowed')) return { success: false, message: data?.detail }
-  return { success: true, message: data.detail }
+  return { response: res, responseData: data }
 }

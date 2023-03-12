@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Typography } from '@mui/material'
+import { Typography, Box, CircularProgress } from '@mui/material'
 
 import ImageUploading from 'react-images-uploading'
 
@@ -7,6 +7,8 @@ import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 
 import { BsCloudUpload } from 'react-icons/bs'
 import { RxCross2 } from 'react-icons/rx'
+import { removeInvoiceImage, uploadInvoiceImage } from 'src/@core/apiFunction/invoice'
+import { getToken } from 'src/@core/utils/manageToken'
 
 const btnContainerstyle = {
   maxHeight: '58px',
@@ -38,19 +40,41 @@ const uploadBtnStyle = {
 const FileUpload = ({ setFiles, clearForm }) => {
   const [images, setImages] = useState([])
 
-  const onChange = (imageList, addUpdateIndex) => {
-    setImages(imageList)
-    const file = imageList[0]?.file
-    const invoice_document = new FormData()
-    invoice_document.append('document', file)
-    setFiles(invoice_document)
-  }
+  const [preview, setPreview] = useState(null)
+
+  const [loading, setLoading] = useState(false)
+
+  const [imageId, setImageId] = useState(null)
+
+  const { access_token } = getToken()
 
   useEffect(() => {
     setImages([])
   }, [clearForm])
 
-  console.log(images)
+  const onChange = (imageList, addUpdateIndex) => {
+    setLoading(true)
+    setImages(imageList)
+    const file = imageList[0]?.file
+    const invoice_document = new FormData()
+    invoice_document.append('document', file)
+
+    uploadInvoiceImage(invoice_document, access_token).then(data => {
+      if (data?.success) {
+        setFiles(data?.id)
+        setImageId(data?.id)
+        setPreview(data?.document)
+      }
+
+      setLoading(false)
+    })
+  }
+
+  const handleRemoveImage = () => {
+    removeInvoiceImage(imageId, access_token).then(() => {
+      setPreview(null)
+    })
+  }
 
   return (
     <>
@@ -59,7 +83,6 @@ const FileUpload = ({ setFiles, clearForm }) => {
         onChange={onChange}
         dataURLKey='data_url'
         acceptType={['jpg', 'jpeg', 'gif', 'png', 'heic', 'heif']}
-        // acceptType={['image/*']}
         allowNonImageType
       >
         {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => {
@@ -67,7 +90,7 @@ const FileUpload = ({ setFiles, clearForm }) => {
 
           return (
             <div style={{ display: 'flex', gap: '5px' }} className='upload__image-wrapper'>
-              {images.length < 1 && (
+              {!preview && (
                 <div>
                   <button style={btnContainerstyle} onClick={onImageUpload} {...dragProps}>
                     {/* Click or Drop here */}
@@ -83,24 +106,30 @@ const FileUpload = ({ setFiles, clearForm }) => {
                 </div>
               )}
 
-              {imageList.map((image, index) => (
-                <div style={{ marginTop: '5px', position: 'relative' }} key={index} className='image-item'>
-                  <TransformWrapper>
-                    <TransformComponent>
-                      <img src={image['data_url']} alt='' width='380' />
-                    </TransformComponent>
-                  </TransformWrapper>
-                  <div
-                    style={{
-                      display: 'flex',
-                      gap: '8px',
-                      position: 'absolute',
-                      top: '0px',
-                      right: '30px',
-                      cursor: 'pointer'
-                    }}
-                    className='image-item__btn-wrapper'
-                  >
+              {loading && (
+                <Box component='div'>
+                  <CircularProgress color='primary' />
+                </Box>
+              )}
+
+              <div style={{ marginTop: '5px', position: 'relative' }} className='image-item'>
+                <TransformWrapper>
+                  <TransformComponent>
+                    <img src={preview} alt='' width='380' />
+                  </TransformComponent>
+                </TransformWrapper>
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '8px',
+                    position: 'absolute',
+                    top: '0px',
+                    right: '30px',
+                    cursor: 'pointer'
+                  }}
+                  className='image-item__btn-wrapper'
+                >
+                  {preview && (
                     <Typography
                       border={1}
                       borderRadius='50%'
@@ -112,13 +141,13 @@ const FileUpload = ({ setFiles, clearForm }) => {
                       boxShadow={2}
                       bgcolor='#d32f2f'
                       borderColor='#fff'
-                      onClick={() => onImageRemove(index)}
+                      onClick={handleRemoveImage}
                     >
                       <RxCross2 color='#fff' fontSize={24} fontWeight={600} />
                     </Typography>
-                  </div>
+                  )}
                 </div>
-              ))}
+              </div>
             </div>
           )
         }}

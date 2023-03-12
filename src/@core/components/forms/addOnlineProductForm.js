@@ -33,7 +33,9 @@ const AddOnlineProduct = ({ refetch }) => {
     }
 
     addOnlineProduct(productData, access_token).then(data => {
-      if (data.success) {
+      const { response, responseData } = data
+
+      if (response.status === 200) {
         toast.success('Product added successfully')
         e.target.product_name.value = ''
         e.target.product_id.value = ''
@@ -42,6 +44,10 @@ const AddOnlineProduct = ({ refetch }) => {
         e.target.category.value = ''
         e.target.sku.value = ''
         refetch(prev => !prev)
+      } else if (response.status === 500) {
+        toast.error('Internal server error')
+      } else if (response.status !== 200 && response.status !== 500) {
+        toast.error(`${responseData?.product_name[0]} ${'|' + responseData?.product_ID[0]}`)
       } else {
         toast.error('Failed to add product')
       }

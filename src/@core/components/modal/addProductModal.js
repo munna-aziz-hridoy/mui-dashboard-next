@@ -48,63 +48,6 @@ const AddProduct = ({ open, setOpen }) => {
         <Card>
           <CardHeader title='Add Product' titleTypographyProps={{ variant: 'h6' }} />
           <CardContent>
-            {/* <form onSubmit={e => e.preventDefault()}>
-              <Grid container spacing={5}>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label='Prodct Name'
-                    placeholder='Product Name'
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <AccountOutline />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    type='email'
-                    label='Price'
-                    placeholder='Product Price'
-                    helperText='You can use only numbers '
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <BiMoney />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    multiline
-                    minRows={3}
-                    label='Note'
-                    placeholder='Note'
-                    sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <MessageOutline />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button type='submit' variant='contained' size='large'>
-                    Submit
-                  </Button>
-                </Grid>
-              </Grid>
-            </form> */}
             <AddInternalProduct closeModal={setOpen} />
           </CardContent>
         </Card>

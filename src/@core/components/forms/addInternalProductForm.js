@@ -120,7 +120,9 @@ const AddInternalProduct = ({
       })
     } else {
       addInternalProduct(productData, access_token).then(data => {
-        if (data.success) {
+        const { data: responseData, response } = data
+
+        if (response.status === 200) {
           toast.success('Internal Product added')
           e.target.product_name.value = ''
           e.target.product_unit.value = ''
@@ -132,6 +134,12 @@ const AddInternalProduct = ({
           if (closeModal) {
             closeModal(false)
           }
+        } else if (response.status === 500) {
+          toast.error('Internal Server Error')
+        } else if (response.status !== 200 && response.status !== 500) {
+          Object.keys(responseData).forEach(key => {
+            toast.error(responseData[key][0])
+          })
         } else {
           toast.error('Failed to add product')
         }
