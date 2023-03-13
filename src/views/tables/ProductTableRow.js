@@ -21,6 +21,8 @@ const ProductTableRow = ({ productData, setProducts, setInvoiceTotal, setTotalTa
     })
   }
 
+  console.log(productData)
+
   return (
     <TableRow hover role='checkbox' tabIndex={-1} style={{ padding: '30px' }}>
       <TableCell>{index + 1}</TableCell>

@@ -87,6 +87,7 @@ const FormSelectProduct = ({ setSelectedProduct, clearForm }) => {
   }
 
   const handleSelectProduct = item => {
+    console.log(item)
     setSelectedProduct(prev => {
       const selectedItem = {
         product: item.id,

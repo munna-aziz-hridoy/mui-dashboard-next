@@ -68,14 +68,14 @@ const AddPurchaseForm = () => {
 
   const [invoiceTotal, setInvoiceTotal] = useState(0)
   const [totalTax, setTotalTax] = useState(0)
-  const [totalProductCount, setTotalProductCount] = useState(0)
+  // const [totalProductCount, setTotalProductCount] = useState(0)
 
   const [clearForm, setClearForm] = useState(false)
   const [showError, setShowError] = useState(false)
 
-  const [confirmModal, setConfirmModal] = useState(false)
+  // const [confirmModal, setConfirmModal] = useState(false)
 
-  const [confirmSubmit, setConfirmSubmit] = useState(false)
+  // const [confirmSubmit, setConfirmSubmit] = useState(false)
 
   const [loading, setLoading] = useState(false)
 
@@ -96,9 +96,9 @@ const AddPurchaseForm = () => {
       const totalProductPrices = selectedProductPrices.reduce((prev, next) => prev + next)
       setInvoiceTotal(totalProductPrices)
 
-      const totalQuantityArr = selectedProduct.map(item => item.quantity)
-      const totalQuantity = totalQuantityArr?.reduce((prev, next) => prev + next)
-      setTotalProductCount(totalQuantity)
+      // const totalQuantityArr = selectedProduct.map(item => item.quantity)
+      // const totalQuantity = totalQuantityArr?.reduce((prev, next) => prev + next)
+      // setTotalProductCount(totalQuantity)
     }
   }, [selectedProduct])
 
@@ -171,7 +171,7 @@ const AddPurchaseForm = () => {
   return (
     <Card>
       <CardHeader title='Add New Purchase' titleTypographyProps={{ variant: 'h6' }} />
-      <ConfirmModal
+      {/* <ConfirmModal
         open={confirmModal}
         setOpen={setConfirmModal}
         setConfirm={setConfirmSubmit}
@@ -179,7 +179,7 @@ const AddPurchaseForm = () => {
         invoiceTotal={invoiceTotal + totalTax - (purchaseData?.discount || 0) + (purchaseData?.shipping_cost || 0)}
         paymentStatus={purchaseData?.payment_status}
         totalItems={totalProductCount}
-      />
+      /> */}
       <Divider sx={{ margin: 0 }} />
       {loading ? (
         <LinearProgress color='primary' />
