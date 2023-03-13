@@ -68,6 +68,8 @@ const AddPurchaseForm = () => {
 
   const [invoiceTotal, setInvoiceTotal] = useState(0)
   const [totalTax, setTotalTax] = useState(0)
+  const [totalProductCount, setTotalProductCount] = useState(0)
+
   const [clearForm, setClearForm] = useState(false)
   const [showError, setShowError] = useState(false)
 
@@ -93,6 +95,10 @@ const AddPurchaseForm = () => {
 
       const totalProductPrices = selectedProductPrices.reduce((prev, next) => prev + next)
       setInvoiceTotal(totalProductPrices)
+
+      const totalQuantityArr = selectedProduct.map(item => item.quantity)
+      const totalQuantity = totalQuantityArr?.reduce((prev, next) => prev + next)
+      setTotalProductCount(totalQuantity)
     }
   }, [selectedProduct])
 
@@ -172,7 +178,7 @@ const AddPurchaseForm = () => {
         cancel={handleRemoveImage}
         invoiceTotal={invoiceTotal + totalTax - (purchaseData?.discount || 0) + (purchaseData?.shipping_cost || 0)}
         paymentStatus={purchaseData?.payment_status}
-        totalItems={selectedProduct.map(product => product?.quantity).reduce((prev, next) => prev + next)}
+        totalItems={totalProductCount}
       />
       <Divider sx={{ margin: 0 }} />
       {loading ? (
