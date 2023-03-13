@@ -1,12 +1,13 @@
 import API_URL from 'src/@core/utils/mainUrl'
 
-export const getOfflineSells = async (searchQuery = '', page = 1, token, dateArray) => {
+export const getOfflineSells = async (searchQuery = '', page = 1, token, dateArray, isMapped) => {
   console.log(dateArray)
-  const url = `${API_URL}/offline-sell/?search=${searchQuery}&page=${page}${
+  const url = `${API_URL}/offline-sell/?search=${searchQuery}&is_mapped=${isMapped}&page=${page}${
     dateArray[1] && `&created_at__date__range=${dateArray[0].split(' ')[0]},${dateArray[1].split(' ')[0]}`
   }`
-  console.log(url)
+
   const data = await getData(url, token)
+
   return data
 }
 
@@ -16,8 +17,8 @@ export const getOfflineSellByBarcode = async (barcode, token) => {
   return data
 }
 
-export const getOnlineSells = async (searchQuery = '', page, token, dateArray) => {
-  const url = `${API_URL}/online-sell/?search=${searchQuery}&page=${page}${
+export const getOnlineSells = async (searchQuery = '', page, token, dateArray, isMapped) => {
+  const url = `${API_URL}/online-sell/?search=${searchQuery}&is_mapped=${isMapped}&page=${page}${
     dateArray[1] && `&created_at__date__range=${dateArray[0].split(' ')[0]},${dateArray[1].split(' ')[0]}`
   }`
   const data = await getData(url, token)
@@ -41,5 +42,5 @@ const getData = async (url, token) => {
 
   const data = await res.json()
 
-  return data
+  return { response: res, responseData: data }
 }

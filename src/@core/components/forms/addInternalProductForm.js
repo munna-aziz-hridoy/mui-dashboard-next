@@ -42,7 +42,7 @@ const AddInternalProduct = ({
 
   const [units, setUnits] = useState([])
 
-  const [unitValue, setUnitValue] = useState('')
+  const [unitValue, setUnitValue] = useState(previousData ? previousData?.product_unit : '')
 
   const [offlineSearchQuery, setOfflineSearchQuery] = useState('')
   const [onlineSearchQuery, setOnlineSearchQuery] = useState('')
@@ -75,6 +75,8 @@ const AddInternalProduct = ({
       setUnits(data)
     })
   }, [])
+
+  console.log(units)
 
   const handleLoadOfflineProduct = () => {
     getOfflineProducts(access_token, '')

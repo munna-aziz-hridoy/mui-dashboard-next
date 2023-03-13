@@ -6,10 +6,16 @@ import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
-import { Box, Divider, Pagination, Typography } from '@mui/material'
+import { Box, Pagination } from '@mui/material'
 import { Fragment } from 'react'
+import { useRouter } from 'next/router'
+import { BsCheck, BsX } from 'react-icons/bs'
 
 const SalesTable = ({ sellData, totalPages, setPageNumber }) => {
+  console.log(sellData)
+
+  const { pathname } = useRouter()
+
   return (
     <Fragment>
       <TableContainer component={Paper} sx={{ maxHeight: 750 }}>
@@ -18,16 +24,19 @@ const SalesTable = ({ sellData, totalPages, setPageNumber }) => {
             <TableRow>
               <TableCell>Date</TableCell>
               <TableCell>Product Name</TableCell>
-              <TableCell>Barcode</TableCell>
+              <TableCell>{pathname.includes('offline') ? 'Barcode' : 'Product ID'}</TableCell>
               <TableCell>Unit Price</TableCell>
               <TableCell>Quantity</TableCell>
               <TableCell>Sell Price</TableCell>
               <TableCell>Discounted Price</TableCell>
-              <TableCell>Total Customer</TableCell>
-              {/* <TableCell>Profit</TableCell> */}
-              <TableCell>Return Count</TableCell>
-              <TableCell>Return amount</TableCell>
+
               <TableCell>Total Discount</TableCell>
+
+              {pathname.includes('offline') && <TableCell>Total Customer</TableCell>}
+
+              <TableCell>{pathname.includes('offline') ? 'Return Count' : 'Refund Count'}</TableCell>
+              <TableCell>Return amount</TableCell>
+              <TableCell>Is Mapped</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -36,33 +45,47 @@ const SalesTable = ({ sellData, totalPages, setPageNumber }) => {
                 <TableRow key={i}>
                   <TableCell>{item?.sell_date}</TableCell>
                   <TableCell>{item?.product_name}</TableCell>
-                  <TableCell>{item?.barcode}</TableCell>
-                  <TableCell>¥{item?.unit_price}</TableCell>
-                  <TableCell>{item?.quantity}</TableCell>
-                  <TableCell>¥{item?.sell_price}</TableCell>
-                  <TableCell>¥{item?.sell_price_after_discount}</TableCell>
-                  <TableCell>{item?.num_of_customers}</TableCell>
-                  <TableCell>{item?.returned_count || 0}</TableCell>
-                  <TableCell>¥{item?.returned_amount || 0}</TableCell>
-                  <TableCell>¥{item?.total_discount || 0}</TableCell>
+                  <TableCell>{pathname.includes('offline') ? item?.barcode : item?.product_id}</TableCell>
+                  <TableCell>
+                    ¥{pathname.includes('offline') ? item?.unit_price : item?.product_current_price}
+                  </TableCell>
+                  <TableCell>
+                    {pathname.includes('offline') ? item?.quantity : item?.summary_report_total_quantity}
+                  </TableCell>
+                  <TableCell>
+                    ¥
+                    {pathname.includes('offline')
+                      ? item?.sell_price
+                      : item?.product_current_price * item?.summary_report_total_quantity}
+                  </TableCell>
+                  <TableCell>
+                    ¥
+                    {pathname.includes('offline') ? item?.sell_price_after_discount : item?.summary_report_total_amount}
+                  </TableCell>
+                  <TableCell>
+                    ¥
+                    {pathname.includes('offline')
+                      ? item?.total_discount || 0
+                      : item?.summary_report_total_discount || 0}
+                  </TableCell>
+                  {pathname.includes('offline') && <TableCell>{item?.num_of_customers}</TableCell>}
+                  <TableCell>
+                    {pathname.includes('offline')
+                      ? item?.returned_count || 0
+                      : item?.summary_report_total_refund_count || 0}
+                  </TableCell>
+                  <TableCell>
+                    ¥
+                    {pathname.includes('offline')
+                      ? item?.returned_amount || 0
+                      : item?.summary_report_total_refund_amount || 0}
+                  </TableCell>
+                  <TableCell align='center'>
+                    {item?.is_mapped ? <BsCheck fontSize={22} color='green' /> : <BsX fontSize={22} color='red' />}
+                  </TableCell>
                 </TableRow>
               )
             })}
-
-            {/* {salesData?.map(item => {
-            const { id, product, quantity, unit_cost } = item
-
-            return (
-              <TableRow key={id}>
-                <TableCell component='th' scope='row'>
-                  {product?.product_name}
-                </TableCell>
-                <TableCell>{quantity}</TableCell>
-                <TableCell>{unit_cost}</TableCell>
-                <TableCell>{quantity * unit_cost}</TableCell>
-              </TableRow>
-            )
-          })} */}
           </TableBody>
         </Table>
       </TableContainer>

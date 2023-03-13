@@ -26,6 +26,8 @@ import { getToken } from 'src/@core/utils/manageToken'
 import { getOfflineSells } from 'src/@core/apiFunction/sell'
 import AffectedTable from 'src/views/tables/affectedTable'
 import formatedDate from 'src/@core/utils/getFormatedDate'
+import useFilterOptions from 'src/@core/hooks/useFilterOptions'
+import FilterButton from 'src/@core/components/filterButton'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField size='small' fullWidth {...props} inputRef={ref} label={props.label} autoComplete='off' />
@@ -45,9 +47,15 @@ const OfflineSales = () => {
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
 
+  const [totalMapped, setTotalMapped] = useState(0)
+  const [totalUnmapped, setTotalUnmapped] = useState(0)
+  const [totalSells, setTotalSells] = useState(0)
+
   const [searchQuery, setSearchQuery] = useState('')
 
   const { access_token } = getToken()
+
+  const { isMapped, setIsMapped } = useFilterOptions()
 
   useEffect(() => {
     setLoading(true)
@@ -55,15 +63,24 @@ const OfflineSales = () => {
     const formatedStartDate = startDate ? formatedDate(startDate) : ''
     const formatedEndDate = endDate ? formatedDate(endDate) : ''
 
-    getOfflineSells(searchQuery, page, access_token, [formatedStartDate, formatedEndDate]).then(data => {
-      if (data?.data) {
-        setOfflineSellData(data?.data?.results)
-        setTotalPages(data?.total_pages)
-      }
-
+    getOfflineSells(searchQuery, page, access_token, [formatedStartDate, formatedEndDate], isMapped).then(data => {
       setLoading(false)
+
+      const { response, responseData } = data
+
+      if (response.status === 200) {
+        const { results, total_sells, total_mapped_count, total_unmapped_count } = responseData?.data
+
+        setOfflineSellData(results)
+        setTotalPages(responseData?.total_pages)
+        setTotalMapped(total_mapped_count)
+        setTotalUnmapped(total_unmapped_count)
+        setTotalSells(total_sells)
+      } else {
+        setOfflineSellData([])
+      }
     })
-  }, [page, searchQuery, refetch])
+  }, [page, refetch])
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -102,6 +119,8 @@ const OfflineSales = () => {
     }
   }
 
+  console.log(offlineSellData)
+
   return (
     <div>
       <Button
@@ -123,6 +142,18 @@ const OfflineSales = () => {
       )}
 
       {affectedRows.length > 0 && <AffectedTable affectedRows={affectedRows} setAffectedRows={setAffectedRows} />}
+
+      <Box component='div' style={{ margin: '30px 0' }}>
+        <Typography variant='body1' fontSize={16} fontWeight={500}>
+          Total sells: {totalSells}
+        </Typography>
+        <Typography variant='body1' fontSize={16} fontWeight={500}>
+          Total mapped: {totalMapped}
+        </Typography>
+        <Typography variant='body1' fontSize={16} fontWeight={500}>
+          Total un-mapped: {totalUnmapped}
+        </Typography>
+      </Box>
 
       <Box component='div' display='flex' justifyContent='space-between' alignItems='center' marginBottom={5}>
         <Box component='div' display='flex' alignItems='center' gap={2}>
@@ -146,17 +177,36 @@ const OfflineSales = () => {
             />
           </DatePickerWrapper>
         </Box>
-        <Box display='flex' alignItems='center'>
-          <TextField
-            onChange={e => setSearchQuery(e.target.value)}
-            size='small'
-            className='search-field'
-            style={{ borderRight: 'none' }}
-            placeholder='Search'
-          />
-          <Button style={{ padding: '7.5px 18px', borderRadius: '0 5px 5px 0' }} variant='outlined'>
-            Search
-          </Button>
+
+        <Box component='div' display='flex' alignItems='center' gap={2}>
+          <FilterButton isMapped={isMapped} setIsMapped={setIsMapped} refetch={setRefetch} />
+
+          <Box display='flex' alignItems='center'>
+            <TextField
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  setRefetch(prev => !prev)
+                }
+              }}
+              onChange={e => {
+                setSearchQuery(e.target.value)
+                if (e.target.value === '') {
+                  setRefetch(prev => !prev)
+                }
+              }}
+              size='small'
+              className='search-field'
+              style={{ borderRight: 'none' }}
+              placeholder='Search'
+            />
+            <Button
+              onClick={() => setRefetch(prev => !prev)}
+              style={{ padding: '7.5px 18px', borderRadius: '0 5px 5px 0' }}
+              variant='outlined'
+            >
+              Search
+            </Button>
+          </Box>
         </Box>
       </Box>
 

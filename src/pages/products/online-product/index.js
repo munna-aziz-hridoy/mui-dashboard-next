@@ -26,15 +26,20 @@ import { HiMagnifyingGlass } from 'react-icons/hi2'
 import useOnlineProducts from 'src/@core/hooks/useOnlineProducts'
 import FilterButton from 'src/@core/components/filterButton'
 import useFilterOptions from 'src/@core/hooks/useFilterOptions'
+import ViewChangeCountModal from 'src/@core/components/modal/viewChangeCount'
 
 const OnlineProduct = () => {
   const [affectedRows, setAffectedRows] = useState([])
 
   const [page, setPage] = useState(1)
 
+  const [totalCreated, setTotalCreated] = useState(0)
+  const [totalUpdated, setTotalUpdated] = useState(0)
+
   const [searchQuery, setSearchQuery] = useState('')
 
   const [uploadLoading, setUploadLoading] = useState(false)
+  const [openSuccessModal, setOpenSuccessModal] = useState(false)
 
   const { access_token } = getToken()
 
@@ -68,7 +73,9 @@ const OnlineProduct = () => {
         }
 
         if (response.status === 200) {
-          toast.success(responseData?.detail)
+          setOpenSuccessModal(true)
+          setTotalCreated(responseData?.total_created)
+          setTotalUpdated(responseData?.total_updated)
         } else if (response.status === 500) {
           toast.error('Internal Server error')
         } else if (response.status !== 200 && response.status !== 500) {
@@ -97,6 +104,13 @@ const OnlineProduct = () => {
       >
         Download Sample CSV
       </Button>
+
+      <ViewChangeCountModal
+        open={openSuccessModal}
+        setOpen={setOpenSuccessModal}
+        totalCreated={totalCreated}
+        totalUpdate={totalUpdated}
+      />
 
       {uploadLoading ? (
         <Box height={180} component='div' display='flex' justifyContent='center' alignItems='center'>

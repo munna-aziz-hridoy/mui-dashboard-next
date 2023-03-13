@@ -108,6 +108,7 @@ const InternalProduct = () => {
               }}
               onChange={e => {
                 setSearchQuery(e.target.value)
+                if (e.target.value === '') refetch(prev => !prev)
               }}
               value={searchQuery}
               size='small'

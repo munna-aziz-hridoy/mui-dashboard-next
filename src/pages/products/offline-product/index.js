@@ -34,17 +34,22 @@ import { HiMagnifyingGlass } from 'react-icons/hi2'
 import useOfflineProducts from 'src/@core/hooks/useOfflineProducts'
 import FilterButton from 'src/@core/components/filterButton'
 import useFilterOptions from 'src/@core/hooks/useFilterOptions'
+import ViewChangeCountModal from 'src/@core/components/modal/viewChangeCount'
 
 const InternalProduct = () => {
   const [middleCatData, setMiddleCatData] = useState(null)
 
   const [page, setPage] = useState(1)
 
+  const [totalCreated, setTotalCreated] = useState(0)
+  const [totalUpdated, setTotalUpdated] = useState(0)
+
   const [affectedRows, setAffectedRows] = useState([])
 
   const [searchQuery, setSearchQuery] = useState('')
 
   const [uploadLoading, setUploadLoading] = useState(false)
+  const [openSuccessModal, setOpenSuccessModal] = useState(false)
 
   const { access_token } = getToken()
 
@@ -72,13 +77,16 @@ const InternalProduct = () => {
 
       uploadOfflineProductCsv(offlineProductData, access_token).then(data => {
         const { response, responseData } = data
+        console.log(data)
         setUploadLoading(false)
         if (responseData?.affected_rows) {
           setAffectedRows(responseData?.affected_rows)
         }
 
         if (response.status === 200) {
-          toast.success(responseData?.detail)
+          setOpenSuccessModal(true)
+          setTotalCreated(responseData?.total_created)
+          setTotalUpdated(responseData?.total_updated)
         } else if (response.status === 500) {
           toast.error('Internal Server error')
         } else if (response.status !== 200 && response.status !== 500) {
@@ -91,7 +99,6 @@ const InternalProduct = () => {
         setCsv([])
         setMiddleCatData(null)
         refetch(prev => !prev)
-        setUploadLoading(false)
       })
     } else toast.error('Please select middle category')
   }
@@ -132,6 +139,13 @@ const InternalProduct = () => {
           Download Sample CSV
         </Button>
       </Box>
+
+      <ViewChangeCountModal
+        open={openSuccessModal}
+        setOpen={setOpenSuccessModal}
+        totalCreated={totalCreated}
+        totalUpdate={totalUpdated}
+      />
 
       {uploadLoading ? (
         <Box height={180} component='div' display='flex' justifyContent='center' alignItems='center'>
