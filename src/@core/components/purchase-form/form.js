@@ -126,32 +126,32 @@ const AddPurchaseForm = () => {
     const supplier_document = invoiceFile
     const data = { ...purchaseData, supplier_document, invoice_items }
 
-    // postInvoice(data, access_token)
-    //   .then(data => {
-    //     if (data.success) {
-    //       setClearForm(true)
-    //       setTotalTax(0)
-    //       setInvoiceTotal(0)
-    //       setInvoiceFile(null)
-    //       toast.success('Added to purchase list')
-    //       setLoading(false)
-    //     } else {
-    //       toast.error('Invoice Not added')
-    //       setLoading(false)
-    //       setClearForm(true)
-    //       setTotalTax(0)
-    //       setInvoiceTotal(0)
-    //       setInvoiceFile(null)
-    //     }
-    //   })
-    //   .catch(err => {
-    //     toast.error('Invoice Not added')
-    //     setLoading(false)
-    //     setClearForm(true)
-    //     setTotalTax(0)
-    //     setInvoiceTotal(0)
-    //     setInvoiceFile(null)
-    //   })
+    postInvoice(data, access_token)
+      .then(data => {
+        if (data.success) {
+          setClearForm(true)
+          setTotalTax(0)
+          setInvoiceTotal(0)
+          setInvoiceFile(null)
+          toast.success('Added to purchase list')
+          setLoading(false)
+        } else {
+          toast.error('Invoice Not added')
+          setLoading(false)
+          setClearForm(true)
+          setTotalTax(0)
+          setInvoiceTotal(0)
+          setInvoiceFile(null)
+        }
+      })
+      .catch(err => {
+        toast.error('Invoice Not added')
+        setLoading(false)
+        setClearForm(true)
+        setTotalTax(0)
+        setInvoiceTotal(0)
+        setInvoiceFile(null)
+      })
   }
 
   const handleRemoveImage = () => {
@@ -170,6 +170,9 @@ const AddPurchaseForm = () => {
         setOpen={setConfirmModal}
         setConfirm={setConfirmSubmit}
         cancel={handleRemoveImage}
+        invoiceTotal={invoiceTotal + totalTax - (purchaseData?.discount || 0) + (purchaseData?.shipping_cost || 0)}
+        paymentStatus={purchaseData?.payment_status}
+        totalItems={selectedProduct.map(product => product?.quantity).reduce((prev, next) => prev + next)}
       />
       <Divider sx={{ margin: 0 }} />
       {loading ? (

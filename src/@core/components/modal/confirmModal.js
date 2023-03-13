@@ -19,7 +19,7 @@ const style = {
   outline: 'none'
 }
 
-const ConfirmModal = ({ open, setOpen, setConfirm, cancel }) => {
+const ConfirmModal = ({ open, setOpen, setConfirm, cancel, invoiceTotal, paymentStatus, totalItems }) => {
   return (
     <Modal
       keepMounted
@@ -42,9 +42,9 @@ const ConfirmModal = ({ open, setOpen, setConfirm, cancel }) => {
             Are you sure you want to upload this invoice?
           </Typography>
           <CardContent>
-            <Typography variant='body2'>Invoice Amount: 100</Typography>
-            <Typography variant='body2'>Total Item: 100</Typography>
-            <Typography variant='body2'>Payment Status: Paid</Typography>
+            <Typography variant='body2'>Invoice Amount: {invoiceTotal}</Typography>
+            <Typography variant='body2'>Total Item: {totalItems}</Typography>
+            <Typography variant='body2'>Payment Status: {paymentStatus}</Typography>
           </CardContent>
 
           <Box
@@ -56,7 +56,14 @@ const ConfirmModal = ({ open, setOpen, setConfirm, cancel }) => {
             alignItems='center'
             gap={2}
           >
-            <Button onClick={() => setConfirm(true)} variant='outlined' size='small'>
+            <Button
+              onClick={() => {
+                setConfirm(true)
+                setOpen(false)
+              }}
+              variant='outlined'
+              size='small'
+            >
               Confirm
             </Button>
             <Button
