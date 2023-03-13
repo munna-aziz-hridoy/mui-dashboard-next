@@ -113,9 +113,9 @@ const AddPurchaseForm = () => {
       return
     }
 
-    setConfirmModal(true)
+    const isConfirm = window.confirm('Are you sure you want to submit this invoice?')
 
-    if (!confirmSubmit) return
+    if (!isConfirm) return
 
     setLoading(true)
     const invoice_items = selectedProduct.map(item => {

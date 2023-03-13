@@ -45,7 +45,7 @@ const FormStockStatus = ({ setPurchaseData, clearForm }) => {
           labelId='form-layouts-separator-select-label'
           value={selectedStatus}
         >
-          {stockStatus.map((item, i) => (
+          {stockStatus?.map((item, i) => (
             <MenuItem key={i} value={item}>
               {item}
             </MenuItem>

@@ -56,7 +56,7 @@ const FormInvoiceStatus = ({ setPurchaseData, clearForm }) => {
           labelId='form-layouts-separator-select-label'
           value={selectedStatus}
         >
-          {invoiceStatus.map((item, i) => (
+          {invoiceStatus?.map((item, i) => (
             <MenuItem key={i} value={item}>
               {item}
             </MenuItem>
